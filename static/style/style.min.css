@@ -1537,3 +1537,67 @@ span#checkpoint_status,span#autosave_status{font-size:small}
 .ipython_tooltip .tooltiptext pre{border:0;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;font-size:100%;background-color:#f7f7f7}
 .pretooltiparrow{left:0;margin:0;top:-16px;width:40px;height:16px;overflow:hidden;position:absolute}
 .pretooltiparrow:before{background-color:#f7f7f7;border:1px #ababab solid;z-index:11;content:"";position:absolute;left:15px;top:10px;width:25px;height:25px;-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg);-o-transform:rotate(45deg)}
+
+.sidebar {
+    float: left;
+    width: 20%;
+}
+
+.content-wrap {
+    float: right;
+    width: 80%;
+}
+
+#sidemainbuttons {
+    float: left;
+    width: 20%;
+}
+
+#sidebuttons {
+    float: left;
+    width: 25%;
+}
+
+#visarea{
+    float: right;
+    width: 75%;
+}
+
+.clear {clear:both;}
+
+
+
+.container-notebook{width:980px}
+
+.container-cellarea{width:900px;margin-left: 1cm}
+
+.container-leftarea{width:100px;margin-left: 1.5cm;margin-top: 1.5cm}
+
+.btn-sidebar{width: 100%}
+
+.profile-element{margin-left: 0.5cm; margin-right: 0.5cm;margin-top: 0.2cm;margin-bottom: 0.2cm}
+
+.body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/*.box {*/
+    /*font: 10px sans-serif;*/
+/*}*/
+
+/*.box line,*/
+/*.box rect,*/
+/*.box circle {*/
+    /*fill: #fff;*/
+    /*stroke: #000;*/
+    /*stroke-width: 1.5px;*/
+/*}*/
+
+/*.box .center {*/
+    /*stroke-dasharray: 3,3;*/
+/*}*/
+
+/*.box .outlier {*/
+    /*fill: none;*/
+    /*stroke: #ccc;*/
+/*}*/

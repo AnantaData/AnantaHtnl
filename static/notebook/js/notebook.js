@@ -80,7 +80,7 @@ var IPython = (function (IPython) {
     Notebook.prototype.create_elements = function () {
         var that = this;
         this.element.attr('tabindex','-1');
-        this.container = $("<div/>").addClass("container").attr("id", "notebook-container");
+        this.container = $("<div/>").addClass("container-cellarea").attr("id", "notebook-container");
         // We add this end_space div to the end of the notebook div to:
         // i) provide a margin between the last cell and the end of the notebook
         // ii) to prevent the div from scrolling up when the last cell is being
@@ -741,7 +741,7 @@ var IPython = (function (IPython) {
      *
      * @return cell {cell|null} created cell or null
      **/
-    Notebook.prototype.insert_cell_at_index = function(type, index){
+    Notebook.prototype.insert_cell_at_index = function(type,gui_type, index){
 
         var ncells = this.ncells();
         index = Math.min(index,ncells);
@@ -751,6 +751,9 @@ var IPython = (function (IPython) {
         if (ncells === 0 || this.is_valid_cell_index(index) || index === ncells) {
             if (type === 'code') {
                 cell = new IPython.CodeCell(this.kernel);
+                if(gui_type === 'flp'){
+                    cell = new IPython.Profile(this.kernel);
+                }
                 cell.set_input_prompt();
             } else if (type === 'markdown') {
                 cell = new IPython.MarkdownCell();
@@ -760,6 +763,7 @@ var IPython = (function (IPython) {
                 cell = new IPython.HeadingCell();
             }
             //-------------edited by lakmal------------------//
+
             else if (type === 'flp'){
                 cell = new IPython.Profile(this.kernel);
                 cell.set_input_prompt();
@@ -1741,7 +1745,7 @@ var IPython = (function (IPython) {
                     cell_data.cell_type = 'raw';
                 }
 
-                new_cell = this.insert_cell_at_index(cell_data.cell_type, i);
+                new_cell = this.insert_cell_at_index(cell_data.cell_type,cell_data.gui_type, i);
                 new_cell.fromJSON(cell_data);
                 if (new_cell.cell_type == 'code' && !new_cell.output_area.trusted) {
                     trusted = false;

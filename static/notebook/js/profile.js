@@ -84,6 +84,7 @@ var IPython = (function (IPython) {
         // Attributes we want to override in this subclass.
         //this.cell_type = "flp";
         this.cell_type = "code";
+        this.gui_type = 'flp';
         this.fileName = "";
         this.fileType ="";
 
@@ -139,7 +140,8 @@ var IPython = (function (IPython) {
         this.code_mirror = CodeMirror(input_area.get(0), this.cm_config);
         $(this.code_mirror.getInputField()).attr("spellcheck", "false");
         inner_cell.append(input_area);
-        input.append(prompt).append(inner_cell);
+        //input.append(prompt).append(inner_cell);
+        input.append(inner_cell);
 
         var widget_area = $('<div/>')
             .addClass('widget-area')
@@ -198,9 +200,11 @@ var IPython = (function (IPython) {
         'File Name: <input id="flpFileName" type="text" name="FileName" value=""><br>'+
         '<input type="submit" value="Execute">'+
         '</form>' );
-        var b1 = $('<button id="flpSetBtn" type="button">Profile Settings</button>');
-        var b2 = $('<button id="flpExcBtn" type="button">Execute</button>');
-        var b3 = $('<button id="flpExcBtn" type="button">Visualize</button>');
+        var b1 = $('<button id="flpSetBtn" type="button" class="btn btn-default">Profile Settings</button>');
+        var b2 = $('<button id="flpExcBtn" type="button" class="btn btn-default">Execute Profile</button>');
+        var b3 = $('<button id="flpVisBtn" type="button" class="btn btn-default">Visualize </button>');
+        var b4 = $('<button id="flpSSBtn" type="button" class="btn btn-default">Show Statistics</button>');
+        var btngrp = $('<div class="btn-group profile-element" role="group" aria-label="..."></div>');
         /*'<button id="flpExcBtn" type="button">Execute</button>' +
         '<button id="flpExcBtn" type="button">Execute</button>' );*/
         var nb = this
@@ -222,9 +226,24 @@ var IPython = (function (IPython) {
         });
         //gui.append(in1).append(b1);
         //cell.append(input).append(widget_area).append(output);
-        cell.append(input).append(widget_area).append(output).append(visdiv);
+        var left = $('<div id="sidebuttons" ></div>');
+        //left.addClass('cell border-box-sizing code_cell');
+        var brk = $('<br>');
+        var right = $('<div id="visarea" "></div>');
+        //right.addClass('cell border-box-sizing code_cell');
+        var full = $('<div></div>');
+        right.append('<h4>File Loading Profile</h4>')
+        full.addClass('clear');
 
-        cell.append(b1).append(b2).append(b3);
+        output.addClass('profile-element');
+
+        //right.append(input).append(widget_area).append(output).append(visdiv);
+        left.append(prompt)
+        btngrp.append(b1).append(b2).append(b3).append(b4);
+        //left.append(btngrp);
+        //cell.append(left).append(brk).append(right);
+        full.append(left).append(right).append(btngrp).append(input).append(widget_area).append(output).append(visdiv);
+        cell.append(full);
         //prof.append(cell).append(gui);
 
         this.element = cell;
@@ -473,7 +492,7 @@ var IPython = (function (IPython) {
         } else {
             ns = encodeURIComponent(prompt_value);
         }
-        return 'In&nbsp;[' + ns + ']:';
+        return 'Profile&nbsp;[' + ns + ']:';
     };
 
     Profile.input_prompt_continuation = function (prompt_value, lines_number) {
@@ -524,7 +543,7 @@ var IPython = (function (IPython) {
 
     Profile.prototype.fromJSON = function (data) {
         IPython.Cell.prototype.fromJSON.apply(this, arguments);
-        if (data.cell_type === 'flp') {
+        if (data.cell_type === 'code' && data.gui_type==='flp') {
             if (data.input !== undefined) {
                 this.set_text(data.input);
                 // make this value the starting point, so that we can only undo
@@ -566,6 +585,7 @@ var IPython = (function (IPython) {
         data.trusted = this.output_area.trusted;
         data.collapsed = this.collapsed;
         ////////
+        data.gui_type = this.gui_type;
         data.fileName = this.fileName;
         data.fileType = this.fileType;
         data.fileLoc = this.fileLoc;
