@@ -752,7 +752,7 @@ var IPython = (function (IPython) {
             if (type === 'code') {
                 cell = new IPython.CodeCell(this.kernel);
                 if(gui_type === 'flp'){
-                    cell = new IPython.Profile(this.kernel);
+                    cell = new IPython.FLProfile(this.kernel);
                 }
                 cell.set_input_prompt();
             } else if (type === 'markdown') {
@@ -761,12 +761,6 @@ var IPython = (function (IPython) {
                 cell = new IPython.RawCell();
             } else if (type === 'heading') {
                 cell = new IPython.HeadingCell();
-            }
-            //-------------edited by lakmal------------------//
-
-            else if (type === 'flp'){
-                cell = new IPython.Profile(this.kernel);
-                cell.set_input_prompt();
             }
 
             if(this._insert_element_at_index(cell.element,index)) {
@@ -865,19 +859,10 @@ var IPython = (function (IPython) {
         index = Math.max(index,0);
         var cell = null;
 
-        cell = new IPython.Profile(this.kernel);
+        cell = new IPython.FLProfile(this.kernel);
+        cell.set_input_prompt();
 
         if (ncells === 0 || this.is_valid_cell_index(index) || index === ncells) {
-            /*if (type === 'code') {
-                cell = new IPython.CodeCell(this.kernel);
-                cell.set_input_prompt();
-            } else if (type === 'markdown') {
-                cell = new IPython.MarkdownCell();
-            } else if (type === 'raw') {
-                cell = new IPython.RawCell();
-            } else if (type === 'heading') {
-                cell = new IPython.HeadingCell();
-            }*/
 
             if(this._insert_element_at_index(cell.element,index)) {
                 cell.render();

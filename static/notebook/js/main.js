@@ -57,7 +57,8 @@ function (marked) {
     IPython.layout_manager = new IPython.LayoutManager();
     IPython.pager = new IPython.Pager('div#pager', 'div#pager_splitter');
     IPython.quick_help = new IPython.QuickHelp();
-    IPython.flpdialog = new IPython.FlpDialog();
+
+
     try {
         IPython.tour = new IPython.NotebookTour();
     } catch (e) {
