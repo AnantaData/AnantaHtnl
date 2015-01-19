@@ -754,9 +754,6 @@ var IPython = (function (IPython) {
                 if(gui_type === 'flp'){
                     cell = new IPython.FLProfile(this.kernel);
                 }
-                else if(gui_type === 'dcp'){
-                    cell = new IPython.DCProfile(this.kernel);
-                }
                 cell.set_input_prompt();
             } else if (type === 'markdown') {
                 cell = new IPython.MarkdownCell();
@@ -765,12 +762,6 @@ var IPython = (function (IPython) {
             } else if (type === 'heading') {
                 cell = new IPython.HeadingCell();
             }
-            //-------------edited by lakmal------------------//
-
-            /*else if (type === 'flp'){
-                cell = new IPython.FLProfile(this.kernel);
-                cell.set_input_prompt();
-            }*/
 
             if(this._insert_element_at_index(cell.element,index)) {
                 cell.render();
@@ -869,54 +860,9 @@ var IPython = (function (IPython) {
         var cell = null;
 
         cell = new IPython.FLProfile(this.kernel);
+        cell.set_input_prompt();
 
         if (ncells === 0 || this.is_valid_cell_index(index) || index === ncells) {
-            /*if (type === 'code') {
-                cell = new IPython.CodeCell(this.kernel);
-                cell.set_input_prompt();
-            } else if (type === 'markdown') {
-                cell = new IPython.MarkdownCell();
-            } else if (type === 'raw') {
-                cell = new IPython.RawCell();
-            } else if (type === 'heading') {
-                cell = new IPython.HeadingCell();
-            }*/
-
-            if(this._insert_element_at_index(cell.element,index)) {
-                cell.render();
-                $([IPython.events]).trigger('create.Cell', {'cell': cell, 'index': index});
-                cell.refresh();
-                // We used to select the cell after we refresh it, but there
-                // are now cases were this method is called where select is
-                // not appropriate. The selection logic should be handled by the
-                // caller of the the top level insert_cell methods.
-                this.set_dirty(true);
-            }
-        }
-        return cell;
-    };
-
-    Notebook.prototype.insert_dcp = function (type, index) {
-        index = this.index_or_selected(index);
-        index +=1;
-        var ncells = this.ncells();
-        index = Math.min(index,ncells);
-        index = Math.max(index,0);
-        var cell = null;
-
-        cell = new IPython.DCProfile(this.kernel);
-
-        if (ncells === 0 || this.is_valid_cell_index(index) || index === ncells) {
-            /*if (type === 'code') {
-             cell = new IPython.CodeCell(this.kernel);
-             cell.set_input_prompt();
-             } else if (type === 'markdown') {
-             cell = new IPython.MarkdownCell();
-             } else if (type === 'raw') {
-             cell = new IPython.RawCell();
-             } else if (type === 'heading') {
-             cell = new IPython.HeadingCell();
-             }*/
 
             if(this._insert_element_at_index(cell.element,index)) {
                 cell.render();
@@ -1502,10 +1448,7 @@ var IPython = (function (IPython) {
             if (cell instanceof IPython.CodeCell) {
                 cell.set_kernel(this.session.kernel);
             }
-            if (cell instanceof IPython.FLProfile) {
-                cell.set_kernel(this.session.kernel);
-            }
-            if (cell instanceof IPython.DCProfile) {
+            if (cell instanceof IPython.Profile) {
                 cell.set_kernel(this.session.kernel);
             }
         }

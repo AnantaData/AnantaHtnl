@@ -58,6 +58,7 @@ function (marked) {
     IPython.pager = new IPython.Pager('div#pager', 'div#pager_splitter');
     IPython.quick_help = new IPython.QuickHelp();
 
+
     try {
         IPython.tour = new IPython.NotebookTour();
     } catch (e) {
