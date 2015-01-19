@@ -50,7 +50,47 @@ var IPython = (function (IPython) {
                     label : 'Insert File Loadiing Profile',
                     icon : 'icon-plus-sign',
                     callback : function () {
-                        IPython.notebook.insert_flp('code');
+                        IPython.notebook.insert_profile('code','flp');
+                        IPython.notebook.select_next();
+                        IPython.notebook.focus_cell();
+                    }
+                },
+                {
+                    id : 'insert_dcp',
+                    label : 'Insert Data Cleaning Profile',
+                    icon : 'icon-plus-sign',
+                    callback : function () {
+                        IPython.notebook.insert_profile('code','dcp');
+                        IPython.notebook.select_next();
+                        IPython.notebook.focus_cell();
+                    }
+                },
+                {
+                    id : 'insert_drp',
+                    label : 'Insert Data Reduction Profile',
+                    icon : 'icon-plus-sign',
+                    callback : function () {
+                        IPython.notebook.insert_profile('code','drp');
+                        IPython.notebook.select_next();
+                        IPython.notebook.focus_cell();
+                    }
+                },
+                {
+                    id : 'insert_dtp',
+                    label : 'Insert Data Transformation Profile',
+                    icon : 'icon-plus-sign',
+                    callback : function () {
+                        IPython.notebook.insert_profile('code','dtp');
+                        IPython.notebook.select_next();
+                        IPython.notebook.focus_cell();
+                    }
+                },
+                {
+                    id : 'insert_dmp',
+                    label : 'Insert Data Mining Profile',
+                    icon : 'icon-plus-sign',
+                    callback : function () {
+                        IPython.notebook.insert_profile('code','dmp');
                         IPython.notebook.select_next();
                         IPython.notebook.focus_cell();
                     }

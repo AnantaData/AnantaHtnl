@@ -754,6 +754,18 @@ var IPython = (function (IPython) {
                 if(gui_type === 'flp'){
                     cell = new IPython.FLProfile(this.kernel);
                 }
+                if(gui_type === 'dcp'){
+                    cell = new IPython.DCProfile(this.kernel);
+                }
+                if(gui_type === 'drp'){
+                    cell = new IPython.DRProfile(this.kernel);
+                }
+                if(gui_type === 'dtp'){
+                    cell = new IPython.DTProfile(this.kernel);
+                }
+                if(gui_type === 'dmp'){
+                    cell = new IPython.DMProfile(this.kernel);
+                }
                 cell.set_input_prompt();
             } else if (type === 'markdown') {
                 cell = new IPython.MarkdownCell();
@@ -851,7 +863,7 @@ var IPython = (function (IPython) {
     };
 
 
-    Notebook.prototype.insert_flp = function (type, index) {
+    Notebook.prototype.insert_profile = function (type,profile_type, index) {
         index = this.index_or_selected(index);
         index +=1;
         var ncells = this.ncells();
@@ -859,7 +871,17 @@ var IPython = (function (IPython) {
         index = Math.max(index,0);
         var cell = null;
 
-        cell = new IPython.FLProfile(this.kernel);
+        if(profile_type === 'flp') {
+            cell = new IPython.FLProfile(this.kernel);
+        }else if(profile_type === 'dcp') {
+            cell = new IPython.DCProfile(this.kernel);
+        }else if(profile_type === 'dtp') {
+            cell = new IPython.DTProfile(this.kernel);
+        }else if(profile_type === 'drp') {
+            cell = new IPython.DRProfile(this.kernel);
+        }else if(profile_type === 'dmp') {
+            cell = new IPython.DMProfile(this.kernel);
+        }
         cell.set_input_prompt();
 
         if (ncells === 0 || this.is_valid_cell_index(index) || index === ncells) {
@@ -877,6 +899,7 @@ var IPython = (function (IPython) {
         }
         return cell;
     };
+
 
     /**
      * Insert cell at end of notebook
