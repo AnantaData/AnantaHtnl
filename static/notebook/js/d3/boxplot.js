@@ -14,8 +14,8 @@ var chart = d3.box()
     .width(width)
     .height(height);
 
-function selectGrapgh(selection){
-    d3.csv("src.csv", function(data) {
+function boxPlotSelectGrapgh(selection){
+    d3.csv("a.csv", function(data) {
         var len = Object.keys(data[0]).length;
         var object_properties = new Array(len)
         object_properties = Object.getOwnPropertyNames(data[0]);

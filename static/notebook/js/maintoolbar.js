@@ -54,6 +54,16 @@ var IPython = (function (IPython) {
                         IPython.notebook.select_next();
                         IPython.notebook.focus_cell();
                     }
+                },
+                {
+                    id : 'insert_dcp',
+                    label : 'Insert Data Cleaning Profile',
+                    icon : 'icon-plus-sign',
+                    callback : function () {
+                        IPython.notebook.insert_dcp('code');
+                        IPython.notebook.select_next();
+                        IPython.notebook.focus_cell();
+                    }
                 }
             ],'insert_above_below');
 
