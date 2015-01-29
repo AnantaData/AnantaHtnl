@@ -1544,25 +1544,13 @@ span#checkpoint_status,span#autosave_status{font-size:small}
 }
 
 .content-wrap {
-    float: left;
-    width: 45%;
-
-}
-
-#vis_stat_area {
     float: right;
-    width: 50%;
-    margin-right: 1cm;
+    width: 80%;
 }
 
-#statistics_area {
-    height:250px;
-    margin-top: 0.5cm;
-    overflow:auto;
-}
-#visualization-area {
-    height:300px;
-    overflow:auto;
+#sidemainbuttons {
+    float: left;
+    width: 20%;
 }
 
 #sidebuttons {
@@ -1579,9 +1567,9 @@ span#checkpoint_status,span#autosave_status{font-size:small}
 
 
 
-.container-notebook{width:550px;margin-left: 1cm;}
+.container-notebook{width:980px}
 
-.container-cellarea{width:480px;margin-left: 1cm}
+.container-cellarea{width:900px;margin-left: 1cm}
 
 .container-leftarea{width:100px;margin-left: 1.5cm;margin-top: 1.5cm}
 
@@ -1593,194 +1581,87 @@ span#checkpoint_status,span#autosave_status{font-size:small}
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-
-th, td { white-space: nowrap; }
-div.dataTables_wrapper {
-    width: 800px;
-    margin: 0 auto;
+/*d3 css*/
+.box {
+    font: 10px sans-serif;
 }
 
-
-
-/* Terence Ordona, portal[AT]imaputz[DOT]com         */
-/* http://creativecommons.org/licenses/by-sa/2.0/    */
-
-/* begin some basic styling here                     */
-/*body {
-    background: #FFF;
-    color: #000;
-    font: normal normal 12px Verdana, Geneva, Arial, Helvetica, sans-serif;
-    margin: 10px;
-    padding: 0
-}
-*/
-table, td, a {
-    color: #000;
-    font: normal normal 12px Verdana, Geneva, Arial, Helvetica, sans-serif
-}
-/*
-h1 {
-    font: normal normal 18px Verdana, Geneva, Arial, Helvetica, sans-serif;
-    margin: 0 0 5px 0
+.box line,
+.box rect,
+.box circle {
+    fill: #fff;
+    stroke: #000;
+    stroke-width: 1.5px;
 }
 
-h2 {
-    font: normal normal 16px Verdana, Geneva, Arial, Helvetica, sans-serif;
-    margin: 0 0 5px 0
+.box .center {
+    stroke-dasharray: 3,3;
 }
 
-h3 {
-    font: normal normal 13px Verdana, Geneva, Arial, Helvetica, sans-serif;
-    color: #008000;
-    margin: 0 0 15px 0
-}*/
-/* end basic styling                                 */
-
-/* define height and width of scrollable area. Add 16px to width for scrollbar          */
-div.tableContainer {
-    clear: both;
-    border: 1px solid #963;
-    overflow: auto;
-    width: 756px
+.box .outlier {
+    fill: none;
+    stroke: #ccc;
 }
 
-/* Reset overflow value to hidden for all non-IE browsers. */
-html>body div.tableContainer {
-    overflow: hidden;
-    width: 756px
+.axis text {
+    font: 10px sans-serif;
 }
 
-/* define width of table. IE browsers only                 */
-div.tableContainer table {
-    float: left;
-    width: 740px
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
 }
 
-/* define width of table. Add 16px to width for scrollbar.           */
-/* All other non-IE browsers.                                        */
-html>body div.tableContainer table {
-    width: 756px
+.hexagon {
+    fill: none;
+    stroke: #000;
+    stroke-width: .5px;
 }
 
-/* set table header to a fixed position. WinIE 6.x only                                       */
-/* In WinIE 6.x, any element with a position property set to relative and is a child of       */
-/* an element that has an overflow property set, the relative value translates into fixed.    */
-/* Ex: parent element DIV with a class of tableContainer has an overflow property set to auto */
-thead.fixedHeader tr {
-    position: relative
+body {
+    font: 10px sans-serif;
 }
 
-/* set THEAD element to have block level attributes. All other non-IE browsers            */
-/* this enables overflow to work on TBODY element. All other non-IE, non-Mozilla browsers */
-html>body thead.fixedHeader tr {
-    display: block
+.bar rect {
+    fill: steelblue;
+    shape-rendering: crispEdges;
 }
 
-/* make the TH elements pretty */
-thead.fixedHeader th {
-    background: #586e75;
-    border-left: 1px solid #EB8;
-    border-right: 1px solid #B74;
-    border-top: 1px solid #EB8;
-    font-weight: normal;
-    padding: 4px 3px;
-    text-align: left
+.bar text {
+    fill: #fff;
 }
 
-/* make the A elements pretty. makes for nice clickable headers                */
-thead.fixedHeader a, thead.fixedHeader a:link, thead.fixedHeader a:visited {
-    color: #FFF;
-    display: block;
-    text-decoration: none;
-    width: 100%
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
 }
 
-/* make the A elements pretty. makes for nice clickable headers                */
-/* WARNING: swapping the background on hover may cause problems in WinIE 6.x   */
-thead.fixedHeader a:hover {
-    color: #FFF;
-    display: block;
-    text-decoration: underline;
-    width: 100%
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
 }
 
-/* define the table content to be scrollable                                              */
-/* set TBODY element to have block level attributes. All other non-IE browsers            */
-/* this enables overflow to work on TBODY element. All other non-IE, non-Mozilla browsers */
-/* induced side effect is that child TDs no longer accept width: auto                     */
-html>body tbody.scrollContent {
-    display: block;
-    height: 185px;
-    overflow: auto;
-    width: 100%
+.dot {
+    stroke: #000;
 }
 
-/* make TD elements pretty. Provide alternating classes for striping the table */
-/* http://www.alistapart.com/articles/zebratables/                             */
-tbody.scrollContent td, tbody.scrollContent tr.normalRow td {
-    background: #FFF;
-    border-bottom: none;
-    border-left: none;
-    border-right: 1px solid #CCC;
-    border-top: 1px solid #DDD;
-    padding: 2px 3px 3px 4px
+svg {
+    font: 10px sans-serif;
 }
 
-tbody.scrollContent tr.alternateRow td {
-    background: #EEE;
-    border-bottom: none;
-    border-left: none;
-    border-right: 1px solid #CCC;
-    border-top: 1px solid #DDD;
-    padding: 2px 3px 3px 4px
+.overlay {
+    fill: none;
+    pointer-events: all;
 }
 
-/* define width of TH elements: 1st, 2nd, and 3rd respectively.          */
-/* Add 16px to last TH for scrollbar padding. All other non-IE browsers. */
-/* http://www.w3.org/TR/REC-CSS2/selector.html#adjacent-selectors        */
-html>body thead.fixedHeader th {
-    width: 200px
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
 }
-
-html>body thead.fixedHeader th + th {
-    width: 240px
-}
-
-html>body thead.fixedHeader th + th + th {
-    width: 316px
-}
-
-/* define width of TD elements: 1st, 2nd, and 3rd respectively.          */
-/* All other non-IE browsers.                                            */
-/* http://www.w3.org/TR/REC-CSS2/selector.html#adjacent-selectors        */
-html>body tbody.scrollContent td {
-    width: 200px
-}
-
-html>body tbody.scrollContent td + td {
-    width: 240px
-}
-
-html>body tbody.scrollContent td + td + td {
-    width: 300px
-}
-/*.box {*/
-    /*font: 10px sans-serif;*/
-/*}*/
-
-/*.box line,*/
-/*.box rect,*/
-/*.box circle {*/
-    /*fill: #fff;*/
-    /*stroke: #000;*/
-    /*stroke-width: 1.5px;*/
-/*}*/
-
-/*.box .center {*/
-    /*stroke-dasharray: 3,3;*/
-/*}*/
-
-/*.box .outlier {*/
-    /*fill: none;*/
-    /*stroke: #ccc;*/
-/*}*/

@@ -54,7 +54,7 @@ var IPython = (function (IPython) {
         err_doc.hide();
         element.append(doc).append(err_doc);
 
-        var form_div = this.build_dmp_options(nb);
+        var form_div = this.build_visu_form(nb);
         element.append(form_div);
 
 
@@ -115,48 +115,7 @@ var IPython = (function (IPython) {
 
     };
 
-    DmpDialog.prototype.build_dmp_options = function (nb) {
-        var div = $('<div/>');
-        var frm = $(
-        '<div class="ui-field-contain">' +
-        '<label for="maptype">Map Type:</label>' +
-        '<select name="title" id="maptype"  >' +
-        '<option selected="selected" value=""></option>' +
-        '<option  value="som" id="type_1">Self Organizing Map</option>' +
-        '<option  value="gsom" id="type_2">Growing Self Organizing Map</option>'+
-        '</select>' +
-        '</div>' +
-        '<div id="mapdesc">' +
-        '</div>' +
-        '<div>' +
-        '<label for="kerneltype">Kernel Type:</label>' +
-        '<select name="title" id="kerneltype"  >' +
-        '<option selected="selected" value=""></option>' +
-        '<option  value="none" id="type_1">No Kernel</option>' +
-        '<option  value="gauss" id="type_2">Gaussian Kernel</option>' +
-        '<option  value="cauchy" id="type_2">Cauchy Kernel</option>' +
-        '<option  value="log" id="type_2">Logarithmic Kernel</option>'+
-        '</select>' +
-        '</div>' +
-        '<div id="kerneldesc">' +
-        '</div>' +
-        '<div>' +
-        '<label for="ensembletype">Ensemble Type:</label>' +
-        '<select name="title" id="ensembletype"  >' +
-        '<option selected="selected" value=""></option>' +
-        '<option  value="none" id="type_1">No Ensemble</option>' +
-        '<option  value="fusion" id="type_2">Machine Fusion</option>' +
-        '<option  value="bfusion" id="type_2">Boost Machine Fusion</option>'+
-        '</select>' +
-        '</div>' +
-        '<div id="ensembledesc">' +
-        '</div>' +
-        '</div>');
-        div.append(frm);
-        return div;
-    };
-
-    DmpDialog.prototype.build_flp_form = function (nb) {
+    DmpDialog.prototype.build_visu_form = function (nb) {
         var div = $('<div/>');
         var frm = $('<form method="post" action="demoform.asp">' +
         '<div class="ui-field-contain">' +
