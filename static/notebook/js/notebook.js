@@ -61,6 +61,7 @@ var IPython = (function (IPython) {
         this.save_notebook = function() { // don't allow save until notebook_loaded
             this.save_notebook_error(null, null, "Load failed, save is disabled");
         };
+
     };
 
     /**
@@ -1474,6 +1475,14 @@ var IPython = (function (IPython) {
             if (cell instanceof IPython.Profile) {
                 cell.set_kernel(this.session.kernel);
             }
+            if ((cell instanceof IPython.FLProfile) ||
+                (cell instanceof IPython.DCProfile) ||
+                (cell instanceof IPython.DRProfile) ||
+                (cell instanceof IPython.DTProfile) ||
+                (cell instanceof IPython.DMProfile)
+            ) {
+                cell.set_kernel(this.session.kernel);
+            }
         }
     };
     
@@ -2523,6 +2532,18 @@ var IPython = (function (IPython) {
         $([IPython.events]).trigger('checkpoint_delete_failed.Notebook', [xhr, status, error]);
     };
 
+    /*Notebook.prototype.hide_stat_table = function ()
+    {
+        var stat_area_header = $("stat_area_header");
+        stat_area_header.onclick(function (e) {
+            var stat_table = $("stat_table");
+            if (stat_table.is_visible()) {
+                stat_table.hide();
+            } else {
+                stat_table.show();
+            }
+        });
+    }*/
 
     IPython.Notebook = Notebook;
 

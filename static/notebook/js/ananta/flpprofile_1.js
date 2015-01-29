@@ -60,7 +60,7 @@ var IPython = (function (IPython) {
      * @param {object|undefined} [options]
      *      @param [options.cm_config] {object} config to pass to CodeMirror
      */
-    var Profile = function (kernel, options) {
+    var Profile1 = function (kernel, options) {
         this.kernel = kernel || null;
         this.collapsed = false;
 
@@ -614,3 +614,5 @@ var IPython = (function (IPython) {
 
     return IPython;
 }(IPython));
+
+///

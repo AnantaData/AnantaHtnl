@@ -1581,23 +1581,87 @@ span#checkpoint_status,span#autosave_status{font-size:small}
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-/*.box {*/
-    /*font: 10px sans-serif;*/
-/*}*/
+/*d3 css*/
+.box {
+    font: 10px sans-serif;
+}
 
-/*.box line,*/
-/*.box rect,*/
-/*.box circle {*/
-    /*fill: #fff;*/
-    /*stroke: #000;*/
-    /*stroke-width: 1.5px;*/
-/*}*/
+.box line,
+.box rect,
+.box circle {
+    fill: #fff;
+    stroke: #000;
+    stroke-width: 1.5px;
+}
 
-/*.box .center {*/
-    /*stroke-dasharray: 3,3;*/
-/*}*/
+.box .center {
+    stroke-dasharray: 3,3;
+}
 
-/*.box .outlier {*/
-    /*fill: none;*/
-    /*stroke: #ccc;*/
-/*}*/
+.box .outlier {
+    fill: none;
+    stroke: #ccc;
+}
+
+.axis text {
+    font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.hexagon {
+    fill: none;
+    stroke: #000;
+    stroke-width: .5px;
+}
+
+body {
+    font: 10px sans-serif;
+}
+
+.bar rect {
+    fill: steelblue;
+    shape-rendering: crispEdges;
+}
+
+.bar text {
+    fill: #fff;
+}
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.dot {
+    stroke: #000;
+}
+
+svg {
+    font: 10px sans-serif;
+}
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
