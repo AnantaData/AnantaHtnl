@@ -122,7 +122,7 @@ var IPython = (function (IPython) {
         '<label for="filetype">File Type:</label>' +
         '<select name="title" id="filetype"  >' +
         '<option selected="selected" value="'+ nb.fileType+'"></option>' +
-        '<option  value="csv" id="type_1">csv</option>' +
+        '<option  value="csv" id="type_1">CSV</option>' +
         '<option  value="xls" id="type_2">Excel</option>'+
         '<option  value="json" id="type_3">JSON</option>'+
         '<option  value="xml" id="type_3">XML</option>'+

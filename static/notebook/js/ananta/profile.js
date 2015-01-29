@@ -4,7 +4,7 @@ var IPython = (function (IPython) {
 
     var Profile = function (kernel, options) {
 
-        IPython.CodeCell.apply(this,[options]);
+        IPython.CodeCell.apply(this,kernel,[options]);
     };
 
     Profile.prototype = new IPython.CodeCell();

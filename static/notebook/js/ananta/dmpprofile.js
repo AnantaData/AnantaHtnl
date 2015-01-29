@@ -49,7 +49,7 @@ var IPython = (function (IPython) {
         var nb = this;
         this.b1.click(function(e){
             e.preventDefault();
-            nb.dmdialog.show_dialog(nb,get_flp_code);
+            nb.dmpdialog.show_dialog(nb,get_flp_code);
         });
         this.b2.click(function(e){
             e.preventDefault();
