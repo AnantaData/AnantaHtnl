@@ -1,3 +1,7 @@
+/**
+ * Created by tiroshan on 1/18/15.
+ */
+
 // Copyright (c) IPython Development Team.
 // Distributed under the terms of the Modified BSD License.
 
@@ -10,11 +14,10 @@ var IPython = (function (IPython) {
 
     var platform = IPython.utils.platform;
 
-    var FlpDialog = function (selector) {
+    var VisuDialog = function (selector) {
     };
 
-
-    FlpDialog.prototype.show_dialog = function (nb,get_flp_code) {
+    VisuDialog.prototype.show_dialog = function (nb,get_dcp_code) {
         // toggles display of keyboard shortcut dialog
         var prof = nb;
         var that = this;
@@ -29,9 +32,9 @@ var IPython = (function (IPython) {
             return;
         }
         /*var command_shortcuts = IPython.keyboard_manager.command_shortcuts.help();
-        var edit_shortcuts = IPython.keyboard_manager.edit_shortcuts.help();
-        var help, shortcut;
-        var i, half, n;*/
+         var edit_shortcuts = IPython.keyboard_manager.edit_shortcuts.help();
+         var help, shortcut;
+         var i, half, n;*/
         var element = $('<div/>');
 
         // The documentation
@@ -54,8 +57,66 @@ var IPython = (function (IPython) {
         err_doc.hide();
         element.append(doc).append(err_doc);
 
-        var form_div = this.build_flp_form(nb);
-        element.append(form_div);
+
+        var diaglog  = this;
+
+        d3.csv("a.csv", function(data) {
+            var len = Object.keys(data[0]).length;
+            var object_properties = new Array(len)
+            object_properties = Object.getOwnPropertyNames(data[0]);
+            //var code = this.inject_attributes_form(nb,object_properties);
+
+            var inject_code = '';
+            for(var i=0;i<object_properties.length;i++){
+                inject_code=inject_code+"\n"+'<label for="label_'+i+'">'+object_properties[i]+':</label>'+
+                                        "\n"+'<button id= "btn_box_'+i+'" type="button" class="btn btn-default">BoxPlot</button>'
+                                        +" "+'<button id= "btn_bar_'+i+'" type="button" class="btn btn-default">Bar Chart</button>'
+                                        +" "+'<button id= "btn_sem_'+i+'" type="button" class="btn btn-default">Semantic</button>';
+
+            }
+
+
+
+            var btn_array = new Array(len);
+
+            for (var j=0;j<len;j++){
+                    var btn_selection = ['#btn_box_'+j,'#btn_bar_'+j,'#btn_sem_'+j];
+                    btn_array[j]= btn_selection;
+            }
+
+            for (var k=0;k<len;k++){
+                var btn_set = btn_array[k];
+                console.log($(btn_set[0]));
+                $(btn_set[0]).click(function(e){
+                    e.preventDefault();
+                    //nb.flpdialog.show_dialog(nb,get_flp_code);
+                    console.log(k);
+                });
+
+            }
+
+            //console.log(btn_array);
+
+            //console.log(inject_code);
+            var form_div = diaglog.build_visu_form(nb,inject_code);
+            element.append(form_div);
+
+        });
+
+
+
+
+
+
+        window.alert("jquery problem");
+        /*
+         // Command mode
+         var cmd_div = this.build_command_help();
+         element.append(cmd_div);
+
+         // Edit mode
+         var edit_div = this.build_edit_help(cm_shortcuts);
+         element.append(edit_div);*/
 
 
         this.shortcut_dialog = IPython.dialog.modal({
@@ -90,7 +151,8 @@ var IPython = (function (IPython) {
                             err_doc.text("File Location is not given");
                             err_doc.show();
                         }else{
-                            get_flp_code(nb,nb.fileType,nb.fileLoc+nb.fileName);
+                            get_dcp_code(nb,nb.fileType,nb.fileLoc+nb.fileName);
+                            //window.alert(fileloc.val() + filename[0].files[0].name);
                             return true;
                         }
                         return false;
@@ -105,7 +167,11 @@ var IPython = (function (IPython) {
             window.alert("chosen");
             $('#filenametxt').val($('#filename')[0].files[0].name);
         });
-        
+
+        $("#btn_box_0").click(function(){
+            window.alert("chosen");
+        });
+
         $([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
 
 
@@ -113,36 +179,38 @@ var IPython = (function (IPython) {
         $('#fileloc').val(nb.fileLoc);
         $('#filenametxt').val(nb.fileName);
 
+
+
     };
 
-    FlpDialog.prototype.build_flp_form = function (nb) {
+
+    VisuDialog.prototype.inject_attributes_form = function (nb,object_array) {
+        var inject_code = '';
+
+        for(var i=0;i<object_array.length;i++){
+
+            inject_code=inject_code+'<label for="label">File Type:</label>'
+
+        }
+        return inject_code
+    };
+
+
+    VisuDialog.prototype.build_visu_form = function (nb,inject_code) {
+
         var div = $('<div/>');
         var frm = $('<form method="post" action="demoform.asp">' +
-        '<div class="ui-field-contain">' +
-        '<label for="filetype">File Type:</label>' +
-        '<select name="title" id="filetype"  >' +
-        '<option selected="selected" value="'+ nb.fileType+'"></option>' +
-        '<option  value="csv" id="type_1">CSV</option>' +
-        '<option  value="xls" id="type_2">Excel</option>'+
-        '<option  value="json" id="type_3">JSON</option>'+
-        '<option  value="xml" id="type_3">XML</option>'+
-        '</select>' +
-        '<label for="fileloc">File Location:</label>' +
-        '<input type="text" name="fileloc" id="fileloc" value="">' +
-        '<label for="filename">File Name:</label>' +
-        '<input type="file" name="filename" id="filename" >' +
-        '<input type="text" name="filenametxt" id="filenametxt" readonly>' +
-        '</div>' +
+        '<div class="ui-field-contain">' + inject_code+'</div>' +
         '</form>');
         div.append(frm);
         return div;
     };
 
-    IPython.FlpDialog = FlpDialog;
+
+    // Set module variables
+    IPython.VisuDialog = VisuDialog;
 
     return IPython;
 
 }(IPython));
 
-
-///
