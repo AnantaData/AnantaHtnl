@@ -17,51 +17,7 @@ var IPython = (function (IPython) {
     var VisuDialog = function (selector) {
     };
 
-    /*var cmd_ctrl = 'Ctrl-';
-     var platform_specific;
-
-     if (platform === 'MacOS') {
-     // Mac OS X specific
-     cmd_ctrl = 'Cmd-';
-     platform_specific = [
-     { shortcut: "Cmd-Up",     help:"go to cell start"  },
-     { shortcut: "Cmd-Down",   help:"go to cell end"  },
-     { shortcut: "Opt-Left",   help:"go one word left"  },
-     { shortcut: "Opt-Right",  help:"go one word right"  },
-     { shortcut: "Opt-Backspace",      help:"del word before"  },
-     { shortcut: "Opt-Delete",         help:"del word after"  },
-     ];
-     } else {
-     // PC specific
-     platform_specific = [
-     { shortcut: "Ctrl-Home",  help:"go to cell start"  },
-     { shortcut: "Ctrl-Up",     help:"go to cell start"  },
-     { shortcut: "Ctrl-End",   help:"go to cell end"  },
-     { shortcut: "Ctrl-Down",  help:"go to cell end"  },
-     { shortcut: "Ctrl-Left",  help:"go one word left"  },
-     { shortcut: "Ctrl-Right", help:"go one word right"  },
-     { shortcut: "Ctrl-Backspace", help:"del word before"  },
-     { shortcut: "Ctrl-Delete",    help:"del word after"  },
-     ];
-     }
-
-     var cm_shortcuts = [
-     { shortcut:"Tab",   help:"code completion or indent" },
-     { shortcut:"Shift-Tab",   help:"tooltip" },
-     { shortcut: cmd_ctrl + "]",   help:"indent"  },
-     { shortcut: cmd_ctrl + "[",   help:"dedent"  },
-     { shortcut: cmd_ctrl + "a",   help:"select all"  },
-     { shortcut: cmd_ctrl + "z",   help:"undo"  },
-     { shortcut: cmd_ctrl + "Shift-z",   help:"redo"  },
-     { shortcut: cmd_ctrl + "y",   help:"redo"  },
-     ].concat( platform_specific );*/
-
-
-
-
-
-
-    VisuDialog.prototype.show_visu_dialog = function (nb,get_dcp_code) {
+    VisuDialog.prototype.show_dialog = function (nb,get_dcp_code) {
         // toggles display of keyboard shortcut dialog
         var prof = nb;
         var that = this;
@@ -101,13 +57,52 @@ var IPython = (function (IPython) {
         err_doc.hide();
         element.append(doc).append(err_doc);
 
-        var form_div = this.build_flp_form(nb);
-        element.append(form_div);
+
+        var diaglog  = this;
 
         d3.csv("a.csv", function(data) {
-            console.log(data)
+            var len = Object.keys(data[0]).length;
+            var object_properties = new Array(len)
+            object_properties = Object.getOwnPropertyNames(data[0]);
+            //var code = this.inject_attributes_form(nb,object_properties);
+
+            var inject_code = '';
+            for(var i=0;i<object_properties.length;i++){
+                inject_code=inject_code+"\n"+'<label for="label_'+i+'">'+object_properties[i]+':</label>'+
+                                        "\n"+'<button id= "btn_box_'+i+'" type="button" class="btn btn-default">BoxPlot</button>'
+                                        +" "+'<button id= "btn_bar_'+i+'" type="button" class="btn btn-default">Bar Chart</button>'
+                                        +" "+'<button id= "btn_sem_'+i+'" type="button" class="btn btn-default">Semantic</button>';
+
+            }
+
+
+
+            var btn_array = new Array(len);
+
+            for (var j=0;j<len;j++){
+                    var btn_selection = ['#btn_box_'+j,'#btn_bar_'+j,'#btn_sem_'+j];
+                    btn_array[j]= btn_selection;
+            }
+
+            for (var k=0;k<len;k++){
+                var btn_set = btn_array[k];
+                console.log($(btn_set[0]));
+                $(btn_set[0]).click(function(e){
+                    e.preventDefault();
+                    //nb.flpdialog.show_dialog(nb,get_flp_code);
+                    console.log(k);
+                });
+
+            }
+
+            //console.log(btn_array);
+
+            //console.log(inject_code);
+            var form_div = diaglog.build_visu_form(nb,inject_code);
+            element.append(form_div);
 
         });
+
 
 
 
@@ -173,6 +168,10 @@ var IPython = (function (IPython) {
             $('#filenametxt').val($('#filename')[0].files[0].name);
         });
 
+        $("#btn_box_0").click(function(){
+            window.alert("chosen");
+        });
+
         $([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
 
 
@@ -180,88 +179,33 @@ var IPython = (function (IPython) {
         $('#fileloc').val(nb.fileLoc);
         $('#filenametxt').val(nb.fileName);
 
+
+
     };
 
-    VisuDialog.prototype.build_flp_form = function (nb) {
+
+    VisuDialog.prototype.inject_attributes_form = function (nb,object_array) {
+        var inject_code = '';
+
+        for(var i=0;i<object_array.length;i++){
+
+            inject_code=inject_code+'<label for="label">File Type:</label>'
+
+        }
+        return inject_code
+    };
+
+
+    VisuDialog.prototype.build_visu_form = function (nb,inject_code) {
+
         var div = $('<div/>');
         var frm = $('<form method="post" action="demoform.asp">' +
-        '<div class="ui-field-contain">' +
-        '<label for="filetype">File Type:</label>' +
-        '<select name="title" id="filetype"  >' +
-        '<option selected="selected" value="'+ nb.fileType+'"></option>' +
-        '<option  value="csv" id="type_1">csv</option>' +
-        '<option  value="xls" id="type_2">Excel</option>'+
-        '<option  value="json" id="type_3">JSON</option>'+
-        '<option  value="xml" id="type_3">XML</option>'+
-        '</select>' +
-        '<label for="fileloc">File Location:</label>' +
-        '<input type="text" name="fileloc" id="fileloc" value="">' +
-        '<label for="filename">File Name:</label>' +
-        '<input type="file" name="filename" id="filename" >' +
-        '<input type="text" name="filenametxt" id="filenametxt" readonly>' +
-        '</div>' +
+        '<div class="ui-field-contain">' + inject_code+'</div>' +
         '</form>');
         div.append(frm);
         return div;
     };
 
-    ///home/lakmal/PycharmProjects/GSOM/
-
-    /*
-     FlpDialog.prototype.build_command_help = function () {
-     var command_shortcuts = IPython.keyboard_manager.command_shortcuts.help();
-     return build_div('<h4>Command Mode (press <code>Esc</code> to enable)</h4>', command_shortcuts);
-     };
-
-     var special_case = { pageup: "PageUp", pagedown: "Page Down", 'minus': '-' };
-     var prettify = function (s) {
-     s = s.replace(/-$/, 'minus'); // catch shortcuts using '-' key
-     var keys = s.split('-');
-     var k, i;
-     for (i=0; i < keys.length; i++) {
-     k = keys[i];
-     if ( k.length == 1 ) {
-     keys[i] = "<code><strong>" + k + "</strong></code>";
-     continue; // leave individual keys lower-cased
-     }
-     keys[i] = ( special_case[k] ? special_case[k] : k.charAt(0).toUpperCase() + k.slice(1) );
-     keys[i] = "<code><strong>" + keys[i] + "</strong></code>";
-     }
-     return keys.join('-');
-
-
-     };
-
-     FlpDialog.prototype.build_edit_help = function (cm_shortcuts) {
-     var edit_shortcuts = IPython.keyboard_manager.edit_shortcuts.help();
-     jQuery.merge(cm_shortcuts, edit_shortcuts);
-     return build_div('<h4>Edit Mode (press <code>Enter</code> to enable)</h4>', cm_shortcuts);
-     };
-
-     var build_one = function (s) {
-     var help = s.help;
-     var shortcut = prettify(s.shortcut);
-     return $('<div>').addClass('quickhelp').
-     append($('<span/>').addClass('shortcut_key').append($(shortcut))).
-     append($('<span/>').addClass('shortcut_descr').text(' : ' + help));
-
-     };
-
-     var build_div = function (title, shortcuts) {
-     var i, half, n;
-     var div = $('<div/>').append($(title));
-     var sub_div = $('<div/>').addClass('hbox');
-     var col1 = $('<div/>').addClass('box-flex1');
-     var col2 = $('<div/>').addClass('box-flex1');
-     n = shortcuts.length;
-     half = ~~(n/2);  // Truncate :)
-     for (i=0; i<half; i++) { col1.append( build_one(shortcuts[i]) ); }
-     for (i=half; i<n; i++) { col2.append( build_one(shortcuts[i]) ); }
-     sub_div.append(col1).append(col2);
-     div.append(sub_div);
-     return div;
-     };
-     */
 
     // Set module variables
     IPython.VisuDialog = VisuDialog;

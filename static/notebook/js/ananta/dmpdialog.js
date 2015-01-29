@@ -54,7 +54,7 @@ var IPython = (function (IPython) {
         err_doc.hide();
         element.append(doc).append(err_doc);
 
-        var form_div = this.build_flp_form(nb);
+        var form_div = this.build_visu_form(nb);
         element.append(form_div);
 
 
@@ -115,7 +115,7 @@ var IPython = (function (IPython) {
 
     };
 
-    DmpDialog.prototype.build_flp_form = function (nb) {
+    DmpDialog.prototype.build_visu_form = function (nb) {
         var div = $('<div/>');
         var frm = $('<form method="post" action="demoform.asp">' +
         '<div class="ui-field-contain">' +

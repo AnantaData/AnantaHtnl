@@ -45,7 +45,7 @@ function boxPlotSelectGrapgh(selection){
 }
 
 function crateGraph(data){
-    var svg = d3.select("#flpvisdiv").selectAll("svg")
+    var svg = d3.select("#boxvisdiv").selectAll("svg")
         .data(data)
         .enter().append("svg")
         .attr("class", "box")

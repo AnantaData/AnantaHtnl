@@ -11,6 +11,13 @@ var IPython = (function (IPython) {
         this.fileType ="";
         this.fileLoc = "";
         this.flpdialog = new IPython.FlpDialog();
+        this.visudialog = new IPython.VisuDialog();
+
+        this.boxplotdialog = new IPython.BoxPlotDialog();
+        this.barchartdialog = new IPython.BarChartDialog();
+        this.hexbinningdialog = new IPython.HexBinningDialog();
+        this.scatterplotdialog = new IPython.ScatterPlotDialog();
+        this.semanticdialog = new IPython.SemanticDialog();
 
     };
 
@@ -57,7 +64,14 @@ var IPython = (function (IPython) {
         });
         this.b3.click(function(e){
             e.preventDefault();
-            selectGrapgh(2);
+            //boxPlotSelectGrapgh(2);
+            //nb.visudialog.show_dialog(nb,get_flp_code);
+            //nb.boxplotdialog.show_dialog(nb,2,"x");
+            //nb.barchartdialog.show_dialog(nb,2,"x");
+            //nb.hexbinningdialog.show_dialog(nb);
+            nb.scatterplotdialog.show_dialog();
+            //nb.semanticdialog.show_dialog(nb,1,2);
+
         });
 
         this.profileheading.text('File Loading Profile');
@@ -67,13 +81,11 @@ var IPython = (function (IPython) {
     FLProfile.prototype.fromJSON = function (data) {
         if(data.gui_type ==='flp'){
             IPython.CodeCell.prototype.fromJSON.apply(this, arguments);
-
             this.fileName = data.fileName;
             this.fileType = data.fileType;
             this.fileLoc = data.fileLoc;
         }
     };
-
 
     FLProfile.prototype.toJSON = function () {
         var data = IPython.CodeCell.prototype.toJSON.apply(this);
@@ -84,7 +96,6 @@ var IPython = (function (IPython) {
         data.fileLoc = this.fileLoc;
         return data;
     };
-
 
     IPython.FLProfile = FLProfile;
 
