@@ -22,18 +22,24 @@ var IPython = (function (IPython) {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
 
-        var get_flp_code= function(nb,fileType,fileName) {
+        var get_dmp_code= function(nb,algorithm,kv) {
+            var alg="";
+            alert(algorithm)
+            if (algorithm=='gsom'){
+                alg='GSOMStep(projects.data.shape[1])';
+            }
+            else if(algorithm == 'kgsom') {
+                alg='KGSOMStep(projects.data.shape[1])';
+            }
+            else if(algorithm=='kmeans'){
+                alg='KmeanStep('+kv+')';
+            }
             var code = 'from ananta_base.base import *' +
-                '\nfrom ananta_base.data_cleaning_pan import DataCleaningProfile, UseGlobalConstantStep, IgnoreTupleStep' +
-                '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
-                '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
-                '\nfrom ananta_base.data_set import TrainingSet' +
-                '\nfrom ananta_base.data_transformation import DataTransformationProfile, EncodingStep' +
-                '\nprojects = TrainingSet()' +
-                '\nflp1 = FileLoadingProfile()' +
-                '\ns1 = FileLoadStep("' + fileType + '", "' + fileName + '")' +
-                '\nflp1.addStep(s1)' +
-                '\nflp1.execute(projects)' +
+                '\nfrom ananta_base.mining import unsupervised_mining as um'+
+                '\nump1 = um.UnsupervisedMiningProfile()' +
+                '\ns1= um.'+alg+''+
+                '\nump1.addStep(s1)' +
+                '\nump1.execute(projects)' +
                 //'\ndf = projects.data.describe()' +
                 '\ndf = projects.data' +
                 '\nprint df' +
@@ -44,12 +50,12 @@ var IPython = (function (IPython) {
         }
 
 
-        get_flp_code(this, this.fileType,this.fileName);
+        get_dmp_code(this, this.algorithm);
 
         var nb = this;
         this.b1.click(function(e){
             e.preventDefault();
-            nb.dmdialog.show_dialog(nb,get_flp_code);
+            nb.dmpdialog.show_dialog(nb,get_dmp_code);
         });
         this.b2.click(function(e){
             e.preventDefault();
@@ -60,7 +66,7 @@ var IPython = (function (IPython) {
             selectGrapgh(2);
         });
 
-        this.profileheading.text('Data Mining Profile');
+        this.profileheading.text('Unsupervised Mining Profile');
     };
 
 
@@ -90,3 +96,5 @@ var IPython = (function (IPython) {
 
     return IPython;
 }(IPython));
+
+///

@@ -4,7 +4,7 @@ var IPython = (function (IPython) {
 
     var Profile = function (kernel, options) {
 
-        IPython.CodeCell.apply(this,[options]);
+        IPython.CodeCell.apply(this,kernel,[options]);
     };
 
     Profile.prototype = new IPython.CodeCell();
@@ -23,8 +23,8 @@ var IPython = (function (IPython) {
         var inner_cell = $('<div />').addClass('inner_cell');
         this.celltoolbar = new IPython.CellToolbar(this);
         inner_cell.append(this.celltoolbar.element);
-        var input_area = $('<div style="display: none;"/>').addClass('input_area');
-        //var input_area = $('<div/>').addClass('input_area');
+        //var input_area = $('<div style="display: none;"/>').addClass('input_area');
+        var input_area = $('<div/>').addClass('input_area');
         this.code_mirror = CodeMirror(input_area.get(0), this.cm_config);
         $(this.code_mirror.getInputField()).attr("spellcheck", "false");
         inner_cell.append(input_area);
@@ -102,3 +102,5 @@ var IPython = (function (IPython) {
 
     return IPython;
 }(IPython));
+
+///

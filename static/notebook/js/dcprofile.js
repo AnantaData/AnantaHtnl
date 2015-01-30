@@ -52,7 +52,7 @@ var IPython = (function (IPython) {
      *
      * The kernel doesn't have to be set at creation time, in that case
      * it will be null and set_kernel has to be called later.
-     * @class Profile
+     * @class DCProfile
      * @extends IPython.Cell
      *
      * @constructor
@@ -60,7 +60,7 @@ var IPython = (function (IPython) {
      * @param {object|undefined} [options]
      *      @param [options.cm_config] {object} config to pass to CodeMirror
      */
-    var Profile1 = function (kernel, options) {
+    var DCProfile = function (kernel, options) {
         this.kernel = kernel || null;
         this.collapsed = false;
 
@@ -72,19 +72,22 @@ var IPython = (function (IPython) {
         this.last_msg_id = null;
         this.completer = null;
 
+        this.dcpdialog = new IPython.DcpDialog();
+        this.visudialog = new IPython.VisuDialog();
 
         var cm_overwrite_options  = {
             onKeyEvent: $.proxy(this.handle_keyevent,this)
         };
 
-        options = this.mergeopt(Profile, options, {cm_config:cm_overwrite_options});
+        options = this.mergeopt(DCProfile, options, {cm_config:cm_overwrite_options});
 
         IPython.Cell.apply(this,[options]);
 
         // Attributes we want to override in this subclass.
         //this.cell_type = "flp";
         this.cell_type = "code";
-        this.gui_type = 'flp';
+        this.gui_type = 'dcp';
+        //
         this.fileName = "";
         this.fileType ="";
 
@@ -94,7 +97,7 @@ var IPython = (function (IPython) {
         );
     };
 
-    Profile.options_default = {
+    DCProfile.options_default = {
         cm_config : {
             extraKeys: {
                 "Tab" :  "indentMore",
@@ -111,19 +114,19 @@ var IPython = (function (IPython) {
         }
     };
 
-    Profile.msg_cells = {};
+    DCProfile.msg_cells = {};
 
-    Profile.prototype = new IPython.Cell();
+    DCProfile.prototype = new IPython.Cell();
 
     /**
      * @method auto_highlight
      */
-    Profile.prototype.auto_highlight = function () {
+    DCProfile.prototype.auto_highlight = function () {
         this._auto_highlight(IPython.config.cell_magic_highlight);
     };
 
     /** @method create_element */
-    Profile.prototype.create_element = function () {
+    DCProfile.prototype.create_element = function () {
         IPython.Cell.prototype.create_element.apply(this, arguments);
 
         var prof = $('<div></div>');
@@ -214,7 +217,7 @@ var IPython = (function (IPython) {
         });
         b1.click(function(e){
             e.preventDefault();
-            IPython.flpdialog.show_flp_dialog(nb,get_flp_code);
+            nb.dcpdialog.show_dcp_dialog(nb,get_flp_code);
         });
         b2.click(function(e){
             e.preventDefault();
@@ -222,7 +225,8 @@ var IPython = (function (IPython) {
         });
         b3.click(function(e){
             e.preventDefault();
-            selectGrapgh(2);
+            nb.visudialog.show_visu_dialog(nb,get_flp_code);
+            //boxPlotSelectGrapgh(2);
         });
         //gui.append(in1).append(b1);
         //cell.append(input).append(widget_area).append(output);
@@ -232,7 +236,7 @@ var IPython = (function (IPython) {
         var right = $('<div id="visarea" "></div>');
         //right.addClass('cell border-box-sizing code_cell');
         var full = $('<div></div>');
-        right.append('<h4>File Loading Profile</h4>')
+        right.append('<h4>Data Cleaning Profile</h4>')
         full.addClass('clear');
 
         output.addClass('profile-element');
@@ -255,7 +259,7 @@ var IPython = (function (IPython) {
 
 
     /** @method bind_events */
-    Profile.prototype.bind_events = function () {
+    DCProfile.prototype.bind_events = function () {
         IPython.Cell.prototype.bind_events.apply(this);
         var that = this;
 
@@ -272,7 +276,7 @@ var IPython = (function (IPython) {
      *  true = ignore, false = don't ignore.
      *  @method handle_codemirror_keyevent
      */
-    Profile.prototype.handle_codemirror_keyevent = function (editor, event) {
+    DCProfile.prototype.handle_codemirror_keyevent = function (editor, event) {
 
         var that = this;
         // whatever key is pressed, first, cancel the tooltip request before
@@ -343,7 +347,7 @@ var IPython = (function (IPython) {
 
     // Kernel related calls.
 
-    Profile.prototype.set_kernel = function (kernel) {
+    DCProfile.prototype.set_kernel = function (kernel) {
         this.kernel = kernel;
     };
 
@@ -351,7 +355,7 @@ var IPython = (function (IPython) {
      * Execute current code cell to the kernel
      * @method execute
      */
-    Profile.prototype.execute = function () {
+    DCProfile.prototype.execute = function () {
         this.output_area.clear_output();
 
         // Clear widget area
@@ -369,16 +373,16 @@ var IPython = (function (IPython) {
         var old_msg_id = this.last_msg_id;
         this.last_msg_id = this.kernel.execute(this.get_text(), callbacks, {silent: false, store_history: true});
         if (old_msg_id) {
-            delete Profile.msg_cells[old_msg_id];
+            delete DCProfile.msg_cells[old_msg_id];
         }
-        Profile.msg_cells[this.last_msg_id] = this;
+        DCProfile.msg_cells[this.last_msg_id] = this;
     };
 
     /**
      * Construct the default callbacks for
      * @method get_callbacks
      */
-    Profile.prototype.get_callbacks = function () {
+    DCProfile.prototype.get_callbacks = function () {
         return {
             shell : {
                 reply : $.proxy(this._handle_execute_reply, this),
@@ -395,7 +399,7 @@ var IPython = (function (IPython) {
         };
     };
 
-    Profile.prototype._open_with_pager = function (payload) {
+    DCProfile.prototype._open_with_pager = function (payload) {
         $([IPython.events]).trigger('open_with_text.Pager', payload);
     };
 
@@ -403,7 +407,7 @@ var IPython = (function (IPython) {
      * @method _handle_execute_reply
      * @private
      */
-    Profile.prototype._handle_execute_reply = function (msg) {
+    DCProfile.prototype._handle_execute_reply = function (msg) {
         this.set_input_prompt(msg.content.execution_count);
         this.element.removeClass("running");
         $([IPython.events]).trigger('set_dirty.Notebook', {value: true});
@@ -413,7 +417,7 @@ var IPython = (function (IPython) {
      * @method _handle_set_next_input
      * @private
      */
-    Profile.prototype._handle_set_next_input = function (payload) {
+    DCProfile.prototype._handle_set_next_input = function (payload) {
         var data = {'cell': this, 'text': payload.text};
         $([IPython.events]).trigger('set_next_input.Notebook', data);
     };
@@ -422,14 +426,14 @@ var IPython = (function (IPython) {
      * @method _handle_input_request
      * @private
      */
-    Profile.prototype._handle_input_request = function (msg) {
+    DCProfile.prototype._handle_input_request = function (msg) {
         this.output_area.append_raw_input(msg);
     };
 
 
     // Basic cell manipulation.
 
-    Profile.prototype.select = function () {
+    DCProfile.prototype.select = function () {
         var cont = IPython.Cell.prototype.select.apply(this);
         if (cont) {
             this.code_mirror.refresh();
@@ -438,18 +442,18 @@ var IPython = (function (IPython) {
         return cont;
     };
 
-    Profile.prototype.render = function () {
+    DCProfile.prototype.render = function () {
         var cont = IPython.Cell.prototype.render.apply(this);
         // Always execute, even if we are already in the rendered state
         return cont;
     };
 
-    Profile.prototype.unrender = function () {
+    DCProfile.prototype.unrender = function () {
         // CodeCell is always rendered
         return false;
     };
 
-    Profile.prototype.select_all = function () {
+    DCProfile.prototype.select_all = function () {
         var start = {line: 0, ch: 0};
         var nlines = this.code_mirror.lineCount();
         var last_line = this.code_mirror.getLine(nlines-1);
@@ -458,34 +462,34 @@ var IPython = (function (IPython) {
     };
 
 
-    Profile.prototype.collapse_output = function () {
+    DCProfile.prototype.collapse_output = function () {
         this.collapsed = true;
         this.output_area.collapse();
     };
 
 
-    Profile.prototype.expand_output = function () {
+    DCProfile.prototype.expand_output = function () {
         this.collapsed = false;
         this.output_area.expand();
         this.output_area.unscroll_area();
     };
 
-    Profile.prototype.scroll_output = function () {
+    DCProfile.prototype.scroll_output = function () {
         this.output_area.expand();
         this.output_area.scroll_if_long();
     };
 
-    Profile.prototype.toggle_output = function () {
+    DCProfile.prototype.toggle_output = function () {
         this.collapsed = Boolean(1 - this.collapsed);
         this.output_area.toggle_output();
     };
 
-    Profile.prototype.toggle_output_scroll = function () {
+    DCProfile.prototype.toggle_output_scroll = function () {
         this.output_area.toggle_scroll();
     };
 
 
-    Profile.input_prompt_classical = function (prompt_value, lines_number) {
+    DCProfile.input_prompt_classical = function (prompt_value, lines_number) {
         var ns;
         if (prompt_value === undefined) {
             ns = "&nbsp;";
@@ -495,45 +499,45 @@ var IPython = (function (IPython) {
         return 'Profile&nbsp;[' + ns + ']:';
     };
 
-    Profile.input_prompt_continuation = function (prompt_value, lines_number) {
-        var html = [Profile.input_prompt_classical(prompt_value, lines_number)];
+    DCProfile.input_prompt_continuation = function (prompt_value, lines_number) {
+        var html = [DCProfile.input_prompt_classical(prompt_value, lines_number)];
         for(var i=1; i < lines_number; i++) {
             html.push(['...:']);
         }
         return html.join('<br/>');
     };
 
-    Profile.input_prompt_function = Profile.input_prompt_classical;
+    DCProfile.input_prompt_function = DCProfile.input_prompt_classical;
 
 
-    Profile.prototype.set_input_prompt = function (number) {
+    DCProfile.prototype.set_input_prompt = function (number) {
         var nline = 1;
         if (this.code_mirror !== undefined) {
             nline = this.code_mirror.lineCount();
         }
         this.input_prompt_number = number;
-        var prompt_html = Profile.input_prompt_function(this.input_prompt_number, nline);
+        var prompt_html = DCProfile.input_prompt_function(this.input_prompt_number, nline);
         // This HTML call is okay because the user contents are escaped.
         this.element.find('div.input_prompt').html(prompt_html);
     };
 
 
-    Profile.prototype.clear_input = function () {
+    DCProfile.prototype.clear_input = function () {
         this.code_mirror.setValue('');
     };
 
 
-    Profile.prototype.get_text = function () {
+    DCProfile.prototype.get_text = function () {
         return this.code_mirror.getValue();
     };
 
 
-    Profile.prototype.set_text = function (code) {
+    DCProfile.prototype.set_text = function (code) {
         return this.code_mirror.setValue(code);
     };
 
 
-    Profile.prototype.clear_output = function (wait) {
+    DCProfile.prototype.clear_output = function (wait) {
         this.output_area.clear_output(wait);
         this.set_input_prompt();
     };
@@ -541,9 +545,9 @@ var IPython = (function (IPython) {
 
     // JSON serialization
 
-    Profile.prototype.fromJSON = function (data) {
+    DCProfile.prototype.fromJSON = function (data) {
         IPython.Cell.prototype.fromJSON.apply(this, arguments);
-        if (data.cell_type === 'code' && data.gui_type==='flp') {
+        if (data.cell_type === 'code' && data.gui_type==='dcp') {
             if (data.input !== undefined) {
                 this.set_text(data.input);
                 // make this value the starting point, so that we can only undo
@@ -565,14 +569,14 @@ var IPython = (function (IPython) {
                     this.expand_output();
                 }
             }
-            this.fileName = data.fileName;
+            /*this.fileName = data.fileName;
             this.fileType = data.fileType;
-            this.fileLoc = data.fileLoc;
+            this.fileLoc = data.fileLoc;*/
         }
     };
 
 
-    Profile.prototype.toJSON = function () {
+    DCProfile.prototype.toJSON = function () {
         var data = IPython.Cell.prototype.toJSON.apply(this);
         data.input = this.get_text();
         // is finite protect against undefined and '*' value
@@ -586,9 +590,9 @@ var IPython = (function (IPython) {
         data.collapsed = this.collapsed;
         ////////
         data.gui_type = this.gui_type;
-        data.fileName = this.fileName;
+        /*data.fileName = this.fileName;
         data.fileType = this.fileType;
-        data.fileLoc = this.fileLoc;
+        data.fileLoc = this.fileLoc;*/
         return data;
     };
 
@@ -597,7 +601,7 @@ var IPython = (function (IPython) {
      * @method unselect
      * @return is the action being taken
      */
-    Profile.prototype.unselect = function () {
+    DCProfile.prototype.unselect = function () {
         var cont = IPython.Cell.prototype.unselect.apply(this);
         if (cont) {
             // When a code cell is usnelected, make sure that the corresponding
@@ -610,9 +614,7 @@ var IPython = (function (IPython) {
         return cont;
     };
 
-    IPython.Profile = Profile;
+    IPython.DCProfile = DCProfile;
 
     return IPython;
 }(IPython));
-
-///

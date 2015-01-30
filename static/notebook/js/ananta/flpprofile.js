@@ -4,13 +4,20 @@ var IPython = (function (IPython) {
 
     var FLProfile = function (kernel, options) {
 
-        IPython.Profile.apply(this,[options]);
+        IPython.Profile.apply(this, kernel, [options]);
 
         this.gui_type = 'flp';
         this.fileName = "";
         this.fileType ="";
         this.fileLoc = "";
         this.flpdialog = new IPython.FlpDialog();
+        this.visudialog = new IPython.VisuDialog();
+
+        this.boxplotdialog = new IPython.BoxPlotDialog();
+        this.barchartdialog = new IPython.BarChartDialog();
+        this.hexbinningdialog = new IPython.HexBinningDialog();
+        this.scatterplotdialog = new IPython.ScatterPlotDialog();
+        this.semanticdialog = new IPython.SemanticDialog();
 
     };
 
@@ -34,10 +41,11 @@ var IPython = (function (IPython) {
                 '\ns1 = FileLoadStep("' + fileType + '", "' + fileName + '")' +
                 '\nflp1.addStep(s1)' +
                 '\nflp1.execute(projects)' +
-                //'\ndf = projects.data.describe()' +
+                '\nprint(projects.data.describe())' +
                 '\ndf = projects.data' +
-                '\nprint df' +
-                '\ndf.to_csv("a.csv", sep=",", encoding="utf-8")' +
+                //'\ndf.to_csv("a.csv", sep=",", encoding="utf-8")' +
+                '\ntypes_list = df.dtypes' +
+                '\ntypes_list.to_csv("types.csv", sep=",", encoding="utf-8")' +
                 '';
             nb.set_text(code);
 
@@ -57,7 +65,14 @@ var IPython = (function (IPython) {
         });
         this.b3.click(function(e){
             e.preventDefault();
-            selectGrapgh(2);
+            //boxPlotSelectGrapgh(2);
+            //nb.visudialog.show_dialog(nb,get_flp_code);
+            //nb.boxplotdialog.show_dialog(nb,2,"x");
+            //nb.barchartdialog.show_dialog(nb,2,"x");
+            //nb.hexbinningdialog.show_dialog(nb);
+            nb.scatterplotdialog.show_dialog();
+            //nb.semanticdialog.show_dialog(nb,1,2);
+
         });
 
         this.profileheading.text('File Loading Profile');

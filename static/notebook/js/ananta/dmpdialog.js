@@ -14,7 +14,7 @@ var IPython = (function (IPython) {
     };
 
 
-    DmpDialog.prototype.show_dialog = function (nb,get_flp_code) {
+    DmpDialog.prototype.show_dialog = function (nb,get_dmp_code) {
         // toggles display of keyboard shortcut dialog
         var prof = nb;
         var that = this;
@@ -54,43 +54,39 @@ var IPython = (function (IPython) {
         err_doc.hide();
         element.append(doc).append(err_doc);
 
-        var form_div = this.build_flp_form(nb);
+        var form_div = this.build_dmp_options(nb);
         element.append(form_div);
 
 
         this.shortcut_dialog = IPython.dialog.modal({
-            title : "Data Mining Profile",
+            title : "Unsupervised Mining Profile",
             body : element,
             destroy : false,
             buttons : {
                 Close : {},
                 Ok :{class : "btn-primary",
                     click: function(e) {
-                        var filetype = $('#filetype');
-                        var filename = $('#filenametxt');
-                        var fileloc = $('#fileloc');
+                        var algorithm = $('#algorithm');
+                        //var kernel_type = $('#kerneltype');
+                        //var ensemble = $('#ensemble');
                         var err_doc = $('#error_doc');
                         err_doc.hide();
-                        var f = filetype[0];
+                        var f = algorithm[0];
                         var error = 0;
-                        nb.fileName = filename.val();
-                        nb.fileLoc = fileloc.val();
-                        nb.fileType = filetype.val();
+                        nb.algorithm = algorithm.val();
+                        nb.kv=0;
+                        if (nb.algorithm=='kmeans'){
+                            nb.kv=$('#kv').val();
+                        }
+                        //nb.fileLoc = fileloc.val();
+                        //nb.fileType = filetype.val();
 
                         if(f.selectedIndex ==0) {
                             e.preventDefault();
-                            err_doc.text("File Type not selected");
-                            err_doc.show();
-                        }else if(!nb.fileName) {
-                            e.preventDefault();
-                            err_doc.text("File Name is not given");
-                            err_doc.show();
-                        }else if(!nb.fileLoc) {
-                            e.preventDefault();
-                            err_doc.text("File Location is not given");
+                            err_doc.text("Please Specify an Algorithm!");
                             err_doc.show();
                         }else{
-                            get_flp_code(nb,nb.fileType,nb.fileLoc+nb.fileName);
+                            get_dmp_code(nb,nb.algorithm,nb.kv);
                             return true;
                         }
                         return false;
@@ -101,9 +97,12 @@ var IPython = (function (IPython) {
         });
         this.shortcut_dialog.addClass("modal_stretch");
 
-        $("#filename").change(function(){
-            window.alert("chosen");
-            $('#filenametxt').val($('#filename')[0].files[0].name);
+        $("#algorithm").change(function(){
+            //window.alert("chosen");
+            if($('#algorithm').val()=='kmeans'){
+                $('#kv').show();
+            }
+            $('#filenametxt').val($('#algorithm')[0].files[0].name);
         });
         
         $([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
@@ -113,6 +112,23 @@ var IPython = (function (IPython) {
         $('#fileloc').val(nb.fileLoc);
         $('#filenametxt').val(nb.fileName);
 
+    };
+
+    DmpDialog.prototype.build_dmp_options = function (nb) {
+        var div = $('<div/>');
+        var frm = $(
+        '<div class="ui-field-contain">' +
+        '<label for="maptype">Algorithm:</label>' +
+        '<select name="title" id="algorithm"  >' +
+        '<option selected="selected" value=""></option>' +
+        '<option  value="gsom" id="type_1">Growing Self Organizing Map</option>' +
+        '<option  value="kgsom" id="type_2">Kernel Growing Self Organizing Map</option>'+
+        '<option value="kmeans" id = "type_3"> K-Means (k = 4) </option>'+
+        '</select>' +
+        '<input type="text" id = "kv" style="display:none">Enter Number of Clusters for K-Means</input>'+
+        '</div>');
+        div.append(frm);
+        return div;
     };
 
     DmpDialog.prototype.build_flp_form = function (nb) {
@@ -143,3 +159,5 @@ var IPython = (function (IPython) {
     return IPython;
 
 }(IPython));
+
+////

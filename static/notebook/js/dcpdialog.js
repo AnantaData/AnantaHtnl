@@ -10,11 +10,54 @@ var IPython = (function (IPython) {
 
     var platform = IPython.utils.platform;
 
-    var FlpDialog = function (selector) {
+    var DcpDialog = function (selector) {
     };
 
+    /*var cmd_ctrl = 'Ctrl-';
+    var platform_specific;
 
-    FlpDialog.prototype.show_dialog = function (nb,get_flp_code) {
+    if (platform === 'MacOS') {
+        // Mac OS X specific
+        cmd_ctrl = 'Cmd-';
+        platform_specific = [
+            { shortcut: "Cmd-Up",     help:"go to cell start"  },
+            { shortcut: "Cmd-Down",   help:"go to cell end"  },
+            { shortcut: "Opt-Left",   help:"go one word left"  },
+            { shortcut: "Opt-Right",  help:"go one word right"  },
+            { shortcut: "Opt-Backspace",      help:"del word before"  },
+            { shortcut: "Opt-Delete",         help:"del word after"  },
+        ];
+    } else {
+        // PC specific
+        platform_specific = [
+            { shortcut: "Ctrl-Home",  help:"go to cell start"  },
+            { shortcut: "Ctrl-Up",     help:"go to cell start"  },
+            { shortcut: "Ctrl-End",   help:"go to cell end"  },
+            { shortcut: "Ctrl-Down",  help:"go to cell end"  },
+            { shortcut: "Ctrl-Left",  help:"go one word left"  },
+            { shortcut: "Ctrl-Right", help:"go one word right"  },
+            { shortcut: "Ctrl-Backspace", help:"del word before"  },
+            { shortcut: "Ctrl-Delete",    help:"del word after"  },
+        ];
+    }
+
+    var cm_shortcuts = [
+        { shortcut:"Tab",   help:"code completion or indent" },
+        { shortcut:"Shift-Tab",   help:"tooltip" },
+        { shortcut: cmd_ctrl + "]",   help:"indent"  },
+        { shortcut: cmd_ctrl + "[",   help:"dedent"  },
+        { shortcut: cmd_ctrl + "a",   help:"select all"  },
+        { shortcut: cmd_ctrl + "z",   help:"undo"  },
+        { shortcut: cmd_ctrl + "Shift-z",   help:"redo"  },
+        { shortcut: cmd_ctrl + "y",   help:"redo"  },
+    ].concat( platform_specific );*/
+
+
+
+      
+
+
+    DcpDialog.prototype.show_dcp_dialog = function (nb,get_dcp_code) {
         // toggles display of keyboard shortcut dialog
         var prof = nb;
         var that = this;
@@ -54,8 +97,22 @@ var IPython = (function (IPython) {
         err_doc.hide();
         element.append(doc).append(err_doc);
 
-        var form_div = this.build_flp_form(nb);
+        var form_div = this.build_visu_form(nb);
         element.append(form_div);
+
+
+
+
+
+        window.alert("jquery problem");
+        /*
+        // Command mode
+        var cmd_div = this.build_command_help();
+        element.append(cmd_div);
+
+        // Edit mode
+        var edit_div = this.build_edit_help(cm_shortcuts);
+        element.append(edit_div);*/
 
 
         this.shortcut_dialog = IPython.dialog.modal({
@@ -90,7 +147,8 @@ var IPython = (function (IPython) {
                             err_doc.text("File Location is not given");
                             err_doc.show();
                         }else{
-                            get_flp_code(nb,nb.fileType,nb.fileLoc+nb.fileName);
+                            get_dcp_code(nb,nb.fileType,nb.fileLoc+nb.fileName);
+                            //window.alert(fileloc.val() + filename[0].files[0].name);
                             return true;
                         }
                         return false;
@@ -115,14 +173,14 @@ var IPython = (function (IPython) {
 
     };
 
-    FlpDialog.prototype.build_flp_form = function (nb) {
+    DcpDialog.prototype.build_visu_form = function (nb) {
         var div = $('<div/>');
         var frm = $('<form method="post" action="demoform.asp">' +
         '<div class="ui-field-contain">' +
         '<label for="filetype">File Type:</label>' +
         '<select name="title" id="filetype"  >' +
         '<option selected="selected" value="'+ nb.fileType+'"></option>' +
-        '<option  value="csv" id="type_1">CSV</option>' +
+        '<option  value="csv" id="type_1">csv</option>' +
         '<option  value="xls" id="type_2">Excel</option>'+
         '<option  value="json" id="type_3">JSON</option>'+
         '<option  value="xml" id="type_3">XML</option>'+
@@ -138,7 +196,66 @@ var IPython = (function (IPython) {
         return div;
     };
 
-    IPython.FlpDialog = FlpDialog;
+    ///home/lakmal/PycharmProjects/GSOM/
+
+    /*
+    FlpDialog.prototype.build_command_help = function () {
+        var command_shortcuts = IPython.keyboard_manager.command_shortcuts.help();
+        return build_div('<h4>Command Mode (press <code>Esc</code> to enable)</h4>', command_shortcuts);
+    };
+
+    var special_case = { pageup: "PageUp", pagedown: "Page Down", 'minus': '-' };
+    var prettify = function (s) {
+        s = s.replace(/-$/, 'minus'); // catch shortcuts using '-' key
+        var keys = s.split('-');
+        var k, i;
+        for (i=0; i < keys.length; i++) {
+            k = keys[i];
+            if ( k.length == 1 ) {
+                keys[i] = "<code><strong>" + k + "</strong></code>";
+                continue; // leave individual keys lower-cased
+            }
+            keys[i] = ( special_case[k] ? special_case[k] : k.charAt(0).toUpperCase() + k.slice(1) );
+            keys[i] = "<code><strong>" + keys[i] + "</strong></code>";
+        }
+        return keys.join('-');
+
+
+    };
+
+    FlpDialog.prototype.build_edit_help = function (cm_shortcuts) {
+        var edit_shortcuts = IPython.keyboard_manager.edit_shortcuts.help();
+        jQuery.merge(cm_shortcuts, edit_shortcuts);
+        return build_div('<h4>Edit Mode (press <code>Enter</code> to enable)</h4>', cm_shortcuts);
+    };
+
+    var build_one = function (s) {
+        var help = s.help;
+        var shortcut = prettify(s.shortcut);
+        return $('<div>').addClass('quickhelp').
+            append($('<span/>').addClass('shortcut_key').append($(shortcut))).
+            append($('<span/>').addClass('shortcut_descr').text(' : ' + help));
+
+    };
+
+    var build_div = function (title, shortcuts) {
+        var i, half, n;
+        var div = $('<div/>').append($(title));
+        var sub_div = $('<div/>').addClass('hbox');
+        var col1 = $('<div/>').addClass('box-flex1');
+        var col2 = $('<div/>').addClass('box-flex1');
+        n = shortcuts.length;
+        half = ~~(n/2);  // Truncate :)
+        for (i=0; i<half; i++) { col1.append( build_one(shortcuts[i]) ); }
+        for (i=half; i<n; i++) { col2.append( build_one(shortcuts[i]) ); }
+        sub_div.append(col1).append(col2);
+        div.append(sub_div);
+        return div;
+    };
+    */
+
+    // Set module variables
+    IPython.DcpDialog = DcpDialog;
 
     return IPython;
 

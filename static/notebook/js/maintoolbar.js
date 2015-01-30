@@ -16,7 +16,7 @@ var IPython = (function (IPython) {
         IPython.ToolBar.apply(this, arguments);
         this.construct();
         this.add_celltype_list();
-        this.add_celltoolbar_list();
+        //this.add_celltoolbar_list();
         this.bind_events();
     };
 
@@ -94,7 +94,17 @@ var IPython = (function (IPython) {
                         IPython.notebook.select_next();
                         IPython.notebook.focus_cell();
                     }
-                }
+                },
+                //{
+                //    id : 'insert_dcp',
+                //    label : 'Insert Data Cleaning Profile',
+                //    icon : 'icon-plus-sign',
+                //    callback : function () {
+                //        IPython.notebook.insert_dcp('code');
+                //        IPython.notebook.select_next();
+                //        IPython.notebook.focus_cell();
+                //    }
+                //}
             ],'insert_above_below');
 
         this.add_buttons_group([
@@ -153,7 +163,7 @@ var IPython = (function (IPython) {
                         // emulate default shift-enter behavior
                         IPython.notebook.execute_cell_and_select_below();
                     }
-                },
+                }/*,
                 {
                     id : 'run_file_profile',
                     label : 'Run File Load Profile',
@@ -171,7 +181,7 @@ var IPython = (function (IPython) {
                         // emulate default shift-enter behavior
                         IPython.notebook.execute_dcp_cell_and_select_below();
                     }
-                },
+                }*/,
                 {
                     id : 'interrupt_b',
                     label : 'Interrupt',
