@@ -1553,15 +1553,16 @@ span#checkpoint_status,span#autosave_status{font-size:small}
     float: right;
     width: 50%;
     margin-right: 1cm;
+    margin-top: 16px;
 }
 
 #statistics_area {
-    height:250px;
-    margin-top: 0.5cm;
+    height:485px;
+    margin-top: 0.25cm;
     overflow:auto;
 }
 #visualization-area {
-    height:300px;
+    height:485px;
     overflow:auto;
 }
 
@@ -1710,7 +1711,7 @@ thead.fixedHeader a:hover {
 /* induced side effect is that child TDs no longer accept width: auto                     */
 html>body tbody.scrollContent {
     display: block;
-    height: 185px;
+    height: 447px;
     overflow: auto;
     width: 100%
 }
@@ -1784,3 +1785,25 @@ html>body tbody.scrollContent td + td + td {
     /*fill: none;*/
     /*stroke: #ccc;*/
 /*}*/
+
+.ui-widget-header {
+    background: #cccccc url(images/ui-bg_highlight-soft_75_cccccc_1x100.png) repeat-x !important;
+    color: #222222;
+    font-weight: bold;
+    height:27px
+}
+
+.ui-widget-header ul {
+    height:11px;
+}
+
+.ui-tabs .ui-tabs-nav li {
+    height:25px;
+    font-size:10px;
+
+}
+
+.ui-tabs .ui-tabs-nav li a {
+    position:relative;
+    top:0px
+}
