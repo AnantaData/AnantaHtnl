@@ -1592,6 +1592,7 @@ span#checkpoint_status,span#autosave_status{font-size:small}
 
 .body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /*background-color: #586e75;*/
 }
 
 
