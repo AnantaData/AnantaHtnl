@@ -18,7 +18,7 @@ function scatterplotCreateGrapgh() {
 
     var color = d3.scale.category10();
 
-    d3.csv("a.csv", function (error, data) {
+    d3.csv("stat.csv", function (error, data) {
 
         x.domain(d3.extent(data, function (d) {
             return d.x;

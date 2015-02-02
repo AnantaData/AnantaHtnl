@@ -60,7 +60,7 @@ var IPython = (function (IPython) {
         //    $('#filenametxt').val($('#filename')[0].files[0].name);
         //});
 
-        //$([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
+        $([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
 
 
         //$('#filetype option[value="' + nb.fileType + '"]').prop('selected', true);

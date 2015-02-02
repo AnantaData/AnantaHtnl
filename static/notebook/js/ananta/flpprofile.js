@@ -74,6 +74,11 @@ var IPython = (function (IPython) {
             //nb.semanticdialog.show_dialog(nb,1,2);
 
         });
+        this.b4.click(function(e){
+            e.preventDefault();
+            tabulate()
+
+        });
 
         this.profileheading.text('File Loading Profile');
     };
