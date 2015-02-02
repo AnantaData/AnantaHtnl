@@ -41,12 +41,10 @@ var IPython = (function (IPython) {
                 '\ns1 = FileLoadStep("' + fileType + '", "' + fileName + '")' +
                 '\nflp1.addStep(s1)' +
                 '\nflp1.execute(projects)' +
-                '\nprint(projects.data.describe())' +
-                '\ndf = projects.data' +
-                //'\ndf.to_csv("a.csv", sep=",", encoding="utf-8")' +
-                '\ntypes_list = df.dtypes' +
-                '\ntypes_list.to_csv("types.csv", sep=",", encoding="utf-8")' +
-                '';
+                '\nstat.getStatistics(projects)' +
+                '\nprint "Profile Successfully Executed"' ;
+
+
             nb.set_text(code);
 
         }
