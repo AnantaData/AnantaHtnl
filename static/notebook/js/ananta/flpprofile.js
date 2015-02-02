@@ -4,7 +4,7 @@ var IPython = (function (IPython) {
 
     var FLProfile = function (kernel, options) {
 
-        IPython.Profile.apply(this, kernel, [options]);
+        IPython.Profile.apply(this, [kernel,options]);
 
         this.gui_type = 'flp';
         this.fileName = "";

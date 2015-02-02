@@ -3,7 +3,7 @@
 function tabulate(){
     d3.csv("stat.csv", function(data) {
         // the columns you'd like to display
-        var columns = ["Field","Count","Mean","St. Dev","Min","Q1","Median","Q3","Max"];
+        var columns = ["Field","Count","Mean","St.Dev","Min","Q1","Median","Q3","Max"];
 
         var table = d3.select("#stat_table");
                 //.append("table"),
