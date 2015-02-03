@@ -64,7 +64,7 @@ var IPython = (function (IPython) {
 
 
         this.shortcut_dialog = IPython.minidialog.modal({
-            title : "File Loading Profile",
+            title : "Ignore Tuple Step",
             body : element,
             destroy : false,
             buttons : {
@@ -114,32 +114,42 @@ var IPython = (function (IPython) {
         $([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
 
 
+
+
         $('#filetype option[value="' + nb.fileType + '"]').prop('selected', true);
         $('#fileloc').val(nb.fileLoc);
         $('#filenametxt').val(nb.fileName);
 
+        tabulate_2();
     };
 
     IgnTuplDialog.prototype.build_flp_form = function (nb) {
-        var div = $('<div/>');
-        var frm = $('<form method="post" action="demoform.asp">' +
-        '<div class="ui-field-contain">' +
-        '<label for="filetype">File Type:</label>' +
-        '<select name="title" id="filetype"  >' +
-        '<option selected="selected" value="'+ nb.fileType+'"></option>' +
-        '<option  value="csv" id="type_1">CSV</option>' +
-        '<option  value="xls" id="type_2">Excel</option>'+
-        '<option  value="json" id="type_3">JSON</option>'+
-        '<option  value="xml" id="type_3">XML</option>'+
-        '</select>' +
-        '<label for="fileloc">File Location:</label>' +
-        '<input type="text" name="fileloc" id="fileloc" value="">' +
-        '<label for="filename">File Name:</label>' +
-        '<input type="file" name="filename" id="filename" >' +
-        '<input type="text" name="filenametxt" id="filenametxt" readonly>' +
-        '</div>' +
-        '</form>');
+        var div = $('<div class="checkboxlist"/>');
+        /*var frm = $('<input type="checkbox" /> This is checkbox <br />' +
+        '<input type="checkbox" /> This is checkbox <br />' +
+        '<input type="checkbox" /> This is checkbox <br />' +
+        '<input type="checkbox" /> This is checkbox <br />' +
+        '<input type="checkbox" /> This is checkbox <br />' +
+        '<input type="checkbox" /> This is checkbox <br />');*/
+        var frm =$('<table id="stat_table_2" class="scrollTable" border="0" cellpadding="0" cellspacing="0" width="100%">' +
+        '<thead id="statistic_thead" class="fixedHeader">' +
+        '<tr class="alternateRow">' +
+        '<th><a href="#">Check</a></th>' +
+        '<th><a href="#">Field</a></th>' +
+        '<th><a href="#">Count</a></th>' +
+        '<th><a href="#">Mean</a></th>' +
+        '<th><a href="#">St.Dev</a></th>' +
+        '<th><a href="#">Min</a></th>' +
+        '<th><a href="#">Q1</a></th>' +
+        '<th><a href="#">Median</a></th>' +
+        '<th><a href="#">Q3</a></th>' +
+        '<th><a href="#">Max</a></th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tbody id="statistic_tbody" class="scrollContent">' +
+        '</table>');
         div.append(frm);
+
         return div;
     };
 

@@ -61,6 +61,7 @@ var IPython = (function (IPython) {
         this.b2.click(function(e){
             e.preventDefault();
             IPython.notebook.execute_cell();
+
         });
         this.b3.click(function(e){
             e.preventDefault();
@@ -81,6 +82,8 @@ var IPython = (function (IPython) {
 
         this.profileheading.text('File Loading Profile');
     };
+
+
 
 
     FLProfile.prototype.fromJSON = function (data) {

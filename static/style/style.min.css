@@ -1820,11 +1820,19 @@ html>body tbody.scrollContent td + td + td {
 }
 
 .modal-mini{
-    width : 400px;
+    width : 560px;
     left:55%;
     top:20%
 }
 
 .modal_stretch-mini{
     height: 60%;
+}
+.checkboxlist {
+    height:100%;
+    width:100%;
+    overflow-y:auto;
+    float:left;
+    position:relative;
+    margin-left:-5px;
 }

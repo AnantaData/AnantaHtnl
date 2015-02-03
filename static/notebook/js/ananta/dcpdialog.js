@@ -46,7 +46,7 @@ var IPython = (function (IPython) {
             '.'
         );
 
-        var err_doc = $('<div id="error_doc"/>').addClass('alert-error');
+        var err_doc = $('<div id="dcp_error_doc"/>').addClass('alert-error');
         err_doc.append(
             $('<button/>').addClass('close').attr('data-dismiss','alert').html('&times;')
         ).append(
@@ -66,11 +66,12 @@ var IPython = (function (IPython) {
             buttons : {
                 Close : {},
                 Ok :{class : "btn-primary",
+                    //id:"dcpok",
                     click: function(e) {
                         var filetype = $('#filetype');
                         var filename = $('#filenametxt');
                         var fileloc = $('#fileloc');
-                        var err_doc = $('#error_doc');
+                        var err_doc = $('#dcp_error_doc');
                         err_doc.hide();
                         var f = filetype[0];
                         var error = 0;
