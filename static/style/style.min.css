@@ -1808,3 +1808,23 @@ html>body tbody.scrollContent td + td + td {
     position:relative;
     top:0px
 }
+
+.stepinputui-left{
+    float: left;
+    width: 50%;
+}
+
+.stepinputui-right{
+    float: right;
+    width: 50%;
+}
+
+.modal-mini{
+    width : 400px;
+    left:55%;
+    top:20%
+}
+
+.modal_stretch-mini{
+    height: 60%;
+}

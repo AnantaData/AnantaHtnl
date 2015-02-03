@@ -1,3 +1,7 @@
+/**
+ * Created by lakmal on 2/3/15.
+ */
+
 // Copyright (c) IPython Development Team.
 // Distributed under the terms of the Modified BSD License.
 
@@ -10,12 +14,12 @@ var IPython = (function (IPython) {
 
     var platform = IPython.utils.platform;
 
-    var DcpDialog = function (selector) {
-        this.minidialog = null;
+    var IgnTuplDialog = function (selector) {
+
     };
 
 
-    DcpDialog.prototype.show_dialog = function (nb,get_flp_code) {
+    IgnTuplDialog.prototype.show_dialog = function (nb,get_flp_code) {
         // toggles display of keyboard shortcut dialog
         var prof = nb;
         var that = this;
@@ -30,9 +34,9 @@ var IPython = (function (IPython) {
             return;
         }
         /*var command_shortcuts = IPython.keyboard_manager.command_shortcuts.help();
-        var edit_shortcuts = IPython.keyboard_manager.edit_shortcuts.help();
-        var help, shortcut;
-        var i, half, n;*/
+         var edit_shortcuts = IPython.keyboard_manager.edit_shortcuts.help();
+         var help, shortcut;
+         var i, half, n;*/
         var element = $('<div/>');
 
         // The documentation
@@ -59,8 +63,8 @@ var IPython = (function (IPython) {
         element.append(form_div);
 
 
-        this.shortcut_dialog = IPython.dialog.modal({
-            title : "Data Cleaning Profile",
+        this.shortcut_dialog = IPython.minidialog.modal({
+            title : "File Loading Profile",
             body : element,
             destroy : false,
             buttons : {
@@ -100,32 +104,13 @@ var IPython = (function (IPython) {
                 }
             }
         });
-        this.shortcut_dialog.addClass("modal_stretch");
+        this.shortcut_dialog.addClass("modal_stretch modal_stretch-mini");
 
-        var that =this;
-        $("#addButton").click(function(){
-            var selected = $('#steptype').val();
-            window.alert(selected);
-            var stepInput = $('#stepInput');
-            if(selected == 'ignTupl'){
-                that.minidialog = new IPython.IgnTuplDialog();
-                that.minidialog.show_dialog(nb, get_flp_code);
-                //that.minidialog.focus();
-            }else if (selected == 'gblCnst'){
-
-            }else if(selected == 'atrMean'){
-
-            }else if(selected == 'atrMode'){
-
-            }else if(selected == 'atrMedn'){
-
-            }
+        $("#filename").change(function(){
+            window.alert("chosen");
+            $('#filenametxt').val($('#filename')[0].files[0].name);
         });
 
-        $("#testdialog").click(function(){
-            window.alert("clicked");
-        });
-        
         $([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
 
 
@@ -135,36 +120,32 @@ var IPython = (function (IPython) {
 
     };
 
-    DcpDialog.prototype.build_flp_form = function (nb) {
+    IgnTuplDialog.prototype.build_flp_form = function (nb) {
         var div = $('<div/>');
-        var frm = $(
-        '<div class="stepinputui">' +
-        '<div class="stepinputui-left">' +
-        '<label for="filetype">Step Type:</label>' +
-        '<select  name="title" id="steptype"  size="6" >' +
-        '<option  value="ignTupl" id="type_1">Ignore Tuples</option>' +
-        '<option  value="gblCnst" id="type_2">Global Constatnt Filling</option>'+
-        '<option  value="atrMean" id="type_3">Attribute Mean Filling</option>'+
-        '<option  value="atrMode" id="type_3">Attribute Mode Filling</option>'+
-        '<option  value="atrMedn" id="type_3">Attribute Median Filling</option>'+
-        '</select>'+
-        '<button id="addButton">Add Step</button>' +
+        var frm = $('<form method="post" action="demoform.asp">' +
+        '<div class="ui-field-contain">' +
+        '<label for="filetype">File Type:</label>' +
+        '<select name="title" id="filetype"  >' +
+        '<option selected="selected" value="'+ nb.fileType+'"></option>' +
+        '<option  value="csv" id="type_1">CSV</option>' +
+        '<option  value="xls" id="type_2">Excel</option>'+
+        '<option  value="json" id="type_3">JSON</option>'+
+        '<option  value="xml" id="type_3">XML</option>'+
+        '</select>' +
+        '<label for="fileloc">File Location:</label>' +
+        '<input type="text" name="fileloc" id="fileloc" value="">' +
+        '<label for="filename">File Name:</label>' +
+        '<input type="file" name="filename" id="filename" >' +
+        '<input type="text" name="filenametxt" id="filenametxt" readonly>' +
         '</div>' +
-        '<div class="stepinputui-right">' +
-        '<textarea style="resize:none" name="steps" cols="10" rows="6"></textarea>' +
-        '<button id="editButton">Edit Step</button>' +
-        '<button id="deleteButton">Delete Step</button>' +
-        '</div>' +
-        '</div>' );
+        '</form>');
         div.append(frm);
-        //div.append($('<button id="testdialog">Test</button>'));
         return div;
     };
 
-    IPython.DcpDialog = DcpDialog;
+    IPython.IgnTuplDialog = IgnTuplDialog;
 
     return IPython;
 
 }(IPython));
 
-///
