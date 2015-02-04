@@ -7,9 +7,10 @@ var IPython = (function (IPython) {
         IPython.Profile.apply(this,[options]);
 
         this.gui_type = 'dcp';
-        this.fileName = "";
+        /*this.fileName = "";
         this.fileType ="";
-        this.fileLoc = "";
+        this.fileLoc = "";*/
+        this.fields = "";
         this.dcpdialog = new IPython.DcpDialog();
 
     };
@@ -49,6 +50,9 @@ var IPython = (function (IPython) {
         var nb = this;
         this.b1.click(function(e){
             e.preventDefault();
+            if(nb.fields ==""){
+                nb.fields = nb.getFields();
+            }
             nb.dcpdialog.show_dialog(nb,get_flp_code);
         });
         this.b2.click(function(e){
@@ -59,8 +63,34 @@ var IPython = (function (IPython) {
             e.preventDefault();
             selectGrapgh(2);
         });
+        this.b4.click(function() {
+
+        });
 
         this.profileheading.text('Data Cleaning Profile');
+    };
+
+    DCProfile.prototype.getFields= function(){
+        var fields = [];
+        $.ajax({
+            type: "GET",
+            url: "types.csv",
+            dataType: "text"
+        }).success(function (csvd) {
+            var field_list = csvd.split('\n');
+            var field_data;
+            for(var i=0;i<field_list.length;i++){
+                field_data = field_list[i].split(',');
+                fields.push({name:field_data[0],type:field_data[1]})
+            }
+        }).done(function() {
+            alert( "success" );
+        }).fail(function() {
+            alert( "error" );
+        }).always(function() {
+            alert( "complete" );
+        });
+        return fields;
     };
 
 
