@@ -121,17 +121,29 @@ var IPython = (function (IPython) {
         $('#filenametxt').val(nb.fileName);
 
         tabulate_2();
+        var table = $('#stat_table_2')[0];
+        var rows = $('#stat_table_2')[0].children[1].children;
+
+        for (var i =0;i< rows.length;i++){
+            var cell = rows[i].children[0];
+            var cell2 = rows[i].children[1];
+            cell.innerHTML ='<input type="checkbox" value="'+rows[i].children[1].innerText+'">';
+            var x = document.createElement("input");
+            x.setAttribute("type", "checkbox");
+            table.children[1].children[i].children[0].appendChild(x);
+            //var fcell = $('#stat_table_2')[0].children[1].children[i].children[0];
+        }
     };
 
     IgnTuplDialog.prototype.build_flp_form = function (nb) {
-        var div = $('<div class="checkboxlist"/>');
-        /*var frm = $('<input type="checkbox" /> This is checkbox <br />' +
-        '<input type="checkbox" /> This is checkbox <br />' +
-        '<input type="checkbox" /> This is checkbox <br />' +
-        '<input type="checkbox" /> This is checkbox <br />' +
-        '<input type="checkbox" /> This is checkbox <br />' +
-        '<input type="checkbox" /> This is checkbox <br />');*/
-        var frm =$('<table id="stat_table_2" class="scrollTable" border="0" cellpadding="0" cellspacing="0" width="100%">' +
+        var div = $('<div id="dialog_stat_table" class="checkboxlist"/>');
+        var html_str = "";
+        for(var i=0;i<nb.fields.length;i++){
+            html_str+='<input type="checkbox" name="'+nb.fields[i].name+'" value="'+nb.fields[i].name+'" /> '
+            +nb.fields[i].name+'<br/>';
+        }
+        var frm = $(html_str);
+        /*var frm =$('<table id="stat_table_2" class="scrollTable" border="0" cellpadding="0" cellspacing="0" width="100%">' +
         '<thead id="statistic_thead" class="fixedHeader">' +
         '<tr class="alternateRow">' +
         '<th><a href="#">Check</a></th>' +
@@ -147,7 +159,7 @@ var IPython = (function (IPython) {
         '</tr>' +
         '</thead>' +
         '<tbody id="statistic_tbody" class="scrollContent">' +
-        '</table>');
+        '</table>');*/
         div.append(frm);
 
         return div;

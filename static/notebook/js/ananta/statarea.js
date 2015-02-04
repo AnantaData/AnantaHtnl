@@ -79,41 +79,24 @@ function tabulate_2(){
             })
             .enter()
             .append("td")
-            .text(function(d) {/*
-                if(d.value == null || d.value==""){
-                    return '<input type="checkbox">';
-                }else {*/
+            .text(function(d) {
                     return d.value;
-                /*}*/
             });
-/*
-        for (var i =0;i< rows.length;i++){
-            var cell = rows[i].children[0];
-            var cell2 = rows[i].children[1];
-            cell.innerHTML ='<input type="checkbox" value="'+rows[i].children[1].innerText+'">';
-            table[0].children[1].children[i].children[0].innerHTML ='<input type="checkbox" value="'+rows[i].children[1].innerText+'">';
-        }*/
     });
 
-    var table = $('#stat_table_2');
+    var table = $('#stat_table_2')[0];
     var rows = $('#stat_table_2')[0].children[1].children;
-    /*var cell;s = table.rows;
-    var cell;*/
+
     for (var i =0;i< rows.length;i++){
         var cell = rows[i].children[0];
         var cell2 = rows[i].children[1];
         cell.innerHTML ='<input type="checkbox" value="'+rows[i].children[1].innerText+'">';
-        $('#stat_table_2')[0].children[1].children[i].children[0].innerHTML ='<input type="checkbox" value="'+rows[i].children[1].innerText+'">';
+        var x = document.createElement("input");
+        x.setAttribute("type", "checkbox");
+        table.children[1].children[i].children[0].appendChild(x);
+        //var fcell = $('#stat_table_2')[0].children[1].children[i].children[0];
     }
-/*
-    $("#stat_table_2 td:first-child").each(function() {
-        $(this).prepend('<input type="checkbox" class="basic-kpi-row"/>');
-    });*/
-    var td = $('#stat_table_2').find('td');
-
-    $('#stat_table_2').find('td').each(function(i,obj){
-        $(obj).replaceWith('<td><input type="checkbox" id="checkbox'+i+'" name="checkbox'+i+'"></td>');
-    });
-
+    var tt = $('#dialog_stat_table');
+    tt.append(table);
 
 }
