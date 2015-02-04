@@ -59,7 +59,7 @@ var IPython = (function (IPython) {
         err_doc.hide();
         element.append(doc).append(err_doc);
 
-        var form_div = this.build_flp_form(nb);
+        var form_div = this.build_elements(nb);
         element.append(form_div);
 
 
@@ -135,7 +135,7 @@ var IPython = (function (IPython) {
         }
     };
 
-    IgnTuplDialog.prototype.build_flp_form = function (nb) {
+    IgnTuplDialog.prototype.build_elements = function (nb) {
         var div = $('<div id="dialog_stat_table" class="checkboxlist"/>');
         var html_str = "";
         for(var i=0;i<nb.fields.length;i++){
