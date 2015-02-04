@@ -7,17 +7,19 @@ var IPython = (function (IPython) {
         IPython.Profile.apply(this, [kernel,options]);
 
         this.gui_type = 'flp';
-        this.fileName = "";
-        this.fileType ="";
-        this.fileLoc = "";
-        this.flpdialog = new IPython.FlpDialog();
-        this.visudialog = new IPython.VisuDialog();
+        this.profileData= {
+            fileName :"",
+            fileType :"",
+            fileLoc : ""
+        };
+        this.flpdialog = new IPython.FlpDialog(this.cell_id);
+        /*this.visudialog = new IPython.VisuDialog();
 
         this.boxplotdialog = new IPython.BoxPlotDialog();
         this.barchartdialog = new IPython.BarChartDialog();
         this.hexbinningdialog = new IPython.HexBinningDialog();
         this.scatterplotdialog = new IPython.ScatterPlotDialog();
-        this.semanticdialog = new IPython.SemanticDialog();
+        this.semanticdialog = new IPython.SemanticDialog();*/
 
     };
 
@@ -53,14 +55,16 @@ var IPython = (function (IPython) {
 
         get_flp_code(this, this.fileType,this.fileName);
 
-        var nb = this;
+        var profile = this;
         this.b1.click(function(e){
             e.preventDefault();
-            nb.flpdialog.show_dialog(nb,get_flp_code);
+            profile.flpdialog.show_dialog(profile,get_flp_code);
         });
         this.b2.click(function(e){
             e.preventDefault();
-            IPython.notebook.execute_cell();
+            profile.set_text(profile.setCode(profile.profileData));
+            //get_flp_code(profile,profile.profileData.fileType,profile.profileData.fileName);
+            //IPython.notebook.execute_cell();
 
         });
         this.b3.click(function(e){
@@ -83,16 +87,34 @@ var IPython = (function (IPython) {
         this.profileheading.text('File Loading Profile');
     };
 
+    FLProfile.prototype.setCode = function(profileData){
+        var code = 'from ananta_base.base import *' +
+            '\nfrom ananta_base.data_cleaning_pan import DataCleaningProfile, UseGlobalConstantStep, IgnoreTupleStep' +
+            '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
+            '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
+            '\nfrom ananta_base.data_set import TrainingSet' +
+            '\nfrom ananta_base.data_transformation import DataTransformationProfile, EncodingStep' +
+            '\nimport ananta_base.data_stat as stat' +
+            '\nprojects = TrainingSet()' +
+            '\nflp1 = FileLoadingProfile()' +
+            '\ns1 = FileLoadStep("' + profileData.fileType + '", "' + profileData.fileLoc+profileData.fileName + '")' +
+            '\nflp1.addStep(s1)' +
+            '\nflp1.execute(projects)' +
+            '\nstat.getStatistics(projects)' +
+            '\nprint "Profile Successfully Executed"' ;
 
+        return code;
+        //nb.set_text(code);
+    }
 
 
     FLProfile.prototype.fromJSON = function (data) {
         if(data.gui_type ==='flp'){
             IPython.CodeCell.prototype.fromJSON.apply(this, arguments);
 
-            this.fileName = data.fileName;
-            this.fileType = data.fileType;
-            this.fileLoc = data.fileLoc;
+            this.profileData = data.profileData;
+            /*this.profileData.fileType = data.fileType;
+            this.profileData.fileLoc = data.fileLoc;*/
         }
     };
 
@@ -101,9 +123,9 @@ var IPython = (function (IPython) {
         var data = IPython.CodeCell.prototype.toJSON.apply(this);
 
         data.gui_type = this.gui_type;
-        data.fileName = this.fileName;
-        data.fileType = this.fileType;
-        data.fileLoc = this.fileLoc;
+        /*data.fileName = this.fileName;
+        data.fileType = this.fileType;*/
+        data.profileData = this.profileData;
         return data;
     };
 

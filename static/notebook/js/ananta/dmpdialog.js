@@ -131,7 +131,7 @@ var IPython = (function (IPython) {
         return div;
     };
 
-    DmpDialog.prototype.build_flp_form = function (nb) {
+    DmpDialog.prototype.build_elements = function (nb) {
         var div = $('<div/>');
         var frm = $('<form method="post" action="demoform.asp">' +
         '<div class="ui-field-contain">' +
