@@ -38,7 +38,9 @@ var IPython = (function (IPython) {
                 '\nfrom ananta_base.mining import unsupervised_mining as um'+
                 '\nump1 = um.UnsupervisedMiningProfile()' +
                 '\ns1= um.'+alg+''+
+                '\nme=um.MapEvalStep()'+
                 '\nump1.addStep(s1)' +
+                '\nump1.addStep(me)'+
                 '\nump1.execute(projects)' +
                 //'\ndf = projects.data.describe()' +
                 '\ndf = projects.data' +
@@ -65,6 +67,11 @@ var IPython = (function (IPython) {
             e.preventDefault();
             selectGrapgh(2);
         });
+
+        /*this.undefinedflpSSBtn.click(function(e){
+            e.preventDefault();
+
+        });*/
 
         this.profileheading.text('Unsupervised Mining Profile');
     };
