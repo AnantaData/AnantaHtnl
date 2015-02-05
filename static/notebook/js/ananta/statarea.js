@@ -1,4 +1,36 @@
 
+function populate_eval(){
+
+    d3.csv("stat.csv",function(data){
+        dataset = data.map(function(d) { return [ +d["het"], +d["hom"] ]; });
+        console.log(dataset)
+        var columns = ['het','hom'];
+        var table = d3.select("#eval_table");
+        var thead = table.append('thead');
+        var tbody = table.append('tbody')
+        thead.append("tr")
+            .selectAll("th")
+            .data(columns)
+            .enter()
+            .append("th")
+            .text(function(column) { return column; });
+
+        var rows = tbody.selectAll("tr")
+            .data(data)
+            .enter()
+            .append("tr");
+        var cells = rows.selectAll("td")
+            .data(function(row) {
+                return columns.map(function(column) {
+                    return {column: column, value: row[column]};
+                });
+            })
+            .enter()
+            .append("td")
+            .text(function(d) { return d.value; });
+    });
+
+}
 
 function tabulate(){
     d3.csv("stat.csv", function(data) {

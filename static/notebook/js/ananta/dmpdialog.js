@@ -99,10 +99,11 @@ var IPython = (function (IPython) {
 
         $("#algorithm").change(function(){
             //window.alert("chosen");
+            $('#kv').hide()
             if($('#algorithm').val()=='kmeans'){
                 $('#kv').show();
             }
-            $('#filenametxt').val($('#algorithm')[0].files[0].name);
+            $('#algorithm').val($('#algorithm')[0].files[0].name);
         });
         
         $([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});

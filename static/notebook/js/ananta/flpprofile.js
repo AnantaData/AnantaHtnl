@@ -80,7 +80,7 @@ var IPython = (function (IPython) {
         });
         this.b4.click(function(e){
             e.preventDefault();
-            tabulate()
+            tabulate();
 
         });
 

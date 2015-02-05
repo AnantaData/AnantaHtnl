@@ -45,7 +45,7 @@ var IPython = (function (IPython) {
                 //'\ndf = projects.data.describe()' +
                 '\ndf = projects.data' +
                 '\nprint df' +
-                '\ndf.to_csv("a.csv", sep=",", encoding="utf-8")' +
+                '\ndf.tofile("a.csv", sep=",")' +
                 '';
             nb.set_text(code);
 
@@ -68,10 +68,10 @@ var IPython = (function (IPython) {
             selectGrapgh(2);
         });
 
-        /*this.undefinedflpSSBtn.click(function(e){
+        this.b4.click(function(e){
             e.preventDefault();
-
-        });*/
+            populate_eval();
+         });
 
         this.profileheading.text('Unsupervised Mining Profile');
     };
