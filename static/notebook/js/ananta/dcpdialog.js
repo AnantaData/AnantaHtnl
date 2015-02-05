@@ -11,54 +11,24 @@ var IPython = (function (IPython) {
     var platform = IPython.utils.platform;
 
     var DcpDialog = function (selector) {
-        this.minidialog = null;
+
     };
 
+    var DcpDialog = function (cell_id) {
+        IPython.ProfileDialog.apply(this, [cell_id]);
+        this.minidialogs = [];
+    };
 
-    DcpDialog.prototype.show_dialog = function (nb,get_flp_code) {
-        // toggles display of keyboard shortcut dialog
-        var prof = nb;
-        var that = this;
-        if ( this.force_rebuild ) {
-            this.shortcut_dialog.remove();
-            delete(this.shortcut_dialog);
-            this.force_rebuild = false;
-        }
-        if ( this.shortcut_dialog ){
-            // if dialog is already shown, close it
-            $(this.shortcut_dialog).modal("toggle");
-            return;
-        }
-        /*var command_shortcuts = IPython.keyboard_manager.command_shortcuts.help();
-        var edit_shortcuts = IPython.keyboard_manager.edit_shortcuts.help();
-        var help, shortcut;
-        var i, half, n;*/
-        var element = $('<div/>');
+    DcpDialog.prototype = new IPython.ProfileDialog();
 
-        // The documentation
-        var doc = $('<div/>').addClass('alert');
-        doc.append(
-            $('<button/>').addClass('close').attr('data-dismiss','alert').html('&times;')
-        ).append(
-            'The File Loading Profile Should be given two inputs. <b>File Type</b> '+
-            'which can be csv, txt, json etc.'+
-            'and <b>File Name</b> which is the location of file and its name'+
-            '.'
-        );
 
-        var err_doc = $('<div id="dcp_error_doc"/>').addClass('alert-error');
-        err_doc.append(
-            $('<button/>').addClass('close').attr('data-dismiss','alert').html('&times;')
-        ).append(
-            ''
-        );
-        err_doc.hide();
-        element.append(doc).append(err_doc);
-
-        var form_div = this.build_elements(nb);
+    DcpDialog.prototype.show_dialog = function (profile) {
+        var element = IPython.ProfileDialog.prototype.show_dialog.apply(this, []);
+        if(!element){return;}
+        var form_div = this.build_elements(profile);
         element.append(form_div);
 
-
+        var this_dialog = this;
         this.shortcut_dialog = IPython.dialog.modal({
             title : "Data Cleaning Profile",
             body : element,
@@ -66,36 +36,7 @@ var IPython = (function (IPython) {
             buttons : {
                 Close : {},
                 Ok :{class : "btn-primary",
-                    //id:"dcpok",
                     click: function(e) {
-                        var filetype = $('#filetype');
-                        var filename = $('#filenametxt');
-                        var fileloc = $('#fileloc');
-                        var err_doc = $('#dcp_error_doc');
-                        err_doc.hide();
-                        var f = filetype[0];
-                        var error = 0;
-                        nb.fileName = filename.val();
-                        nb.fileLoc = fileloc.val();
-                        nb.fileType = filetype.val();
-
-                        if(f.selectedIndex ==0) {
-                            e.preventDefault();
-                            err_doc.text("File Type not selected");
-                            err_doc.show();
-                        }else if(!nb.fileName) {
-                            e.preventDefault();
-                            err_doc.text("File Name is not given");
-                            err_doc.show();
-                        }else if(!nb.fileLoc) {
-                            e.preventDefault();
-                            err_doc.text("File Location is not given");
-                            err_doc.show();
-                        }else{
-                            get_flp_code(nb,nb.fileType,nb.fileLoc+nb.fileName);
-                            return true;
-                        }
-                        return false;
 
                     }
                 }
@@ -103,15 +44,93 @@ var IPython = (function (IPython) {
         });
         this.shortcut_dialog.addClass("modal_stretch");
 
-        var that =this;
-        $("#addButton").click(function(){
-            var selected = $('#steptype').val();
-            window.alert(selected);
-            var stepInput = $('#stepInput');
+        this.retrive_elements();
+        this.set_dynamic_ui(profile);
+        //this.set_values(profile);
+        this.setInstruction();
+        
+        $([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
+
+    };
+
+    DcpDialog.prototype.build_elements = function (nb) {
+        var div = $('<div/>');
+        var left = $('<div class="stepinputui-left" />');
+        var right = $('<div class="stepinputui-right" />');
+        var inr1left = $('<div class="stepinputui-select" />');
+        var inr1right = $('<div class="stepinputui-button" />');
+        var inr2left = $('<div class="stepinputui-select" />');
+        var inr2right = $('<div class="stepinputui-button" />');
+
+        this.stepTypeInp_id = this.dialog_id+"steptype";
+        this.stepTypeBtn_id = this.dialog_id+"stepaddbtn";
+        this.stepListInp_id = this.dialog_id+"steplist";
+        this.editStepBtn_id = this.dialog_id+"stepeditbtn";
+        this.dletStepBtn_id = this.dialog_id+"stepdletbtn";
+
+
+        var stepTypeLbl = $('<label for="steptype">Step Type:</label>');
+        var stepTypeInp = $('<select  name="steptype"  size="10" >' +
+                                '<option  value="ignTupl" >Ignore Tuples</option>' +
+                                '<option  value="gblCnst" >Global Constatnt Filling</option>'+
+                                '<option  value="atrMean" >Attribute Mean Filling</option>'+
+                                '<option  value="atrMode" >Attribute Mode Filling</option>'+
+                                '<option  value="atrMedn" >Attribute Median Filling</option>'+
+                            '</select>');
+        var stepTypeBtn = $('<button >Add Step</button>');
+        var stepListLbl = $('<label for="steplist">Steps:</label>');
+        var stepListInp = $('<select  name="steplist" size="10" >' +
+                            '</select>');
+        var editStepBtn = $('<button >Edit Step</button>');
+        var dletStepBtn = $('<button >Delete Step</button>');
+
+        stepTypeInp.attr('id',this.stepTypeInp_id);
+        stepTypeBtn.attr('id',this.stepTypeBtn_id);
+        stepListInp.attr('id',this.stepListInp_id);
+        editStepBtn.attr('id',this.editStepBtn_id);
+        dletStepBtn.attr('id',this.dletStepBtn_id);
+
+        inr1left.append(stepTypeLbl).append(stepTypeInp);
+        inr1right.append(stepTypeBtn);
+        left.append(inr1left).append(inr1right);
+        inr2left.append(stepListLbl).append(stepListInp);
+        inr2right.append(editStepBtn).append(dletStepBtn);
+        right.append(inr2left).append(inr2right);
+        div.append(left).append(right);
+        return div;
+    };
+
+    DcpDialog.prototype.setInstruction = function(){
+        this.documentation.text('The Data Cleaning Profile Should be given the steps. ')
+    };
+
+    DcpDialog.prototype.retrive_elements = function(){
+        this.stepTypeInp = $('#'+this.stepTypeInp_id);
+        this.stepTypeBtn = $('#'+this.stepTypeBtn_id);
+
+        this.stepListInp = $('#'+this.stepListInp_id);
+        this.editStepBtn = $('#'+this.editStepBtn_id);
+        this.dletStepBtn = $('#'+this.dletStepBtn_id);
+        this.errDoc = $('#'+this.errorDoc_id);
+        this.documentation = $('#'+this.documentation_id);
+    };
+
+    DcpDialog.prototype.get_values = function(profile, e){
+        profile.set_text(profile.set)
+    };
+
+    DcpDialog.prototype.set_values =function(profile){
+        this.update_step_list(profile);
+    };
+
+    DcpDialog.prototype.set_dynamic_ui =function(profile){
+        var this_dialog = this;
+        this.stepTypeBtn.click(function(){
+            var that = profile.settingsdialog;
+            var selected = that.stepTypeInp.val();
+            var step_no = profile.profileData.steps.length;
             if(selected == 'ignTupl'){
-                that.minidialog = new IPython.IgnTuplDialog();
-                that.minidialog.show_dialog(nb, get_flp_code);
-                //that.minidialog.focus();
+                that.minidialogs[step_no] = new IPython.IgnTuplDialog(profile.cell_id,step_no);
             }else if (selected == 'gblCnst'){
 
             }else if(selected == 'atrMean'){
@@ -121,46 +140,57 @@ var IPython = (function (IPython) {
             }else if(selected == 'atrMedn'){
 
             }
+            that.minidialogs[step_no].show_dialog(profile);
         });
+        this.editStepBtn.click(function(){
+            var that = profile.settingsdialog;
+            var step_no = profile.settingsdialog.stepListInp[0].selectedIndex;
+            window.alert(step_no);
+            var selected = profile.profileData.steps[step_no].step_no;
+            if(selected == 'ignTupl'){
+                that.minidialogs[step_no] = new IPython.IgnTuplDialog(profile.cell_id,step_no);
+            }else if (selected == 'gblCnst'){
 
-        $("#testdialog").click(function(){
-            window.alert("clicked");
+            }else if(selected == 'atrMean'){
+
+            }else if(selected == 'atrMode'){
+
+            }else if(selected == 'atrMedn'){
+
+            }
+            that.minidialogs[step_no].show_dialog(profile);
+
         });
-        
-        $([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
-
-
-        $('#filetype option[value="' + nb.fileType + '"]').prop('selected', true);
-        $('#fileloc').val(nb.fileLoc);
-        $('#filenametxt').val(nb.fileName);
-
+        this.dletStepBtn.click(function(){
+            var step_no = profile.settingsdialog.stepListInp[0].selectedIndex;
+            var new_steps = [];
+            for(var i=0; i<step_no;i++){
+                new_steps[i] = profile.profileData.steps[i];
+            }
+            for(var i=step_no+1;i<profile.profileData.steps.length;i++){
+                var step  = profile.profileData.steps[i];
+                step.step_no = i-1;
+                step.step_label = step.step_no+"-"+step.step_show_name;
+                step.step_name = step.step_no+"_"+step.step_type;
+                new_steps[i-1] = step;
+            }
+            profile.profileData.steps = new_steps;
+            this_dialog.update_step_list(profile);
+            this_dialog.minidialogs.splice(step_no,1);
+            for(var i=step_no;i<this_dialog.minidialogs.length;i++){
+                this_dialog.minidialogs[i].step_no = i;
+            }
+        });
     };
 
-    DcpDialog.prototype.build_elements = function (nb) {
-        var div = $('<div/>');
-        var frm = $(
-        '<div class="stepinputui">' +
-        '<div class="stepinputui-left">' +
-        '<label for="filetype">Step Type:</label>' +
-        '<select  name="title" id="steptype"  size="6" >' +
-        '<option  value="ignTupl" id="type_1">Ignore Tuples</option>' +
-        '<option  value="gblCnst" id="type_2">Global Constatnt Filling</option>'+
-        '<option  value="atrMean" id="type_3">Attribute Mean Filling</option>'+
-        '<option  value="atrMode" id="type_3">Attribute Mode Filling</option>'+
-        '<option  value="atrMedn" id="type_3">Attribute Median Filling</option>'+
-        '</select>'+
-        '<button id="addButton">Add Step</button>' +
-        '</div>' +
-        '<div class="stepinputui-right">' +
-        '<textarea style="resize:none" name="steps" cols="10" rows="6"></textarea>' +
-        '<button id="editButton">Edit Step</button>' +
-        '<button id="deleteButton">Delete Step</button>' +
-        '</div>' +
-        '</div>' );
-        div.append(frm);
-        //div.append($('<button id="testdialog">Test</button>'));
-        return div;
-    };
+    DcpDialog.prototype.update_step_list= function(profile){
+        this.stepListInp.empty();
+        var stepData;
+        for(var i = 0;i<profile.profileData.steps.length;i++){
+            stepData = profile.profileData.steps[i];
+            this.stepListInp.append('<option  value="'+stepData.step_name+'" >'+stepData.step_label+'</option>');
+        }
+    }
 
     IPython.DcpDialog = DcpDialog;
 

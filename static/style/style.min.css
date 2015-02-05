@@ -1819,6 +1819,15 @@ html>body tbody.scrollContent td + td + td {
     width: 50%;
 }
 
+.stepinputui-select{
+    float: left;
+    width: 70%;
+}
+.stepinputui-button{
+    float: left;
+    width: 30%;
+}
+
 .modal-mini{
     width : 560px;
     left:55%;

@@ -7,11 +7,11 @@ var IPython = (function (IPython) {
         IPython.Profile.apply(this,[options]);
 
         this.gui_type = 'dcp';
-        /*this.fileName = "";
-        this.fileType ="";
-        this.fileLoc = "";*/
+        this.profileData = {
+            steps :[]
+        };
         this.fields = "";
-        this.dcpdialog = new IPython.DcpDialog();
+        this.settingsdialog = new IPython.DcpDialog(this.cell_id);
 
     };
 
@@ -47,13 +47,13 @@ var IPython = (function (IPython) {
 
         get_flp_code(this, this.fileType,this.fileName);
 
-        var nb = this;
+        /*var nb = this;
         this.b1.click(function(e){
             e.preventDefault();
             if(nb.fields ==""){
                 nb.fields = nb.getFields();
             }
-            nb.dcpdialog.show_dialog(nb,get_flp_code);
+            nb.settingsdialog.show_dialog(nb,get_flp_code);
         });
         this.b2.click(function(e){
             e.preventDefault();
@@ -65,7 +65,7 @@ var IPython = (function (IPython) {
         });
         this.b4.click(function() {
 
-        });
+        });*/
 
         this.profileheading.text('Data Cleaning Profile');
     };
@@ -93,27 +93,6 @@ var IPython = (function (IPython) {
         return fields;
     };
 
-
-    DCProfile.prototype.fromJSON = function (data) {
-        if(data.gui_type ==='dcp'){
-            IPython.CodeCell.prototype.fromJSON.apply(this, arguments);
-
-            /*this.fileName = data.fileName;
-            this.fileType = data.fileType;
-            this.fileLoc = data.fileLoc;*/
-        }
-    };
-
-
-    DCProfile.prototype.toJSON = function () {
-        var data = IPython.CodeCell.prototype.toJSON.apply(this);
-
-        data.gui_type = this.gui_type;
-        /*data.fileName = this.fileName;
-        data.fileType = this.fileType;
-        data.fileLoc = this.fileLoc;*/
-        return data;
-    };
 
 
     IPython.DCProfile = DCProfile;
