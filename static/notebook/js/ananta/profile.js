@@ -53,10 +53,10 @@ var IPython = (function (IPython) {
         var output = $('<div></div>');
         var visdiv = $('<div id="flpvisdiv"></div>');
 
-        this.b1id = this.id+"flpSetBtn";
-        this.b2id = this.id+"flpExcBtn";
-        this.b3id = this.id+"flpVisBtn";
-        this.b4id = this.id+"flpSSBtn";
+        this.b1id = this.cell_id+"flpSetBtn";
+        this.b2id = this.cell_id+"flpExcBtn";
+        this.b3id = this.cell_id+"flpVisBtn";
+        this.b4id = this.cell_id+"flpSSBtn";
         this.profileheading = $('<h4>'+this.heading+'</h4>');
 
         this.b1 = $('<button id="'+this.b1id+'" type="button" class="btn btn-default">Profile Settings</button>');
@@ -84,6 +84,26 @@ var IPython = (function (IPython) {
         this.output_area = new IPython.OutputArea(output, true);
         this.completer = new IPython.Completer(this);
 
+        var profile = this;
+        this.b1.click(function(e){
+            e.preventDefault();
+            profile.settingsdialog.show_dialog(profile);
+        });
+        this.b2.click(function(e){
+            e.preventDefault();
+            IPython.notebook.execute_cell();
+
+        });
+        this.b3.click(function(e){
+            e.preventDefault();
+
+        });
+        this.b4.click(function(e){
+            e.preventDefault();
+            tabulate()
+
+        });
+
 
     };
 
@@ -97,6 +117,24 @@ var IPython = (function (IPython) {
         }
         return 'Profile&nbsp;[' + ns + ']:';
     };
+
+    Profile.prototype.fromJSON = function (data) {
+        //if(data.gui_type ==='flp'){
+            IPython.CodeCell.prototype.fromJSON.apply(this, arguments);
+            this.gui_type = data.gui_type;
+            this.profileData = data.profileData;
+        //}
+    };
+
+
+    Profile.prototype.toJSON = function () {
+        var data = IPython.CodeCell.prototype.toJSON.apply(this);
+
+        data.gui_type = this.gui_type;
+        data.profileData = this.profileData;
+        return data;
+    };
+
 
     IPython.Profile = Profile;
 
