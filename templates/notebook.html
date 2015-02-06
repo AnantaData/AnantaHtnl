@@ -403,6 +403,8 @@ class="notebook_app"
         sweetAlert({
             title:"Welcome to Ananta!",
             text:"Smarter Insights for Better Customer Analytics." ,
+            imageUrl: "{{ static_url('base/images/ansm_hello.png') }}",
+            imageSize:"480x480",
             showCancelButton:true,
             cancelButtonText:"Take me to Ananta, Now!",
             confirmButtonText:"Tell me more!",
@@ -413,6 +415,8 @@ class="notebook_app"
                 text:"At the core of all good customer relations, knowing your customer plays a huge role! How well do you know what kind of a clientele" +
                 " you have? How loyal are your customers to you and your products? Do you stand a chance if you try that new product out? Or should you go about " +
                 " marketing that product to those people living in that area? How many of your current customers will defect by the new price of the product?",
+                imageUrl: "{{ static_url('base/images/ansm_bman.png') }}",
+                imageSize:"124x240",
                 showCancelButton:true,
                 cancelButtonText:"Take me to Ananta, Now!",
                 confirmButtonText:"How do I find this out?",
@@ -424,6 +428,8 @@ class="notebook_app"
                     "! Ananta will help you identify special patterns hidden inside your customer base, and gain more insight about them" +
                     " which will ultimately help you to gain more knowledge about your clientele. Use this golden information in devicing your" +
                     " marketing strategies / pricing policies / annual promotions... After all, the 'Customer is always right!'(mostly). ",
+                    imageUrl: "{{ static_url('base/images/ansm_kcus.png') }}",
+                    imageSize:"240x240",
                     showCancelButton:true,
                     cancelButtonText:"Take me to Ananta, Now!",
                     confirmButtonText:"What about defectors?",
@@ -434,6 +440,8 @@ class="notebook_app"
                         text:"Having gained information about the behavior of your clients, it may be useful to model their response to slight" +
                         " or drastic changes of your pricing policies, marketing strategies and so on. Use a predictive analaysis to " +
                         "identify which customers are most likely to turn away from your product.",
+                        imageUrl: "{{ static_url('base/images/ansm_churn.png') }}",
+                        imageSize:"240x240",
                         showCancelButton:true,
                         cancelButtonText:"Take me to Ananta, Now!",
                         confirmButtonText:"So what can 'Ananta' do?",
@@ -445,13 +453,15 @@ class="notebook_app"
                             "about the customers that we talked about. Using unsupervised learning, you can learn about your customer and " +
                             "using the supervised learning models, predict their behavior! Experience the power of machine learning in your " +
                             "strategy.",
+                            imageUrl: "{{ static_url('base/images/ansm_ans.png') }}",
+                            imageSize:"240x240",
                             showCancelButton:true,
                             cancelButtonText:"Proceed to Ananta",
                             confirmButtonText:"Learn More!",
                             closeOnConfirm:false,
                             cancelButtonColor: "#81F5AA"
                         },function(isConfirm){
-                           window.location.href="http://ananta-dataanalytics.rhcloud.com/"
+                           if(isConfirm){window.location.href="http://ananta-dataanalytics.rhcloud.com/";}
                         });
                     });
                 });
