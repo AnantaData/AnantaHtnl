@@ -57,8 +57,6 @@ var IPython = (function (IPython) {
         '.')
     };
 
-
-
     FlpDialog.prototype.build_elements = function (profile) {
         var div = $('<div/>');
 

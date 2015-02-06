@@ -2,67 +2,32 @@
  * Created by lakmal on 2/3/15.
  */
 
-// Copyright (c) IPython Development Team.
-// Distributed under the terms of the Modified BSD License.
-
-//============================================================================
-// QuickHelp button
-//============================================================================
 
 var IPython = (function (IPython) {
     "use strict";
 
     var platform = IPython.utils.platform;
 
-    var IgnTuplDialog = function (selector) {
-
+    var IgnTuplDialog = function (cell_id,step_no ) {
+        IPython.ProfileDialog.apply(this, [cell_id]);
+        this.cell_id = cell_id;
+        this.step_type = "igntupl";
+        this.step_show_name = "Ignore Tuple";
+        this.dialog_id = cell_id+"_"+this.step_type+"_"+step_no+"_";
+        this.step_no = step_no;
     };
 
+    IgnTuplDialog.prototype = new IPython.ProfileDialog();
 
-    IgnTuplDialog.prototype.show_dialog = function (nb,get_flp_code) {
-        // toggles display of keyboard shortcut dialog
-        var prof = nb;
-        var that = this;
-        if ( this.force_rebuild ) {
-            this.shortcut_dialog.remove();
-            delete(this.shortcut_dialog);
-            this.force_rebuild = false;
-        }
-        if ( this.shortcut_dialog ){
-            // if dialog is already shown, close it
-            $(this.shortcut_dialog).modal("toggle");
-            return;
-        }
-        /*var command_shortcuts = IPython.keyboard_manager.command_shortcuts.help();
-         var edit_shortcuts = IPython.keyboard_manager.edit_shortcuts.help();
-         var help, shortcut;
-         var i, half, n;*/
-        var element = $('<div/>');
 
-        // The documentation
-        var doc = $('<div/>').addClass('alert');
-        doc.append(
-            $('<button/>').addClass('close').attr('data-dismiss','alert').html('&times;')
-        ).append(
-            'The File Loading Profile Should be given two inputs. <b>File Type</b> '+
-            'which can be csv, txt, json etc.'+
-            'and <b>File Name</b> which is the location of file and its name'+
-            '.'
-        );
+    IgnTuplDialog.prototype.show_dialog = function (profile) {
 
-        var err_doc = $('<div id="error_doc"/>').addClass('alert-error');
-        err_doc.append(
-            $('<button/>').addClass('close').attr('data-dismiss','alert').html('&times;')
-        ).append(
-            ''
-        );
-        err_doc.hide();
-        element.append(doc).append(err_doc);
-
-        var form_div = this.build_elements(nb);
+        var element = IPython.ProfileDialog.prototype.show_dialog.apply(this, []);
+        if(!element){return;}
+        var form_div = this.build_elements(profile);
         element.append(form_div);
 
-
+        var this_dialog = this;
         this.shortcut_dialog = IPython.minidialog.modal({
             title : "Ignore Tuple Step",
             body : element,
@@ -71,71 +36,91 @@ var IPython = (function (IPython) {
                 Close : {},
                 Ok :{class : "btn-primary",
                     click: function(e) {
-                        var filetype = $('#filetype');
-                        var filename = $('#filenametxt');
-                        var fileloc = $('#fileloc');
-                        var err_doc = $('#error_doc');
-                        err_doc.hide();
-                        var f = filetype[0];
-                        var error = 0;
-                        nb.fileName = filename.val();
-                        nb.fileLoc = fileloc.val();
-                        nb.fileType = filetype.val();
-
-                        if(f.selectedIndex ==0) {
-                            e.preventDefault();
-                            err_doc.text("File Type not selected");
-                            err_doc.show();
-                        }else if(!nb.fileName) {
-                            e.preventDefault();
-                            err_doc.text("File Name is not given");
-                            err_doc.show();
-                        }else if(!nb.fileLoc) {
-                            e.preventDefault();
-                            err_doc.text("File Location is not given");
-                            err_doc.show();
-                        }else{
-                            get_flp_code(nb,nb.fileType,nb.fileLoc+nb.fileName);
-                            return true;
-                        }
-                        return false;
-
+                        this_dialog.get_values(profile,e);
+                        profile.settingsdialog.update_step_list(profile);
                     }
                 }
             }
         });
         this.shortcut_dialog.addClass("modal_stretch modal_stretch-mini");
 
-        $("#filename").change(function(){
-            window.alert("chosen");
-            $('#filenametxt').val($('#filename')[0].files[0].name);
-        });
+        this.retrive_elements();
+        this.set_dynamic_ui();
+        this.set_values(profile);
+        this.setInstruction();
 
         $([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
 
-
-
-
-        $('#filetype option[value="' + nb.fileType + '"]').prop('selected', true);
-        $('#fileloc').val(nb.fileLoc);
-        $('#filenametxt').val(nb.fileName);
-
-        tabulate_2();
-        var table = $('#stat_table_2')[0];
-        var rows = $('#stat_table_2')[0].children[1].children;
-
-        for (var i =0;i< rows.length;i++){
-            var cell = rows[i].children[0];
-            var cell2 = rows[i].children[1];
-            cell.innerHTML ='<input type="checkbox" value="'+rows[i].children[1].innerText+'">';
-            var x = document.createElement("input");
-            x.setAttribute("type", "checkbox");
-            table.children[1].children[i].children[0].appendChild(x);
-            //var fcell = $('#stat_table_2')[0].children[1].children[i].children[0];
-        }
     };
 
-    IgnTuplDialog.prototype.build_elements = function (nb) {
+    IgnTuplDialog.prototype.setInstruction = function(){
+        this.documentation.text('TGive the names of the fields where unfilled data tuples should be removed'+
+        '.')
+    };
+
+    IgnTuplDialog.prototype.build_elements = function (profile) {
+
+
+        var div = $('<div/>');
+
+        this.stepNameInp_id = this.dialog_id+"stepname";
+
+        var stepNameLbl = $('<label for="stepname">Step Name:</label>');
+        var stepNameInp = $('<input type="text" name="stepname"  readonly>');
+
+        stepNameInp.attr('id',this.stepNameInp_id);
+
+        div.append(stepNameInp);
+        return div;
+    };
+
+    IgnTuplDialog.prototype.retrive_elements = function(){
+        this.stepNameInp = $('#'+this.stepNameInp_id);
+        this.errDoc = $('#'+this.errorDoc_id);
+        this.documentation = $('#'+this.documentation_id);
+    };
+
+    IgnTuplDialog.prototype.get_values = function(profile, e){
+
+        this.errDoc.hide();
+        var stepData = {
+            step_no : this.step_no,
+            step_type : this.step_type,
+            step_show_name : this.step_show_name,
+            step_label : this.step_no+"-"+this.step_show_name,
+            step_name : this.step_no+"_"+this.step_type,
+            fields : []
+        };
+        profile.profileData.steps[this.step_no] = stepData;
+    };
+
+    IgnTuplDialog.prototype.set_values =function(profile){
+        /*$('#'+this.fileTypeInp_id+' option[value="' + profile.profileData.fileType + '"]').prop('selected', true);
+        this.fileLoctInp.val(profile.profileData.fileLoc);
+        this.fileNameTxt.val(profile.profileData.fileName);*/
+        var stepData = {
+            step_no : this.step_no,
+            step_type : this.step_type,
+            step_show_name : this.step_show_name,
+            step_label : this.step_no+"-"+this.step_show_name,
+            step_name : this.step_no+"_"+this.step_type,
+            fields : []
+        };
+        if(profile.profileData.steps[this.step_no]){
+            stepData = profile.profileData.steps[this.step_no];
+        }
+        this.stepNameInp.val(stepData.step_label);
+
+    };
+
+    IgnTuplDialog.prototype.set_dynamic_ui =function(){
+        /*var this_dialog = this;
+        this.fileNameInp.change(function(){
+            this_dialog.fileNameTxt.val(this_dialog.fileNameInp[0].files[0].name);
+        });*/
+    };
+
+    /*IgnTuplDialog.prototype.build_elements = function (nb) {
         var div = $('<div id="dialog_stat_table" class="checkboxlist"/>');
         var html_str = "";
         for(var i=0;i<nb.fields.length;i++){
@@ -143,27 +128,10 @@ var IPython = (function (IPython) {
             +nb.fields[i].name+'<br/>';
         }
         var frm = $(html_str);
-        /*var frm =$('<table id="stat_table_2" class="scrollTable" border="0" cellpadding="0" cellspacing="0" width="100%">' +
-        '<thead id="statistic_thead" class="fixedHeader">' +
-        '<tr class="alternateRow">' +
-        '<th><a href="#">Check</a></th>' +
-        '<th><a href="#">Field</a></th>' +
-        '<th><a href="#">Count</a></th>' +
-        '<th><a href="#">Mean</a></th>' +
-        '<th><a href="#">St.Dev</a></th>' +
-        '<th><a href="#">Min</a></th>' +
-        '<th><a href="#">Q1</a></th>' +
-        '<th><a href="#">Median</a></th>' +
-        '<th><a href="#">Q3</a></th>' +
-        '<th><a href="#">Max</a></th>' +
-        '</tr>' +
-        '</thead>' +
-        '<tbody id="statistic_tbody" class="scrollContent">' +
-        '</table>');*/
         div.append(frm);
 
         return div;
-    };
+    };*/
 
     IPython.IgnTuplDialog = IgnTuplDialog;
 
