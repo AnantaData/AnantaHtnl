@@ -1,5 +1,5 @@
 /**
- * Created by lakmal on 2/3/15.
+ * Created by laksheen on 06/02/2015.
  */
 
 
@@ -8,19 +8,19 @@ var IPython = (function (IPython) {
 
     var platform = IPython.utils.platform;
 
-    var IgnTuplDialog = function (cell_id,step_no ) {
+    var GlblConstDialog = function (cell_id,step_no ) {
         IPython.ProfileDialog.apply(this, [cell_id]);
         this.cell_id = cell_id;
-        this.step_type = "ignTupl";
-        this.step_show_name = "Ignore Tuple";
+        this.step_type = "gblCnst";
+        this.step_show_name = "Global Constant";
         this.dialog_id = cell_id+"_"+this.step_type+"_"+step_no+(new Date()).valueOf().toString()+"_";
         this.step_no = step_no;
     };
 
-    IgnTuplDialog.prototype = new IPython.ProfileDialog();
+    GlblConstDialog.prototype = new IPython.ProfileDialog();
 
 
-    IgnTuplDialog.prototype.show_dialog = function (profile) {
+    GlblConstDialog.prototype.show_dialog = function (profile) {
 
         var element = IPython.ProfileDialog.prototype.show_dialog.apply(this, []);
         if(!element){return;}
@@ -29,7 +29,7 @@ var IPython = (function (IPython) {
 
         var this_dialog = this;
         this.shortcut_dialog = IPython.minidialog.modal({
-            title : "Ignore Tuple Step",
+            title : "Global Constant Step",
             body : element,
             destroy : false,
             buttons : {
@@ -56,75 +56,83 @@ var IPython = (function (IPython) {
 
     };
 
-    IgnTuplDialog.prototype.setInstruction = function(){
-        this.documentation.text('Give the names of the fields where unfilled data tuples should be removed'+
+    GlblConstDialog.prototype.setInstruction = function(){
+        this.documentation.text('Specify the global constant that should be filled in empty fields'+
         '.')
     };
 
-    IgnTuplDialog.prototype.build_elements = function (profile) {
+    GlblConstDialog.prototype.build_elements = function (profile) {
 
 
         var div = $('<div/>');
 
         this.stepNameInp_id = this.dialog_id+"stepname";
+        this.constNameInp_id = this.dialog_id+"constant";
         this.statTabl_id = "stattable"+this.dialog_id;
 
         var stepNameLbl = $('<label for="stepname">Step Name:</label>');
         var stepNameInp = $('<input type="text" name="stepname"  readonly>');
+        var glbNameLblLbl = $('<label for="stepname">Global Constant:</label>');
+        var constNameInp = $('<input type="text" name="stepname"  />');
         var statTabl = $('<table>' +
-                            '<thead id="statistic_thead" class="fixedHeader">' +
-                                '<tr class="alternateRow">' +
-                                '<th><a href="#">Field</a></th>' +
-                                '<th><a href="#">Count</a></th>' +
-                                '<th><a href="#">Mean</a></th>' +
-                                '<th><a href="#">St.Dev</a></th>' +
-                                '<th><a href="#">Min</a></th>' +
-                                '<th><a href="#">Q1</a></th>' +
-                                '<th><a href="#">Median</a></th>' +
-                                '<th><a href="#">Q3</a></th>' +
-                                '<th><a href="#">Max</a></th>' +
-                                '</tr>' +
-                            '</thead>' +
-                            '<tbody id="statistic_tbody" class="scrollContent">' +
-                            '</tbody>' +
-                        '</table>');
+        '<thead id="statistic_thead" class="fixedHeader">' +
+        '<tr class="alternateRow">' +
+        '<th><a href="#">Field</a></th>' +
+        '<th><a href="#">Count</a></th>' +
+        '<th><a href="#">Mean</a></th>' +
+        '<th><a href="#">St.Dev</a></th>' +
+        '<th><a href="#">Min</a></th>' +
+        '<th><a href="#">Q1</a></th>' +
+        '<th><a href="#">Median</a></th>' +
+        '<th><a href="#">Q3</a></th>' +
+        '<th><a href="#">Max</a></th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tbody id="statistic_tbody" class="scrollContent">' +
+        '</tbody>' +
+        '</table>');
 
         stepNameInp.attr('id',this.stepNameInp_id);
         statTabl.attr('id',this.statTabl_id);
+        constNameInp.attr('id',this.constNameInp_id)
 
-        div.append(stepNameInp).append(statTabl);
+        div.append(stepNameLbl).append(stepNameInp).append(glbNameLblLbl).append(constNameInp).append(statTabl);
 
         tabulate_2(this.statTabl_id);
 
         return div;
     };
 
-    IgnTuplDialog.prototype.retrive_elements = function(){
+    GlblConstDialog.prototype.retrive_elements = function(){
         this.stepNameInp = $('#'+this.stepNameInp_id);
+        this.globalConstantInp = $('#'+this.constNameInp_id);
         this.statTabl = $('#'+this.statTabl_id);
         this.errDoc = $('#'+this.errorDoc_id);
         this.documentation = $('#'+this.documentation_id);
     };
 
-    IgnTuplDialog.prototype.get_values = function(profile){
+    GlblConstDialog.prototype.get_values = function(profile){
 
         this.errDoc.hide();
         var stepData = {
             step_no : this.step_no,
             step_type : this.step_type,
+            global_const : '',
             step_show_name : this.step_show_name,
             step_label : this.step_no+"-"+this.step_show_name,
             step_name : this.step_no+"_"+this.step_type,
             fields : []
         };
         stepData.fields=this.getCheckedValues();
+        stepData.global_const=this.globalConstantInp.val();
         profile.profileData.steps[this.step_no] = stepData;
     };
 
-    IgnTuplDialog.prototype.set_values =function(profile){
+    GlblConstDialog.prototype.set_values =function(profile){
         var stepData = {
             step_no : this.step_no,
             step_type : this.step_type,
+            global_const : '',
             step_show_name : this.step_show_name,
             step_label : this.step_no+"-"+this.step_show_name,
             step_name : this.step_no+"_"+this.step_type,
@@ -134,11 +142,12 @@ var IPython = (function (IPython) {
             stepData = profile.profileData.steps[this.step_no];
         }
         this.stepNameInp.val(stepData.step_label);
+        this.global_const.val(stepData.globalConstantInp.val)
         this.setCheckedValues(profile,stepData.fields);
 
     };
 
-    IgnTuplDialog.prototype.getCheckedValues = function(){
+    GlblConstDialog.prototype.getCheckedValues = function(){
         var fields = [];
         var row = this.statTabl[0].children[1].children;
         for(var i=0;i<row.length;i++){
@@ -151,7 +160,7 @@ var IPython = (function (IPython) {
         return fields;
     };
 
-    IgnTuplDialog.prototype.setCheckedValues = function(profile,fields){
+    GlblConstDialog.prototype.setCheckedValues = function(profile,fields){
         var checked = [];
         var rows = profile.fields.length;
         for(var j=0;j<rows;j++){
@@ -169,19 +178,21 @@ var IPython = (function (IPython) {
         tabulate_3(this.statTabl_id,checked);
     };
 
-    IgnTuplDialog.prototype.addStep =function(profile, this_dialog){
+    GlblConstDialog.prototype.addStep =function(profile, this_dialog){
         this_dialog.get_values(profile);
         profile.settingsdialog.update_step_list(profile);
         profile.settingsdialog.minidialogs[this_dialog.step_no] = this_dialog;
     };
 
-    IgnTuplDialog.prototype.set_dynamic_ui =function(){
+    GlblConstDialog.prototype.set_dynamic_ui =function(){
     };
 
 
-    IPython.IgnTuplDialog = IgnTuplDialog;
+    IPython.IgnTuplDialog = GlblConstDialog;
 
     return IPython;
 
 }(IPython));
+
+
 

@@ -12,7 +12,8 @@ window.mathjax_url = "{{mathjax_url}}";
 </script>
 
 <link rel="stylesheet" href="{{ static_url("components/bootstrap-tour/build/css/bootstrap-tour.min.css") }}" type="text/css" />
-<link rel="stylesheet" href="{{ static_url("components/codemirror/lib/codemirror.css") }}">
+<link rel="stylesheet" href="{{ static_url("components/codemirror/lib/codemirror.css") }}"/>
+<link rel="stylesheet" type="text/css" href= "{{ static_url("notebook/js/swal/sweet-alert.css") }}"/>
 
 {{super()}}
 
@@ -303,7 +304,7 @@ class="notebook_app"
             <ul>
                 <li><a href="#statistics_area">Statistics Area</a></li>
                 <li><a href="#visualization-area">Visualization Area</a></li>
-                <li><a href="#tabs-3">Aenean lacinia</a></li>
+                <li><a href="#eval_area">Evaluation Information</a></li>
             </ul>
             <div id="statistics_area" >
                 <!-- <h5 id="stat_area_header">Statistics Area</h5> -->
@@ -377,8 +378,10 @@ class="notebook_app"
                 <!-- <h5 id="vis-area-header">Visualization Area</h5> -->
 
             </div>
-            <div id="tabs-3">
-                <p> feugiat nec, luctus a, lacus.</p>
+            <div id="eval_area">
+                <table id = 'eval_table' class="scrollTable" border="0" cellpadding="0" cellspacing="0" width="100%">
+
+                </table>
             </div>
         </div>
 
@@ -395,9 +398,80 @@ class="notebook_app"
 {% block script %}
 
 {{super()}}
+<script type="text/javascript">
+    $(function(){
+        sweetAlert({
+            title:"Welcome to Ananta!",
+            text:"Smarter Insights for Better Customer Analytics." ,
+            imageUrl: "{{ static_url('base/images/ansm_hello.png') }}",
+            imageSize:"480x480",
+            showCancelButton:true,
+            cancelButtonText:"Take me to Ananta, Now!",
+            confirmButtonText:"Tell me more!",
+            closeOnConfirm:false
+        },function(isConfirm){
+            sweetAlert({
+                title:"Customer Analytics",
+                text:"At the core of all good customer relations, knowing your customer plays a huge role! How well do you know what kind of a clientele" +
+                " you have? How loyal are your customers to you and your products? Do you stand a chance if you try that new product out? Or should you go about " +
+                " marketing that product to those people living in that area? How many of your current customers will defect by the new price of the product?",
+                imageUrl: "{{ static_url('base/images/ansm_bman.png') }}",
+                imageSize:"124x240",
+                showCancelButton:true,
+                cancelButtonText:"Take me to Ananta, Now!",
+                confirmButtonText:"How do I find this out?",
+                closeOnConfirm:false
+            },function(isConfirm){
+                sweetAlert({
+                    title:"Descriptive Customer Analytics",
+                    text:"Know the underlying patterns of your clientele, and cater solutions better suited to their specific needs" +
+                    "! Ananta will help you identify special patterns hidden inside your customer base, and gain more insight about them" +
+                    " which will ultimately help you to gain more knowledge about your clientele. Use this golden information in devicing your" +
+                    " marketing strategies / pricing policies / annual promotions... After all, the 'Customer is always right!'(mostly). ",
+                    imageUrl: "{{ static_url('base/images/ansm_kcus.png') }}",
+                    imageSize:"240x240",
+                    showCancelButton:true,
+                    cancelButtonText:"Take me to Ananta, Now!",
+                    confirmButtonText:"What about defectors?",
+                    closeOnConfirm:false
+                },function(isConfirm){
+                    sweetAlert({
+                        title:"Predictive Customer Analytics",
+                        text:"Having gained information about the behavior of your clients, it may be useful to model their response to slight" +
+                        " or drastic changes of your pricing policies, marketing strategies and so on. Use a predictive analaysis to " +
+                        "identify which customers are most likely to turn away from your product.",
+                        imageUrl: "{{ static_url('base/images/ansm_churn.png') }}",
+                        imageSize:"240x240",
+                        showCancelButton:true,
+                        cancelButtonText:"Take me to Ananta, Now!",
+                        confirmButtonText:"So what can 'Ananta' do?",
+                        closeOnConfirm:false
+                    },function(isConfirm){
+                        sweetAlert({
+                            title:"What Ananta does for you...",
+                            text:"Upload your data, and using the flexible and easy-to-use framework of Ananta, obtain the information " +
+                            "about the customers that we talked about. Using unsupervised learning, you can learn about your customer and " +
+                            "using the supervised learning models, predict their behavior! Experience the power of machine learning in your " +
+                            "strategy.",
+                            imageUrl: "{{ static_url('base/images/ansm_ans.png') }}",
+                            imageSize:"240x240",
+                            showCancelButton:true,
+                            cancelButtonText:"Proceed to Ananta",
+                            confirmButtonText:"Learn More!",
+                            closeOnConfirm:false,
+                            cancelButtonColor: "#81F5AA"
+                        },function(isConfirm){
+                           if(isConfirm){window.location.href="http://ananta-dataanalytics.rhcloud.com/";}
+                        });
+                    });
+                });
+            });
+        });
+    });
+</script>
 
-<script src="{{ static_url("components/google-caja/html-css-sanitizer-minified.js") }}" charset="utf-8"></script>
-<script src="{{ static_url("components/codemirror/lib/codemirror.js") }}" charset="utf-8"></script>
+<script src="{{ static_url('components/google-caja/html-css-sanitizer-minified.js') }}" charset="utf-8"></script>
+<script src="{{ static_url('components/codemirror/lib/codemirror.js') }}" charset="utf-8"></script>
 <script type="text/javascript">
     CodeMirror.modeURL = "{{ static_url("components/codemirror/mode/%N/%N.js", include_version=False) }}";
 </script>
@@ -475,12 +549,14 @@ class="notebook_app"
 <script src="{{ static_url("notebook/js/ananta/drpdialog.js") }}" type="text/javascript" charset="utf-8"></script>
 <script src="{{ static_url("notebook/js/ananta/dtpprofile.js") }}" type="text/javascript" charset="utf-8"></script>
 <script src="{{ static_url("notebook/js/ananta/dtpdialog.js") }}" type="text/javascript" charset="utf-8"></script>
-<script src="{{ static_url("notebook/js/ananta/dmpprofile.js") }}" type="text/javascript" charset="utf-8"></script>
-<script src="{{ static_url("notebook/js/ananta/dmpdialog.js") }}" type="text/javascript" charset="utf-8"></script>
+<script src="{{ static_url("notebook/js/ananta/umprofile.js") }}" type="text/javascript" charset="utf-8"></script>
+<script src="{{ static_url("notebook/js/ananta/umpdialog.js") }}" type="text/javascript" charset="utf-8"></script>
+<script src="{{ static_url("notebook/js/ananta/smprofile.js") }}" type="text/javascript" charset="utf-8"></script>
+<script src="{{ static_url("notebook/js/ananta/smpdialog.js") }}" type="text/javascript" charset="utf-8"></script>
 <script src="{{ static_url("notebook/js/ananta/statarea.js") }}" type="text/javascript" charset="utf-8"></script>
 <script src="{{ static_url("notebook/js/ananta/minidialog.js") }}" type="text/javascript" charset="utf-8"></script>
 <script src="{{ static_url("notebook/js/ananta/ignoreTupleDialog.js") }}" type="text/javascript" charset="utf-8"></script>
-
+<script src="{{ static_url("notebook/js/ananta/globalConstantDialog.js") }}" type="text/javascript" charset="utf-8"></script>
 
 
 <script src="{{ static_url("notebook/js/d3/min.js") }}" type="text/javascript" charset="utf-8"></script>
@@ -492,6 +568,9 @@ class="notebook_app"
 <script src="{{ static_url("notebook/js/d3/min.hexa.js") }}" type="text/javascript" charset="utf-8"></script>
 <script src="{{ static_url("notebook/js/d3/scatterplot.js") }}" type="text/javascript" charset="utf-8"></script>
 <script src="{{ static_url("notebook/js/d3/semantic.js") }}" type="text/javascript" charset="utf-8"></script>
+
+<script src="{{ static_url("notebook/js/swal/sweet-alert.min.js") }}" type="text/javascript" charset="utf-8"></script>
+
 
 <script src="{{ static_url("notebook/js/ananta/visudialog.js") }}" type="text/javascript" charset="utf-8"></script>
 <script src="{{ static_url("notebook/js/ananta/boxplotdialog.js") }}" type="text/javascript" charset="utf-8"></script>

@@ -44,7 +44,7 @@ var IPython = (function (IPython) {
         this.set_values(profile);
         this.setInstruction();
 
-        $([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
+        //$([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
 
 
     };
@@ -56,8 +56,6 @@ var IPython = (function (IPython) {
         'and <b>File Name</b> which is the location of file and its name'+
         '.')
     };
-
-
 
     FlpDialog.prototype.build_elements = function (profile) {
         var div = $('<div/>');

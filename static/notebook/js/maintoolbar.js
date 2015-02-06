@@ -47,8 +47,8 @@ var IPython = (function (IPython) {
                 },
                 {
                     id : 'insert_flp',
-                    label : 'Insert File Loadiing Profile',
-                    icon : 'icon-plus-sign',
+                    label : 'Insert File Loading Profile',
+                    icon : 'icon-upload',
                     callback : function () {
                         IPython.notebook.insert_profile('code','flp');
                         IPython.notebook.select_next();
@@ -58,7 +58,7 @@ var IPython = (function (IPython) {
                 {
                     id : 'insert_dcp',
                     label : 'Insert Data Cleaning Profile',
-                    icon : 'icon-plus-sign',
+                    icon : 'icon-eraser',
                     callback : function () {
                         IPython.notebook.insert_profile('code','dcp');
                         IPython.notebook.select_next();
@@ -68,7 +68,7 @@ var IPython = (function (IPython) {
                 {
                     id : 'insert_drp',
                     label : 'Insert Data Reduction Profile',
-                    icon : 'icon-plus-sign',
+                    icon : 'icon-filter',
                     callback : function () {
                         IPython.notebook.insert_profile('code','drp');
                         IPython.notebook.select_next();
@@ -78,7 +78,7 @@ var IPython = (function (IPython) {
                 {
                     id : 'insert_dtp',
                     label : 'Insert Data Transformation Profile',
-                    icon : 'icon-plus-sign',
+                    icon : 'icon-sort-by-attributes',
                     callback : function () {
                         IPython.notebook.insert_profile('code','dtp');
                         IPython.notebook.select_next();
@@ -87,14 +87,24 @@ var IPython = (function (IPython) {
                 },
                 {
                     id : 'insert_dmp',
-                    label : 'Insert Data Mining Profile',
-                    icon : 'icon-plus-sign',
+                    label : 'Insert Unsupervised Mining Profile',
+                    icon : 'icon-fullscreen',
                     callback : function () {
                         IPython.notebook.insert_profile('code','dmp');
                         IPython.notebook.select_next();
                         IPython.notebook.focus_cell();
                     }
+                },{
+                    id : 'insert_smp',
+                    label : 'Insert Supervised Mining Profile',
+                    icon : 'icon-linechart',
+                    callback : function () {
+                        IPython.notebook.insert_profile('code','smp');
+                        IPython.notebook.select_next();
+                        IPython.notebook.focus_cell();
+                    }
                 },
+
                 //{
                 //    id : 'insert_dcp',
                 //    label : 'Insert Data Cleaning Profile',
