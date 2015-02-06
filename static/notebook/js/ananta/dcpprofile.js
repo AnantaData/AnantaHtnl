@@ -74,8 +74,7 @@ var IPython = (function (IPython) {
             '\n'+stepName+' = '+stepType+'('+fields+')' +
             '\ndcp.addStep('+stepName+')';
         return code;
-    }
-
+    };
 
     IPython.DCProfile = DCProfile;
 
