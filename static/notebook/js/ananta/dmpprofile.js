@@ -10,7 +10,7 @@ var IPython = (function (IPython) {
         this.fileName = "";
         this.fileType ="";
         this.fileLoc = "";
-        this.dmpdialog = new IPython.DmpDialog();
+        this.settingsdialog = new IPython.DmpDialog();
 
     };
 
