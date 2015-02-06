@@ -21,6 +21,9 @@ var IPython = (function (IPython) {
 
 
     IgnTuplDialog.prototype.show_dialog = function (profile) {
+        if(this.shortcut_dialog){
+            this.force_rebuild = true;
+        }
 
         var element = IPython.ProfileDialog.prototype.show_dialog.apply(this, []);
         if(!element){return;}
@@ -38,6 +41,7 @@ var IPython = (function (IPython) {
                     click: function(e) {
                         this_dialog.get_values(profile,e);
                         profile.settingsdialog.update_step_list(profile);
+                        profile.settingsdialog.minidialogs[this_dialog.step_no] = this_dialog;
                     }
                 }
             }
@@ -64,13 +68,61 @@ var IPython = (function (IPython) {
         var div = $('<div/>');
 
         this.stepNameInp_id = this.dialog_id+"stepname";
+        this.statTabl_id = "stattable"+this.dialog_id;
 
         var stepNameLbl = $('<label for="stepname">Step Name:</label>');
         var stepNameInp = $('<input type="text" name="stepname"  readonly>');
+        var statTabl = $('<table>' +
+                            '<thead id="statistic_thead" class="fixedHeader">' +
+                                '<tr class="alternateRow">' +
+                                '<th><a href="#">Field</a></th>' +
+                                '<th><a href="#">Count</a></th>' +
+                                '<th><a href="#">Mean</a></th>' +
+                                '<th><a href="#">St.Dev</a></th>' +
+                                '<th><a href="#">Min</a></th>' +
+                                '<th><a href="#">Q1</a></th>' +
+                                '<th><a href="#">Median</a></th>' +
+                                '<th><a href="#">Q3</a></th>' +
+                                '<th><a href="#">Max</a></th>' +
+                                '</tr>' +
+                            '</thead>' +
+                            '<tbody id="statistic_tbody" class="scrollContent">' +
+                            '</tbody>' +
+                        '</table>');
 
         stepNameInp.attr('id',this.stepNameInp_id);
+        statTabl.attr('id',this.statTabl_id);
 
-        div.append(stepNameInp);
+        div.append(stepNameInp).append(statTabl);
+
+        tabulate_2(this.statTabl_id, addcheckboxes);
+        //promise.then(addcheckboxes());
+        var html_str = "";
+        for(var i=0;i<profile.fields.length;i++){
+            html_str+='<input type="checkbox" name="'+profile.fields[i].name+'" value="'+profile.fields[i].name+'" /> '
+            +profile.fields[i].name+'<br/>';
+        }
+        var frm = $(html_str);
+        //div.append(frm);
+
+        //var table = statTabl;
+        var addcheckboxes = function() {
+            var rows = statTabl[0].children[1].children;
+
+            for (var i = 0; i < rows.length; i++) {
+                //var cell = rows[i].children[0];
+                //var cell2 = rows[i].children[1];
+                //cell.innerHTML ='<input type="checkbox" value="'+rows[i].children[1].innerText+'">';
+                var x = document.createElement("input");
+                x.setAttribute("type", "checkbox");
+                statTabl[0].children()[1].children()[i].children()[0].append(x);
+                //var fcell = $('#stat_table_2')[0].children[1].children[i].children[0];
+            }
+
+
+            div.append(statTabl);
+        }
+
         return div;
     };
 

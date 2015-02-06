@@ -70,28 +70,7 @@ var IPython = (function (IPython) {
         this.profileheading.text('Data Cleaning Profile');
     };
 
-    DCProfile.prototype.getFields= function(){
-        var fields = [];
-        $.ajax({
-            type: "GET",
-            url: "types.csv",
-            dataType: "text"
-        }).success(function (csvd) {
-            var field_list = csvd.split('\n');
-            var field_data;
-            for(var i=0;i<field_list.length;i++){
-                field_data = field_list[i].split(',');
-                fields.push({name:field_data[0],type:field_data[1]})
-            }
-        }).done(function() {
-            alert( "success" );
-        }).fail(function() {
-            alert( "error" );
-        }).always(function() {
-            alert( "complete" );
-        });
-        return fields;
-    };
+
 
 
 
