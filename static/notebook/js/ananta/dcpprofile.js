@@ -28,6 +28,8 @@ var IPython = (function (IPython) {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
         this.profileheading.text('Data Cleaning Profile');
+        this.profileheading[0].style.color="#610B4B";
+
     };
 
     DCProfile.prototype.setCode = function(profileData){
@@ -57,21 +59,20 @@ var IPython = (function (IPython) {
         var stepType;
         if(stepData.step_type == 'ignTupl'){
             stepType = 'IgnoreTupleStep';
-            var stepName = 'step'+stepData.step_no;
-            var fields = '[';
-            for(var i=0;i<stepData.fields.length;i++){
-                if(i!=0){
-                    fields +=','
-                }
-                fields += '"'+stepData.fields[i]+'"';
-
-            }
-            fields +="]";
-            var code =
-                '\n'+stepName+' = '+stepType+'('+fields+')' +
-                '\ndcp.addStep('+stepName+')';
         }
+        var stepName = 'step'+stepData.step_no;
+        var fields = '[';
+        for(var i=0;i<stepData.fields.length;i++){
+            if(i!=0){
+                fields +=','
+            }
+            fields += '"'+stepData.fields[i]+'"';
 
+        }
+        fields +="]";
+        var code =
+            '\n'+stepName+' = '+stepType+'('+fields+')' +
+            '\ndcp.addStep('+stepName+')';
         return code;
     }
 

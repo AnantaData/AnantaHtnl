@@ -61,6 +61,8 @@ var IPython = (function (IPython) {
         });
 
         this.profileheading.text('Data Transformation Profile');
+        this.profileheading[0].style.color="#086A87";
+
     };
 
 

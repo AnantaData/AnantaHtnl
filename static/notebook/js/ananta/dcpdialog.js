@@ -136,7 +136,7 @@ var IPython = (function (IPython) {
                 //that.minidialogs[step_no] = new IPython.IgnTuplDialog(profile.cell_id,step_no);
                 minidialog = new IPython.IgnTuplDialog(profile.cell_id,step_no);
             }else if (selected == 'gblCnst'){
-                minidialog = new IPython.GlblConstDialog(profile.cell_id,step_no);
+
             }else if(selected == 'atrMean'){
 
             }else if(selected == 'atrMode'){

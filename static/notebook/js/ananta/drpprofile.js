@@ -61,6 +61,8 @@ var IPython = (function (IPython) {
         });
 
         this.profileheading.text('Data Reduction Profile');
+        this.profileheading[0].style.color="#4C0B5F";
+
     };
 
 
