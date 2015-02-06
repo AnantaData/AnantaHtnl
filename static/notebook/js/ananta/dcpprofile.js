@@ -11,7 +11,12 @@ var IPython = (function (IPython) {
             steps :[]
         };
         this.fields = "";
+
+        //Dialog for profile settings
         this.settingsdialog = new IPython.DcpDialog(this.cell_id);
+
+        //set the input code according to the profile data
+        this.set_text(this.setCode(this.profileData));
 
     };
 
@@ -22,56 +27,52 @@ var IPython = (function (IPython) {
     DCProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
-
-        var get_flp_code= function(nb,fileType,fileName) {
-            var code = 'from ananta_base.base import *' +
-                '\nfrom ananta_base.data_cleaning_pan import DataCleaningProfile, UseGlobalConstantStep, IgnoreTupleStep' +
-                '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
-                '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
-                '\nfrom ananta_base.data_set import TrainingSet' +
-                '\nfrom ananta_base.data_transformation import DataTransformationProfile, EncodingStep' +
-                '\nprojects = TrainingSet()' +
-                '\nflp1 = FileLoadingProfile()' +
-                '\ns1 = FileLoadStep("' + fileType + '", "' + fileName + '")' +
-                '\nflp1.addStep(s1)' +
-                '\nflp1.execute(projects)' +
-                //'\ndf = projects.data.describe()' +
-                '\ndf = projects.data' +
-                '\nprint df' +
-                '\ndf.to_csv("a.csv", sep=",", encoding="utf-8")' +
-                '';
-            nb.set_text(code);
-
-        }
-
-
-        get_flp_code(this, this.fileType,this.fileName);
-
-        /*var nb = this;
-        this.b1.click(function(e){
-            e.preventDefault();
-            if(nb.fields ==""){
-                nb.fields = nb.getFields();
-            }
-            nb.settingsdialog.show_dialog(nb,get_flp_code);
-        });
-        this.b2.click(function(e){
-            e.preventDefault();
-            IPython.notebook.execute_cell();
-        });
-        this.b3.click(function(e){
-            e.preventDefault();
-            selectGrapgh(2);
-        });
-        this.b4.click(function() {
-
-        });*/
-
         this.profileheading.text('Data Cleaning Profile');
     };
 
+    DCProfile.prototype.setCode = function(profileData){
+        var code = 'from ananta_base.base import *' +
+            '\nfrom ananta_base.data_cleaning_pan import DataCleaningProfile, UseGlobalConstantStep, IgnoreTupleStep' +
+            '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
+            '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
+            '\nfrom ananta_base.data_set import TrainingSet' +
+            '\nfrom ananta_base.data_transformation import DataTransformationProfile, EncodingStep' +
+            '\nimport ananta_base.data_stat as stat' +
 
+            '\ndcp = DataCleaningProfile()';
+        var stepCode = "";
+        for(var i=0;i<profileData.steps.length;i++){
+            stepCode+=this.addStepCode(profileData.steps[i]);
+        }
+        var endcode =
+            '\ndcp.execute(projects)' +
+            '\nstat.getStatistics(projects)' +
+            '\nprint "Profile Successfully Executed"' ;
 
+        code  = code+stepCode+endcode;
+        return code;
+    };
+
+    DCProfile.prototype.addStepCode = function(stepData){
+        var stepType;
+        if(stepData.step_type == 'ignTupl'){
+            stepType = 'IgnoreTupleStep';
+        }
+        var stepName = 'step'+stepData.step_no;
+        var fields = '[';
+        for(var i=0;i<stepData.fields.length;i++){
+            if(i!=0){
+                fields +=','
+            }
+            fields += '"'+stepData.fields[i]+'"';
+
+        }
+        fields +="]";
+        var code =
+            '\n'+stepName+' = '+stepType+'('+fields+')' +
+            '\ndcp.addStep('+stepName+')';
+        return code;
+    }
 
 
     IPython.DCProfile = DCProfile;

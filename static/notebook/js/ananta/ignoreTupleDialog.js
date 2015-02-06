@@ -11,9 +11,9 @@ var IPython = (function (IPython) {
     var IgnTuplDialog = function (cell_id,step_no ) {
         IPython.ProfileDialog.apply(this, [cell_id]);
         this.cell_id = cell_id;
-        this.step_type = "igntupl";
+        this.step_type = "ignTupl";
         this.step_show_name = "Ignore Tuple";
-        this.dialog_id = cell_id+"_"+this.step_type+"_"+step_no+"_";
+        this.dialog_id = cell_id+"_"+this.step_type+"_"+step_no+(new Date()).valueOf().toString()+"_";
         this.step_no = step_no;
     };
 
@@ -21,9 +21,6 @@ var IPython = (function (IPython) {
 
 
     IgnTuplDialog.prototype.show_dialog = function (profile) {
-        if(this.shortcut_dialog){
-            this.force_rebuild = true;
-        }
 
         var element = IPython.ProfileDialog.prototype.show_dialog.apply(this, []);
         if(!element){return;}
@@ -36,9 +33,11 @@ var IPython = (function (IPython) {
             body : element,
             destroy : false,
             buttons : {
-                Close : {},
+                Close : {
+                },
                 Ok :{class : "btn-primary",
                     click: function(e) {
+                        //this_dialog.addStep(profile,this_dialog);
                         this_dialog.get_values(profile,e);
                         profile.settingsdialog.update_step_list(profile);
                         profile.settingsdialog.minidialogs[this_dialog.step_no] = this_dialog;
@@ -52,8 +51,8 @@ var IPython = (function (IPython) {
         this.set_dynamic_ui();
         this.set_values(profile);
         this.setInstruction();
-
-        $([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
+        //this.addStep(profile,this);
+        //$([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
 
     };
 
@@ -95,44 +94,19 @@ var IPython = (function (IPython) {
 
         div.append(stepNameInp).append(statTabl);
 
-        tabulate_2(this.statTabl_id, addcheckboxes);
-        //promise.then(addcheckboxes());
-        var html_str = "";
-        for(var i=0;i<profile.fields.length;i++){
-            html_str+='<input type="checkbox" name="'+profile.fields[i].name+'" value="'+profile.fields[i].name+'" /> '
-            +profile.fields[i].name+'<br/>';
-        }
-        var frm = $(html_str);
-        //div.append(frm);
-
-        //var table = statTabl;
-        var addcheckboxes = function() {
-            var rows = statTabl[0].children[1].children;
-
-            for (var i = 0; i < rows.length; i++) {
-                //var cell = rows[i].children[0];
-                //var cell2 = rows[i].children[1];
-                //cell.innerHTML ='<input type="checkbox" value="'+rows[i].children[1].innerText+'">';
-                var x = document.createElement("input");
-                x.setAttribute("type", "checkbox");
-                statTabl[0].children()[1].children()[i].children()[0].append(x);
-                //var fcell = $('#stat_table_2')[0].children[1].children[i].children[0];
-            }
-
-
-            div.append(statTabl);
-        }
+        tabulate_2(this.statTabl_id);
 
         return div;
     };
 
     IgnTuplDialog.prototype.retrive_elements = function(){
         this.stepNameInp = $('#'+this.stepNameInp_id);
+        this.statTabl = $('#'+this.statTabl_id);
         this.errDoc = $('#'+this.errorDoc_id);
         this.documentation = $('#'+this.documentation_id);
     };
 
-    IgnTuplDialog.prototype.get_values = function(profile, e){
+    IgnTuplDialog.prototype.get_values = function(profile){
 
         this.errDoc.hide();
         var stepData = {
@@ -143,13 +117,11 @@ var IPython = (function (IPython) {
             step_name : this.step_no+"_"+this.step_type,
             fields : []
         };
+        stepData.fields=this.getCheckedValues();
         profile.profileData.steps[this.step_no] = stepData;
     };
 
     IgnTuplDialog.prototype.set_values =function(profile){
-        /*$('#'+this.fileTypeInp_id+' option[value="' + profile.profileData.fileType + '"]').prop('selected', true);
-        this.fileLoctInp.val(profile.profileData.fileLoc);
-        this.fileNameTxt.val(profile.profileData.fileName);*/
         var stepData = {
             step_no : this.step_no,
             step_type : this.step_type,
@@ -162,28 +134,50 @@ var IPython = (function (IPython) {
             stepData = profile.profileData.steps[this.step_no];
         }
         this.stepNameInp.val(stepData.step_label);
+        this.setCheckedValues(profile,stepData.fields);
 
+    };
+
+    IgnTuplDialog.prototype.getCheckedValues = function(){
+        var fields = [];
+        var row = this.statTabl[0].children[1].children;
+        for(var i=0;i<row.length;i++){
+            var checkbox = row[i].children[0].children[0];
+            var fieldname = row[i].children[1].innerText;
+            if(checkbox.checked){
+                fields.push(fieldname);
+            }
+        }
+        return fields;
+    };
+
+    IgnTuplDialog.prototype.setCheckedValues = function(profile,fields){
+        var checked = [];
+        var rows = profile.fields.length;
+        for(var j=0;j<rows;j++){
+            checked[j] = false;
+        }
+        for(var i=0;i<fields.length;i++){
+            for(var j=0;j<rows;j++){
+                var fieldname = profile.fields[j];
+                if(fieldname.name == fields[i]){
+                    checked[j] = true;
+                    break;
+                }
+            }
+        }
+        tabulate_3(this.statTabl_id,checked);
+    };
+
+    IgnTuplDialog.prototype.addStep =function(profile, this_dialog){
+        this_dialog.get_values(profile);
+        profile.settingsdialog.update_step_list(profile);
+        profile.settingsdialog.minidialogs[this_dialog.step_no] = this_dialog;
     };
 
     IgnTuplDialog.prototype.set_dynamic_ui =function(){
-        /*var this_dialog = this;
-        this.fileNameInp.change(function(){
-            this_dialog.fileNameTxt.val(this_dialog.fileNameInp[0].files[0].name);
-        });*/
     };
 
-    /*IgnTuplDialog.prototype.build_elements = function (nb) {
-        var div = $('<div id="dialog_stat_table" class="checkboxlist"/>');
-        var html_str = "";
-        for(var i=0;i<nb.fields.length;i++){
-            html_str+='<input type="checkbox" name="'+nb.fields[i].name+'" value="'+nb.fields[i].name+'" /> '
-            +nb.fields[i].name+'<br/>';
-        }
-        var frm = $(html_str);
-        div.append(frm);
-
-        return div;
-    };*/
 
     IPython.IgnTuplDialog = IgnTuplDialog;
 
