@@ -28,6 +28,8 @@ var IPython = (function (IPython) {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
         this.profileheading.text('Data Cleaning Profile');
+        this.profileheading[0].style.color="#610B4B";
+
     };
 
     DCProfile.prototype.setCode = function(profileData){

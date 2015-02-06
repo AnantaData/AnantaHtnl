@@ -30,6 +30,8 @@ var IPython = (function (IPython) {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
         this.profileheading.text('File Loading Profile');
+        this.profileheading[0].style.color="#B404AE";
+
     };
 
     FLProfile.prototype.setCode = function(profileData){

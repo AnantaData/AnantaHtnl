@@ -19,7 +19,7 @@ var IPython = (function (IPython) {
         cell.attr('tabindex','2');
 
         var input = $('<div></div>').addClass('input');
-        var prompt = $('<div style="width:30px;float:left;"/>').addClass('prompt input_prompt');
+        var prompt = $('<div style="width:65px;float:left;"/>').addClass('prompt input_prompt');
         var inner_cell = $('<div />').addClass('inner_cell');
         this.celltoolbar = new IPython.CellToolbar(this);
         inner_cell.append(this.celltoolbar.element);
@@ -53,12 +53,38 @@ var IPython = (function (IPython) {
         var output = $('<div></div>');
         var visdiv = $('<div id="flpvisdiv"></div>');
 
+        /*change color according to the profile type */
+
+        //alert(this.gui_type);
+        /*switch(this.gui_type){
+            case "flp":
+                color = "#E2A9F3";
+                break;
+            case "dcp":
+                color = "#9F81F7";
+                break;
+            case "Data Reduction Profile":
+                color = "#819FF7";
+                break;
+            case "Data Transformation Profile":
+                color = "#81DAF5";
+                break;
+            case "Unsupervised Mining Profile":
+                color = "#81F7D8";
+                break;
+            case "Supervised Mining Profile":
+                color = "#81F79F";
+                break;
+            default:
+                color="#000000";
+        }*/
+
+
         this.b1id = this.cell_id+"flpSetBtn";
         this.b2id = this.cell_id+"flpExcBtn";
         this.b3id = this.cell_id+"flpVisBtn";
         this.b4id = this.cell_id+"flpSSBtn";
-        this.profileheading = $('<h4 style="float:left; width:35%;">'+this.heading+'</h4>');
-
+        this.profileheading = $('<h4 style="float:left; width:35%; ">'+this.heading+'</h4>');
         this.b1 = $('<button id="'+this.b1id+'" title="Profile Settings" type="button" class="btn btn-default icon-cogs"/>');
         this.b2 = $('<button id="'+this.b2id+'" title="Execute Profile" type="button" class="btn btn-default icon-play"/>');
         this.b3 = $('<button id="'+this.b3id+'" title="Visualize Related Information" type="button" class="btn btn-default icon-eye-open"/>');
