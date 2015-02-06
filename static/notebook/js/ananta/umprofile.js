@@ -24,6 +24,7 @@ var IPython = (function (IPython) {
     UMProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
         this.profileheading.text('Unsupervised Mining Profile');
+        this.profileheading[0].style.color="#0B615E";
     };
 
     UMProfile.prototype.setCode = function (profileData) {
