@@ -94,7 +94,9 @@ var IPython = (function (IPython) {
 
         div.append(stepNameInp).append(statTabl);
 
-        tabulate_2(this.statTabl_id);
+        if(profile.profileData.steps.length < (this.step_no+1)){
+            tabulate_2(this.statTabl_id);
+        }
 
         return div;
     };
