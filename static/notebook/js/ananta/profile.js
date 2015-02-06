@@ -19,12 +19,12 @@ var IPython = (function (IPython) {
         cell.attr('tabindex','2');
 
         var input = $('<div></div>').addClass('input');
-        var prompt = $('<div/>').addClass('prompt input_prompt');
+        var prompt = $('<div style="width:30px;float:left;"/>').addClass('prompt input_prompt');
         var inner_cell = $('<div />').addClass('inner_cell');
         this.celltoolbar = new IPython.CellToolbar(this);
         inner_cell.append(this.celltoolbar.element);
-        //var input_area = $('<div style="display: none;"/>').addClass('input_area');
-        var input_area = $('<div/>').addClass('input_area');
+        var input_area = $('<div style="display: none;"/>').addClass('input_area');
+        //var input_area = $('<div/>').addClass('input_area');
         this.code_mirror = CodeMirror(input_area.get(0), this.cm_config);
         $(this.code_mirror.getInputField()).attr("spellcheck", "false");
         inner_cell.append(input_area);
@@ -57,7 +57,7 @@ var IPython = (function (IPython) {
         this.b2id = this.cell_id+"flpExcBtn";
         this.b3id = this.cell_id+"flpVisBtn";
         this.b4id = this.cell_id+"flpSSBtn";
-        this.profileheading = $('<h4 style="align-content: center">'+this.heading+'</h4>');
+        this.profileheading = $('<h4 style="float:left; width:35%;">'+this.heading+'</h4>');
 
         this.b1 = $('<button id="'+this.b1id+'" title="Profile Settings" type="button" class="btn btn-default icon-cogs"/>');
         this.b2 = $('<button id="'+this.b2id+'" title="Execute Profile" type="button" class="btn btn-default icon-play"/>');
