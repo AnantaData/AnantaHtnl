@@ -188,7 +188,7 @@ var IPython = (function (IPython) {
     };
 
 
-    IPython.IgnTuplDialog = GlblConstDialog;
+    IPython.GlblConstDialog = GlblConstDialog;
 
     return IPython;
 

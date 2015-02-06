@@ -59,20 +59,40 @@ var IPython = (function (IPython) {
         var stepType;
         if(stepData.step_type == 'ignTupl'){
             stepType = 'IgnoreTupleStep';
-        }
-        var stepName = 'step'+stepData.step_no;
-        var fields = '[';
-        for(var i=0;i<stepData.fields.length;i++){
-            if(i!=0){
-                fields +=','
-            }
-            fields += '"'+stepData.fields[i]+'"';
+            var stepName = 'step'+stepData.step_no;
+            var fields = '[';
+            for(var i=0;i<stepData.fields.length;i++){
+                if(i!=0){
+                    fields +=','
+                }
+                fields += '"'+stepData.fields[i]+'"';
 
+            }
+            fields +="]";
+            var code =
+                '\n'+stepName+' = '+stepType+'('+fields+')' +
+                '\ndcp.addStep('+stepName+')';
         }
-        fields +="]";
-        var code =
-            '\n'+stepName+' = '+stepType+'('+fields+')' +
-            '\ndcp.addStep('+stepName+')';
+        if(stepData.step_type == 'gblCnst'){
+            stepType = 'UseGlobalConstantStep';
+            var stepName = 'step'+stepData.step_no;
+            var fields = '[';
+            var consts = '[';
+            for(var i=0;i<stepData.fields.length;i++){
+                if(i!=0){
+                    fields +=','
+                    consts +=','
+                }
+                fields += '"'+stepData.fields[i]+'"';
+                consts += stepData.global_const;
+            }
+            fields +="]";
+            consts +="]";
+            var code =
+                '\n'+stepName+' = '+stepType+'('+consts+','+fields+')' +
+                '\ndcp.addStep('+stepName+')';
+        }
+
         return code;
     };
 
