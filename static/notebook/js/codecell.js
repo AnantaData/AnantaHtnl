@@ -400,7 +400,7 @@ var IPython = (function (IPython) {
         } else {
             ns = encodeURIComponent(prompt_value);
         }
-        return 'Profile&nbsp;[' + ns + ']:';
+        return 'Profile&nbsp;' + ns + ':';
     };
 
     CodeCell.input_prompt_continuation = function (prompt_value, lines_number) {

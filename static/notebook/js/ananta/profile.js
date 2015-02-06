@@ -19,12 +19,12 @@ var IPython = (function (IPython) {
         cell.attr('tabindex','2');
 
         var input = $('<div></div>').addClass('input');
-        var prompt = $('<div/>').addClass('prompt input_prompt');
+        var prompt = $('<div style="width:30px;float:left;"/>').addClass('prompt input_prompt');
         var inner_cell = $('<div />').addClass('inner_cell');
         this.celltoolbar = new IPython.CellToolbar(this);
         inner_cell.append(this.celltoolbar.element);
-        //var input_area = $('<div style="display: none;"/>').addClass('input_area');
-        var input_area = $('<div/>').addClass('input_area');
+        var input_area = $('<div style="display: none;"/>').addClass('input_area');
+        //var input_area = $('<div/>').addClass('input_area');
         this.code_mirror = CodeMirror(input_area.get(0), this.cm_config);
         $(this.code_mirror.getInputField()).attr("spellcheck", "false");
         inner_cell.append(input_area);
@@ -57,27 +57,26 @@ var IPython = (function (IPython) {
         this.b2id = this.cell_id+"flpExcBtn";
         this.b3id = this.cell_id+"flpVisBtn";
         this.b4id = this.cell_id+"flpSSBtn";
-        this.profileheading = $('<h4>'+this.heading+'</h4>');
+        this.profileheading = $('<h4 style="float:left; width:35%;">'+this.heading+'</h4>');
 
-        this.b1 = $('<button id="'+this.b1id+'" type="button" class="btn btn-default">Profile Settings</button>');
-        this.b2 = $('<button id="'+this.b2id+'" type="button" class="btn btn-default">Execute Profile</button>');
-        this.b3 = $('<button id="'+this.b3id+'" type="button" class="btn btn-default">Visualize </button>');
-        this.b4 = $('<button id="'+this.b4id+'" type="button" class="btn btn-default">Show Statistics</button>');
-        var btngrp = $('<div class="btn-group profile-element" role="group" aria-label="..."></div>');
+        this.b1 = $('<button id="'+this.b1id+'" title="Profile Settings" type="button" class="btn btn-default icon-cogs"/>');
+        this.b2 = $('<button id="'+this.b2id+'" title="Execute Profile" type="button" class="btn btn-default icon-play"/>');
+        this.b3 = $('<button id="'+this.b3id+'" title="Visualize Related Information" type="button" class="btn btn-default icon-eye-open"/>');
+        this.b4 = $('<button id="'+this.b4id+'" title="Show Statistics" type="button" class="btn btn-default icon-signal"/>');
+        var btngrp = $('<div class="btn-group profile-element" role="group" aria-label="..." style="align-content: center"></div>');
 
         btngrp.append(this.b1).append(this.b2).append(this.b3).append(this.b4);
 
-        var left = $('<div id="sidebuttons" ></div>');
+        //var left = $('<div id="sidebuttons" ></div>');
         var brk = $('<br>');
-        var right = $('<div id="visarea" "></div>');
+        //var right = $('<div id="visarea" "></div>');
         var full = $('<div></div>');
 
-        right.append(this.profileheading);
+        //right.append(this.profileheading);
         full.addClass('clear');
         output.addClass('profile-element');
-
-        left.append(prompt)
-        full.append(left).append(right).append(btngrp).append(input).append(widget_area).append(output).append(visdiv);
+        //left.append(prompt)
+        full.append(prompt).append(this.profileheading).append(btngrp).append(input).append(widget_area).append(output).append(visdiv);
         cell.append(full);
 
         this.element = cell;
@@ -100,6 +99,10 @@ var IPython = (function (IPython) {
         });
         this.b4.click(function(e){
             e.preventDefault();
+            /*$("#stat_table")[0].children[1].empty();
+            var table = $("#stat_table")[0].children[1].empty();
+            var tbody = table.children[1];
+            tbody.empty();*/
             tabulate()
 
         });

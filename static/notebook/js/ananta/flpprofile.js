@@ -52,24 +52,6 @@ var IPython = (function (IPython) {
     }
 
 
-    /*FLProfile.prototype.fromJSON = function (data) {
-        if(data.gui_type ==='flp'){
-            IPython.CodeCell.prototype.fromJSON.apply(this, arguments);
-
-            this.profileData = data.profileData;
-        }
-    };
-
-
-    FLProfile.prototype.toJSON = function () {
-        var data = IPython.CodeCell.prototype.toJSON.apply(this);
-
-        data.gui_type = this.gui_type;
-        data.profileData = this.profileData;
-        return data;
-    };*/
-
-
     IPython.FLProfile = FLProfile;
 
     return IPython;
