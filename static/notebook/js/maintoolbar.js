@@ -87,14 +87,24 @@ var IPython = (function (IPython) {
                 },
                 {
                     id : 'insert_dmp',
-                    label : 'Insert Data Mining Profile',
+                    label : 'Insert Unsupervised Mining Profile',
                     icon : 'icon-plus-sign',
                     callback : function () {
                         IPython.notebook.insert_profile('code','dmp');
                         IPython.notebook.select_next();
                         IPython.notebook.focus_cell();
                     }
+                },{
+                    id : 'insert_smp',
+                    label : 'Insert Supervised Mining Profile',
+                    icon : 'icon-plus-sign',
+                    callback : function () {
+                        IPython.notebook.insert_profile('code','smp');
+                        IPython.notebook.select_next();
+                        IPython.notebook.focus_cell();
+                    }
                 },
+
                 //{
                 //    id : 'insert_dcp',
                 //    label : 'Insert Data Cleaning Profile',

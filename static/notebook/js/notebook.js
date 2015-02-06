@@ -882,6 +882,8 @@ var IPython = (function (IPython) {
             cell = new IPython.DRProfile(this.kernel);
         }else if(profile_type === 'dmp') {
             cell = new IPython.DMProfile(this.kernel);
+        }else if (profile_type === 'smp'){
+            cell = new IPython.SMProfile(this.kernel);
         }
         cell.set_input_prompt();
 
