@@ -73,12 +73,13 @@ function tabulate(){
 
 }
 
-function tabulate_2(){
+function tabulate_2(stattableid, callback){
+    var table_id = "#"+stattableid;
     d3.csv("stat.csv", function(data) {
         // the columns you'd like to display
         var columns = ["Check","Field","Count","Mean","St.Dev","Min","Q1","Median","Q3","Max"];
 
-        var table = d3.select("#stat_table_2");
+        var table = d3.select(table_id);
         //.append("table"),
         //thead = d3.select("#statictic_thead"),
         //tbody = d3.select("#statictic_tbody");
@@ -111,13 +112,22 @@ function tabulate_2(){
             })
             .enter()
             .append("td")
-            .text(function(d) {
+            .html(function(d) {
+                //console.log(d.column);
+                if (d.column === "Check") {
+                    return '<input type="checkbox" />';
+                }
+
+                else {
                     return d.value;
+                }
             });
+
+
     });
 
-    var table = $('#stat_table_2')[0];
-    var rows = $('#stat_table_2')[0].children[1].children;
+    /*var table = $(table_id)[0];
+    var rows = $(table_id)[0].children[1].children;
 
     for (var i =0;i< rows.length;i++){
         var cell = rows[i].children[0];
@@ -127,8 +137,32 @@ function tabulate_2(){
         x.setAttribute("type", "checkbox");
         table.children[1].children[i].children[0].appendChild(x);
         //var fcell = $('#stat_table_2')[0].children[1].children[i].children[0];
-    }
-    var tt = $('#dialog_stat_table');
-    tt.append(table);
+    }*/
+    //var tt = $('#dialog_stat_table');
+    //tt.append(table);
 
+}
+
+function getFields(){
+    var fields = [];
+    $.ajax({
+        type: "GET",
+        url: "types.csv",
+        dataType: "text",
+        async:false
+    }).success(function (csvd) {
+        var field_list = csvd.split('\n');
+        var field_data;
+        for(var i=0;i<field_list.length;i++){
+            field_data = field_list[i].split(',');
+            fields.push({name:field_data[0],type:field_data[1]})
+        }
+    }).done(function() {
+        alert( "success" );
+    }).fail(function() {
+        alert( "error" );
+    }).always(function() {
+        alert( "complete" );
+    });
+    return fields;
 }

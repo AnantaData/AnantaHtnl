@@ -23,6 +23,7 @@ var IPython = (function (IPython) {
 
 
     DcpDialog.prototype.show_dialog = function (profile) {
+        profile.fields = getFields();
         var element = IPython.ProfileDialog.prototype.show_dialog.apply(this, []);
         if(!element){return;}
         var form_div = this.build_elements(profile);
@@ -129,8 +130,11 @@ var IPython = (function (IPython) {
             var that = profile.settingsdialog;
             var selected = that.stepTypeInp.val();
             var step_no = profile.profileData.steps.length;
+            window.alert(step_no);
+            var minidialog;
             if(selected == 'ignTupl'){
-                that.minidialogs[step_no] = new IPython.IgnTuplDialog(profile.cell_id,step_no);
+                //that.minidialogs[step_no] = new IPython.IgnTuplDialog(profile.cell_id,step_no);
+                minidialog = new IPython.IgnTuplDialog(profile.cell_id,step_no);
             }else if (selected == 'gblCnst'){
 
             }else if(selected == 'atrMean'){
@@ -140,7 +144,8 @@ var IPython = (function (IPython) {
             }else if(selected == 'atrMedn'){
 
             }
-            that.minidialogs[step_no].show_dialog(profile);
+            //that.minidialogs[step_no].show_dialog(profile);
+            minidialog.show_dialog(profile);
         });
         this.editStepBtn.click(function(){
             var that = profile.settingsdialog;
