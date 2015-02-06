@@ -765,7 +765,7 @@ var IPython = (function (IPython) {
                     cell = new IPython.DTProfile(this.kernel);
                 }
                 if(gui_type === 'dmp'){
-                    cell = new IPython.DMProfile(this.kernel);
+                    cell = new IPython.UMProfile(this.kernel);
                 }
                 cell.set_input_prompt();
             } else if (type === 'markdown') {
@@ -881,7 +881,7 @@ var IPython = (function (IPython) {
         }else if(profile_type === 'drp') {
             cell = new IPython.DRProfile(this.kernel);
         }else if(profile_type === 'dmp') {
-            cell = new IPython.DMProfile(this.kernel);
+            cell = new IPython.UMProfile(this.kernel);
         }else if (profile_type === 'smp'){
             cell = new IPython.SMProfile(this.kernel);
         }
@@ -1481,7 +1481,9 @@ var IPython = (function (IPython) {
                 (cell instanceof IPython.DCProfile) ||
                 (cell instanceof IPython.DRProfile) ||
                 (cell instanceof IPython.DTProfile) ||
-                (cell instanceof IPython.DMProfile)
+                (cell instanceof IPython.UMProfile) ||
+                (cell instanceof IPython.SMProfile)
+
             ) {
                 cell.set_kernel(this.session.kernel);
             }
