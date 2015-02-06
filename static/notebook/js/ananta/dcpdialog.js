@@ -158,7 +158,7 @@ var IPython = (function (IPython) {
                     if (selected == 'ignTupl') {
                         that.minidialogs[i] = new IPython.IgnTuplDialog(profile.cell_id, i);
                     } else if (selected == 'gblCnst') {
-
+                        this.minidialogs[i] = new IPython.GlblConstDialog(profile.cell_id, i);
                     } else if (selected == 'atrMean') {
 
                     } else if (selected == 'atrMode') {
