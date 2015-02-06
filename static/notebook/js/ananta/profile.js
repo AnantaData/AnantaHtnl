@@ -99,6 +99,10 @@ var IPython = (function (IPython) {
         });
         this.b4.click(function(e){
             e.preventDefault();
+            /*$("#stat_table")[0].children[1].empty();
+            var table = $("#stat_table")[0].children[1].empty();
+            var tbody = table.children[1];
+            tbody.empty();*/
             tabulate()
 
         });
