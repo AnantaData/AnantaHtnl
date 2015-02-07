@@ -5,6 +5,7 @@ var IPython = (function (IPython) {
     var Profile = function (kernel, options) {
 
         IPython.CodeCell.apply(this,[kernel,options]);
+        this.visudialog = new IPython.VisuDialog(this.cell_id);
     };
 
     Profile.prototype = new IPython.CodeCell();
@@ -121,14 +122,18 @@ var IPython = (function (IPython) {
         });
         this.b3.click(function(e){
             e.preventDefault();
+            profile.visudialog.show_dialog(profile);
 
         });
         this.b4.click(function(e){
             e.preventDefault();
-            /*$("#stat_table")[0].children[1].empty();
-            var table = $("#stat_table")[0].children[1].empty();
+            //$("#stat_table")[0].children[1].empty();
+            var table = $("#stat_table")[0];
             var tbody = table.children[1];
-            tbody.empty();*/
+            var len = tbody.children.length;
+            for(var i=0;i<len;i++){
+                tbody.deleteRow();
+            }
             if(!profile.profileData.fileNamePrefix){
                 window.alert("File Name Prefix is unknown.");
             }else {
