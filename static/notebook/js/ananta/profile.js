@@ -129,7 +129,11 @@ var IPython = (function (IPython) {
             var table = $("#stat_table")[0].children[1].empty();
             var tbody = table.children[1];
             tbody.empty();*/
-            tabulate()
+            if(!profile.profileData.fileNamePrefix){
+                window.alert("File Name Prefix is unknown.");
+            }else {
+                tabulate(profile.profileData.fileNamePrefix);
+            }
 
         });
 

@@ -32,8 +32,8 @@ function populate_eval(){
 
 }
 
-function tabulate(){
-    d3.csv("stat.csv", function(data) {
+function tabulate(filenameprefix){
+    d3.csv(filenameprefix+"stat.csv", function(data) {
         // the columns you'd like to display
         var columns = ["Field","Count","Mean","St.Dev","Min","Q1","Median","Q3","Max"];
 
