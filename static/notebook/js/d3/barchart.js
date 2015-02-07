@@ -4,31 +4,33 @@
 
 var values;
 
-function barChartSelectGrapgh(selection){
-    d3.csv("src.csv", function(data) {
+function barChartSelectGrapgh(file,selection){
+    d3.csv(file, function(data) {
         var len = Object.keys(data[0]).length;
         var object_properties = new Array(len)
         object_properties = Object.getOwnPropertyNames(data[0]);
         var data_array = new Array(data.length);
 
-        var select_property = selection;
+        //console.log(object_properties);
+        //var select_property = selection;
+
         for (j = 0; j < data.length; j++) {
             var object = data[j];
-            var property = object_properties[select_property];
-
-            data_array[j] = parseInt(object[property]);
+            //var property = object_properties[select_property];
+            //console.log(property);
+            data_array[j] = parseInt(object[selection]);
         }
-        console.log(data_array);
+        //console.log(data_array);
         if (isNaN(data_array[0])){
             console.log("NAN")
         }
         else{
-            crateGraph(data_array);
+            cratebarChar(data_array,selection);
         }
     });
 }
 
-function crateGraph(values){
+function cratebarChar(values,column){
     var max_margin = maxMargin(values),
         min_margin = minMargin(values);
 
@@ -59,7 +61,7 @@ function crateGraph(values){
         .scale(x)
         .orient("bottom");
 
-    var svg = d3.select("#barchartvisdiv").append("svg")
+    var svg = d3.select("#visualization-area").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -73,7 +75,7 @@ function crateGraph(values){
 
     bar.append("rect")
         .attr("x", 1)
-        .attr("width", x(data[0].dx) - 1)
+        .attr("width", function(){ if (x(data[0].dx) - 1<0) return 1; else return x(data[0].dx) - 1})
         .attr("height", function(d) { return height - y(d.y); });
 
     bar.append("text")

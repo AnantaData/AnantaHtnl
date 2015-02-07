@@ -57,8 +57,35 @@ var IPython = (function (IPython) {
         });
         this.b3.click(function(e){
             e.preventDefault();
-            selectGrapgh(2);
+            //selectGrapgh(2);
+
+            //-----tiro ------ just create a json for test purpose, call ReadJson(Jarrray)
+
+            var Jarrray = {
+                "datafile":"data.csv",
+                "statfile":"stat.csv",
+                "graphs":[
+                    {
+                        "graphtype":"bar",
+                        "fileds":["vendorid", "item_unit_price","item_quantity"]
+                    },
+                    {
+                        "graphtype":"boxplot",
+                        "fileds":["vendorid", "item_unit_price","item_quantity"]
+                    },
+                    {
+                        "graphtype":"scatter",
+                        "fileds":["name", "legs","hands"]
+                    },
+                    {
+                        "graphtype":"hexbinning",
+                        "fileds":["name", "legs","hands"]
+                    }
+                ]
+            };
+            ReadJson(Jarrray);
         });
+
 
         this.profileheading.text('Data Transformation Profile');
     };
