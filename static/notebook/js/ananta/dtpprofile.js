@@ -4,7 +4,7 @@ var IPython = (function (IPython) {
 
     var DTProfile = function (kernel, options) {
 
-        IPython.Profile.apply(this,[options]);
+        IPython.Profile.apply(this,[kernel,options]);
 
         this.gui_type = 'dtp';
         this.fileName = "";

@@ -2,7 +2,7 @@ var IPython = (function (IPython) {
 
     var SMProfile = function (kernel, options) {
 
-        IPython.Profile.apply(this, [options]);
+        IPython.Profile.apply(this, [kernel,options]);
 
         this.gui_type = 'smp';
         this.profileData = {
