@@ -38,7 +38,7 @@ var IPython = (function (IPython) {
                 Close : {},
                 Ok :{class : "btn-primary",
                     click: function(e) {
-
+                        this_dialog.get_values(profile , e);
                     }
                 }
             }
@@ -47,7 +47,7 @@ var IPython = (function (IPython) {
 
         this.retrive_elements();
         this.set_dynamic_ui(profile);
-        //this.set_values(profile);
+        this.set_values(profile);
         this.setInstruction();
         
         $([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
@@ -117,7 +117,7 @@ var IPython = (function (IPython) {
     };
 
     DcpDialog.prototype.get_values = function(profile, e){
-        profile.set_text(profile.set)
+        profile.set_text(profile.setCode(profile.profileData));
     };
 
     DcpDialog.prototype.set_values =function(profile){
@@ -136,7 +136,7 @@ var IPython = (function (IPython) {
                 //that.minidialogs[step_no] = new IPython.IgnTuplDialog(profile.cell_id,step_no);
                 minidialog = new IPython.IgnTuplDialog(profile.cell_id,step_no);
             }else if (selected == 'gblCnst'){
-
+                minidialog = new IPython.GlblConstDialog(profile.cell_id,step_no);
             }else if(selected == 'atrMean'){
 
             }else if(selected == 'atrMode'){
@@ -151,17 +151,22 @@ var IPython = (function (IPython) {
             var that = profile.settingsdialog;
             var step_no = profile.settingsdialog.stepListInp[0].selectedIndex;
             window.alert(step_no);
-            var selected = profile.profileData.steps[step_no].step_no;
-            if(selected == 'ignTupl'){
-                that.minidialogs[step_no] = new IPython.IgnTuplDialog(profile.cell_id,step_no);
-            }else if (selected == 'gblCnst'){
+            //window.alert(that.minidialogs);
+            if(step_no>that.minidialogs.length-1){
+                for(var i=0;i<profile.profileData.steps.length;i++) {
+                    var selected = profile.profileData.steps[i].step_type;
+                    if (selected == 'ignTupl') {
+                        that.minidialogs[i] = new IPython.IgnTuplDialog(profile.cell_id, i);
+                    } else if (selected == 'gblCnst') {
+                        that.minidialogs[i] = new IPython.GlblConstDialog(profile.cell_id, i);
+                    } else if (selected == 'atrMean') {
 
-            }else if(selected == 'atrMean'){
+                    } else if (selected == 'atrMode') {
 
-            }else if(selected == 'atrMode'){
+                    } else if (selected == 'atrMedn') {
 
-            }else if(selected == 'atrMedn'){
-
+                    }
+                }
             }
             that.minidialogs[step_no].show_dialog(profile);
 
