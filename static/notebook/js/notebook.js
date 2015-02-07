@@ -766,6 +766,8 @@ var IPython = (function (IPython) {
                 }
                 if(gui_type === 'dmp'){
                     cell = new IPython.UMProfile(this.kernel);
+                }if(gui_type === 'smp'){
+                    cell = new IPython.SMProfile(this.kernel);
                 }
                 cell.set_input_prompt();
             } else if (type === 'markdown') {
