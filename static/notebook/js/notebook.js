@@ -1475,9 +1475,11 @@ var IPython = (function (IPython) {
             var cell = this.get_cell(i);
             if (cell instanceof IPython.CodeCell) {
                 cell.set_kernel(this.session.kernel);
+                console.log('kernel set at default');
             }
             if (cell instanceof IPython.Profile) {
                 cell.set_kernel(this.session.kernel);
+                console.log('kernel set at profile case');
             }
             if ((cell instanceof IPython.FLProfile) ||
                 (cell instanceof IPython.DCProfile) ||
@@ -1488,6 +1490,8 @@ var IPython = (function (IPython) {
 
             ) {
                 cell.set_kernel(this.session.kernel);
+                console.log('kernel set at profileinstance case');
+
             }
         }
     };

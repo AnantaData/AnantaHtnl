@@ -47,9 +47,8 @@ var IPython = (function (IPython) {
         else if (algorithm == 'svm') {
             alg = 'TrainSVMStep()';
         }
-        var code ='print "hello world"'; /*'from ananta_base.base import *' +
-            '\nfrom ananta_base.mining import supervised_mining as sm' +
-            //'\nfrom sklearn.metrics import roc_auc_score' +
+        var code ='from ananta_base.mining import supervised_mining as sm' +
+            '\nfrom sklearn.metrics import roc_auc_score' +
             '\nprint "imports done"'+
             '\nsmp1 = sm.SupervisedMiningProfile("'+profileData.response_var+'")' +
             '\nprint "mining profile created" '+
@@ -60,10 +59,11 @@ var IPython = (function (IPython) {
             '\nsmp1.execute(projects)' +
                 //'\ndf = projects.data.describe()' +
             '\ndf = projects.pred_y' +
+            '\nprojects.roc_auc_score= roc_auc_score(df, projects.train_Y)'+
             '\nprint df' +
             '\ndf.tofile("a.csv", sep=",")' +
             '\nprint projects.roc_auc_score'+
-            '';*/
+            '';
         return code;
 
     }
