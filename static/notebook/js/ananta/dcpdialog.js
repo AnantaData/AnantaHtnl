@@ -102,7 +102,7 @@ var IPython = (function (IPython) {
     };
 
     DcpDialog.prototype.setInstruction = function(){
-        this.documentation.text('The Data Cleaning Profile Should be given the steps. ')
+        this.documentation.text('The Data Cleaning Profile should be given the steps. ')
     };
 
     DcpDialog.prototype.retrive_elements = function(){
@@ -138,11 +138,11 @@ var IPython = (function (IPython) {
             }else if (selected == 'gblCnst'){
                 minidialog = new IPython.GlblConstDialog(profile.cell_id,step_no);
             }else if(selected == 'atrMean'){
-
+                minidialog = new IPython.AttrMeanDialog(profile.cell_id,step_no);
             }else if(selected == 'atrMode'){
-
+                minidialog = new IPython.AttrModeDialog(profile.cell_id,step_no);
             }else if(selected == 'atrMedn'){
-
+                minidialog = new IPython.AttrMedianDialog(profile.cell_id,step_no);
             }
             //that.minidialogs[step_no].show_dialog(profile);
             minidialog.show_dialog(profile);
@@ -160,11 +160,11 @@ var IPython = (function (IPython) {
                     } else if (selected == 'gblCnst') {
                         that.minidialogs[i] = new IPython.GlblConstDialog(profile.cell_id, i);
                     } else if (selected == 'atrMean') {
-
+                        that.minidialogs[i] = new IPython.AttrMeanDialog(profile.cell_id, i);
                     } else if (selected == 'atrMode') {
-
+                        that.minidialogs[i] = new IPython.AttrModeDialog(profile.cell_id, i);
                     } else if (selected == 'atrMedn') {
-
+                        that.minidialogs[i] = new IPython.AttrMedianDialog(profile.cell_id, i);
                     }
                 }
             }

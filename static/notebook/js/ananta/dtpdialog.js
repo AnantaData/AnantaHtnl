@@ -11,53 +11,25 @@ var IPython = (function (IPython) {
     var platform = IPython.utils.platform;
 
     var DtpDialog = function (selector) {
+
     };
 
+    var DtpDialog = function (cell_id) {
+        IPython.ProfileDialog.apply(this, [cell_id]);
+        this.minidialogs = [];
+    };
 
-    DtpDialog.prototype.show_dialog = function (nb,get_flp_code) {
-        // toggles display of keyboard shortcut dialog
-        var prof = nb;
-        var that = this;
-        if ( this.force_rebuild ) {
-            this.shortcut_dialog.remove();
-            delete(this.shortcut_dialog);
-            this.force_rebuild = false;
-        }
-        if ( this.shortcut_dialog ){
-            // if dialog is already shown, close it
-            $(this.shortcut_dialog).modal("toggle");
-            return;
-        }
-        /*var command_shortcuts = IPython.keyboard_manager.command_shortcuts.help();
-        var edit_shortcuts = IPython.keyboard_manager.edit_shortcuts.help();
-        var help, shortcut;
-        var i, half, n;*/
-        var element = $('<div/>');
+    DtpDialog.prototype = new IPython.ProfileDialog();
 
-        // The documentation
-        var doc = $('<div/>').addClass('alert');
-        doc.append(
-            $('<button/>').addClass('close').attr('data-dismiss','alert').html('&times;')
-        ).append(
-            'The File Loading Profile Should be given two inputs. <b>File Type</b> '+
-            'which can be csv, txt, json etc.'+
-            'and <b>File Name</b> which is the location of file and its name'+
-            '.'
-        );
 
-        var err_doc = $('<div id="error_doc"/>').addClass('alert-error');
-        err_doc.append(
-            $('<button/>').addClass('close').attr('data-dismiss','alert').html('&times;')
-        ).append(
-            ''
-        );
-        err_doc.hide();
-        element.append(doc).append(err_doc);
-
-        var form_div = this.build_visu_form(nb);
+    DtpDialog.prototype.show_dialog = function (profile) {
+        profile.fields = getFields();
+        var element = IPython.ProfileDialog.prototype.show_dialog.apply(this, []);
+        if(!element){return;}
+        var form_div = this.build_elements(profile);
         element.append(form_div);
 
-
+        var this_dialog = this;
         this.shortcut_dialog = IPython.dialog.modal({
             title : "Data Transformation Profile",
             body : element,
@@ -66,84 +38,163 @@ var IPython = (function (IPython) {
                 Close : {},
                 Ok :{class : "btn-primary",
                     click: function(e) {
-                        var filetype = $('#filetype');
-                        var filename = $('#filenametxt');
-                        var fileloc = $('#fileloc');
-                        var err_doc = $('#error_doc');
-                        err_doc.hide();
-                        var f = filetype[0];
-                        var error = 0;
-                        nb.fileName = filename.val();
-                        nb.fileLoc = fileloc.val();
-                        nb.fileType = filetype.val();
-
-                        if(f.selectedIndex ==0) {
-                            e.preventDefault();
-                            err_doc.text("File Type not selected");
-                            err_doc.show();
-                        }else if(!nb.fileName) {
-                            e.preventDefault();
-                            err_doc.text("File Name is not given");
-                            err_doc.show();
-                        }else if(!nb.fileLoc) {
-                            e.preventDefault();
-                            err_doc.text("File Location is not given");
-                            err_doc.show();
-                        }else{
-                            get_flp_code(nb,nb.fileType,nb.fileLoc+nb.fileName);
-                            return true;
-                        }
-                        return false;
-
+                        this_dialog.get_values(profile , e);
                     }
                 }
             }
         });
         this.shortcut_dialog.addClass("modal_stretch");
 
-        $("#filename").change(function(){
-            window.alert("chosen");
-            $('#filenametxt').val($('#filename')[0].files[0].name);
-        });
-        
+        this.retrive_elements();
+        this.set_dynamic_ui(profile);
+        this.set_values(profile);
+        this.setInstruction();
+
         $([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
 
-
-        $('#filetype option[value="' + nb.fileType + '"]').prop('selected', true);
-        $('#fileloc').val(nb.fileLoc);
-        $('#filenametxt').val(nb.fileName);
-
     };
 
-    DtpDialog.prototype.build_visu_form = function (nb) {
+    DtpDialog.prototype.build_elements = function (nb) {
         var div = $('<div/>');
-        var frm = $('<form method="post" action="demoform.asp">' +
-        '<div class="ui-field-contain">' +
-        '<label for="filetype">File Type:</label>' +
-        '<select name="title" id="filetype"  >' +
-        '<option selected="selected" value="'+ nb.fileType+'"></option>' +
-        '<option  value="csv" id="type_1">csv</option>' +
-        '<option  value="xls" id="type_2">Excel</option>'+
-        '<option  value="json" id="type_3">JSON</option>'+
-        '<option  value="xml" id="type_3">XML</option>'+
-        '</select>' +
-        '<label for="fileloc">File Location:</label>' +
-        '<input type="text" name="fileloc" id="fileloc" value="">' +
-        '<label for="filename">File Name:</label>' +
-        '<input type="file" name="filename" id="filename" >' +
-        '<input type="text" name="filenametxt" id="filenametxt" readonly>' +
-        '</div>' +
-        '</form>');
-        div.append(frm);
+        var left = $('<div class="stepinputui-left" />');
+        var right = $('<div class="stepinputui-right" />');
+        var inr1left = $('<div class="stepinputui-select" />');
+        var inr1right = $('<div class="stepinputui-button" />');
+        var inr2left = $('<div class="stepinputui-select" />');
+        var inr2right = $('<div class="stepinputui-button" />');
+
+        this.stepTypeInp_id = this.dialog_id+"steptype";
+        this.stepTypeBtn_id = this.dialog_id+"stepaddbtn";
+        this.stepListInp_id = this.dialog_id+"steplist";
+        this.editStepBtn_id = this.dialog_id+"stepeditbtn";
+        this.dletStepBtn_id = this.dialog_id+"stepdletbtn";
+
+
+        var stepTypeLbl = $('<label for="steptype">Step Type:</label>');
+        var stepTypeInp = $('<select  name="steptype"  size="10" >' +
+        '<option  value="oneHot" >One Hot Encoding</option>' +
+        '<option  value="labelEn" >Label Encoding</option>'+
+        '<option  value="binning" >Binning</option>'+
+        '</select>');
+        var stepTypeBtn = $('<button >Add Step</button>');
+        var stepListLbl = $('<label for="steplist">Steps:</label>');
+        var stepListInp = $('<select  name="steplist" size="10" >' +
+        '</select>');
+        var editStepBtn = $('<button >Edit Step</button>');
+        var dletStepBtn = $('<button >Delete Step</button>');
+
+        stepTypeInp.attr('id',this.stepTypeInp_id);
+        stepTypeBtn.attr('id',this.stepTypeBtn_id);
+        stepListInp.attr('id',this.stepListInp_id);
+        editStepBtn.attr('id',this.editStepBtn_id);
+        dletStepBtn.attr('id',this.dletStepBtn_id);
+
+        inr1left.append(stepTypeLbl).append(stepTypeInp);
+        inr1right.append(stepTypeBtn);
+        left.append(inr1left).append(inr1right);
+        inr2left.append(stepListLbl).append(stepListInp);
+        inr2right.append(editStepBtn).append(dletStepBtn);
+        right.append(inr2left).append(inr2right);
+        div.append(left).append(right);
         return div;
     };
+
+    DtpDialog.prototype.setInstruction = function(){
+        this.documentation.text('The Data Transformation Profile should be given the steps. ')
+    };
+
+    DtpDialog.prototype.retrive_elements = function(){
+        this.stepTypeInp = $('#'+this.stepTypeInp_id);
+        this.stepTypeBtn = $('#'+this.stepTypeBtn_id);
+
+        this.stepListInp = $('#'+this.stepListInp_id);
+        this.editStepBtn = $('#'+this.editStepBtn_id);
+        this.dletStepBtn = $('#'+this.dletStepBtn_id);
+        this.errDoc = $('#'+this.errorDoc_id);
+        this.documentation = $('#'+this.documentation_id);
+    };
+
+    DtpDialog.prototype.get_values = function(profile, e){
+        profile.set_text(profile.setCode(profile.profileData));
+    };
+
+    DtpDialog.prototype.set_values =function(profile){
+        this.update_step_list(profile);
+    };
+
+    DtpDialog.prototype.set_dynamic_ui =function(profile){
+        var this_dialog = this;
+        this.stepTypeBtn.click(function(){
+            var that = profile.settingsdialog;
+            var selected = that.stepTypeInp.val();
+            var step_no = profile.profileData.steps.length;
+            window.alert(step_no);
+            var minidialog;
+            if(selected == 'oneHot'){
+                minidialog = new IPython.OneHotEnDialog(profile.cell_id,step_no);
+            }else if (selected == 'labelEn'){
+                minidialog = new IPython.LabelEnDialog(profile.cell_id,step_no);
+            }else if(selected == 'binning'){
+                minidialog = new IPython.BinningDialog(profile.cell_id,step_no);
+            }
+            //that.minidialogs[step_no].show_dialog(profile);
+            minidialog.show_dialog(profile);
+        });
+        this.editStepBtn.click(function(){
+            var that = profile.settingsdialog;
+            var step_no = profile.settingsdialog.stepListInp[0].selectedIndex;
+            window.alert(step_no);
+            //window.alert(that.minidialogs);
+            if(step_no>that.minidialogs.length-1){
+                for(var i=0;i<profile.profileData.steps.length;i++) {
+                    var selected = profile.profileData.steps[i].step_type;
+                    if (selected == 'oneHot') {
+                        that.minidialogs[i] = new IPython.OneHotEnDialog(profile.cell_id, i);
+                    } else if (selected == 'labelEn') {
+                        that.minidialogs[i] = new IPython.LabelEnDialog(profile.cell_id, i);
+                    } else if (selected == 'binning') {
+                        that.minidialogs[i] = new IPython.BinningDialog(profile.cell_id, i);
+                    }
+                }
+            }
+            that.minidialogs[step_no].show_dialog(profile);
+
+        });
+        this.dletStepBtn.click(function(){
+            var step_no = profile.settingsdialog.stepListInp[0].selectedIndex;
+            var new_steps = [];
+            for(var i=0; i<step_no;i++){
+                new_steps[i] = profile.profileData.steps[i];
+            }
+            for(var i=step_no+1;i<profile.profileData.steps.length;i++){
+                var step  = profile.profileData.steps[i];
+                step.step_no = i-1;
+                step.step_label = step.step_no+"-"+step.step_show_name;
+                step.step_name = step.step_no+"_"+step.step_type;
+                new_steps[i-1] = step;
+            }
+            profile.profileData.steps = new_steps;
+            this_dialog.update_step_list(profile);
+            this_dialog.minidialogs.splice(step_no,1);
+            for(var i=step_no;i<this_dialog.minidialogs.length;i++){
+                this_dialog.minidialogs[i].step_no = i;
+            }
+        });
+    };
+
+    DtpDialog.prototype.update_step_list= function(profile){
+        this.stepListInp.empty();
+        var stepData;
+        for(var i = 0;i<profile.profileData.steps.length;i++){
+            stepData = profile.profileData.steps[i];
+            this.stepListInp.append('<option  value="'+stepData.step_name+'" >'+stepData.step_label+'</option>');
+        }
+    }
 
     IPython.DtpDialog = DtpDialog;
 
     return IPython;
 
 }(IPython));
-
-///
 
 ///
