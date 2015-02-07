@@ -766,6 +766,8 @@ var IPython = (function (IPython) {
                 }
                 if(gui_type === 'dmp'){
                     cell = new IPython.UMProfile(this.kernel);
+                }if(gui_type === 'smp'){
+                    cell = new IPython.SMProfile(this.kernel);
                 }
                 cell.set_input_prompt();
             } else if (type === 'markdown') {
@@ -1473,9 +1475,11 @@ var IPython = (function (IPython) {
             var cell = this.get_cell(i);
             if (cell instanceof IPython.CodeCell) {
                 cell.set_kernel(this.session.kernel);
+                console.log('kernel set at default');
             }
             if (cell instanceof IPython.Profile) {
                 cell.set_kernel(this.session.kernel);
+                console.log('kernel set at profile case');
             }
             if ((cell instanceof IPython.FLProfile) ||
                 (cell instanceof IPython.DCProfile) ||
@@ -1486,6 +1490,8 @@ var IPython = (function (IPython) {
 
             ) {
                 cell.set_kernel(this.session.kernel);
+                console.log('kernel set at profileinstance case');
+
             }
         }
     };

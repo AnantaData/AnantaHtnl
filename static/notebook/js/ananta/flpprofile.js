@@ -12,7 +12,8 @@ var IPython = (function (IPython) {
         this.profileData = {
             fileName :"",
             fileType :"",
-            fileLoc : ""
+            fileLoc : "",
+            fileNamePrefix:this.cell_id
         };
         //Dialog for profile settings
         this.settingsdialog = new IPython.FlpDialog(this.cell_id);
@@ -47,7 +48,7 @@ var IPython = (function (IPython) {
             '\ns1 = FileLoadStep("' + profileData.fileType + '", "' + profileData.fileLoc+profileData.fileName + '")' +
             '\nflp1.addStep(s1)' +
             '\nflp1.execute(projects)' +
-            '\nstat.getStatistics(projects)' +
+            '\nstat.getStatistics(projects,"'+profileData.fileNamePrefix+'")' +
             '\nprint "Profile Successfully Executed"' ;
 
         return code;

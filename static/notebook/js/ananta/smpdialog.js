@@ -53,6 +53,7 @@ var IPython = (function (IPython) {
         var div = $('<div/>');
 
         this.alg_inp_id = this.dialog_id+"algorithm";
+        this.res_var_id = this.dialog_id+"response_var";
 
         var algLbl = $('<label for="algorithm">Model</label>');
         var algInp = $('<select name="algorithm"  >' +
@@ -63,14 +64,29 @@ var IPython = (function (IPython) {
         '</select>');
 
 
-        algInp.attr('id',this.alg_inp_id);
+        var resLbl = $('<label for= "response_var" >Response Variable(Y)</label>');
+        var resSel = $('<select name="response_var" >' +
+        '<option selected = "selected" value=""></option>' +
+        '</select>');
+        var fieldList= getFields();
+        //alert(fieldList.length);
+        for (var i = 0 ; i < fieldList.length; i++){
+            resSel.append($('<option value="'+fieldList[i].name+'" >'+fieldList[i].name+'</option>'));
+        }
 
-        div.append(algLbl).append(algInp);
+
+
+
+
+        algInp.attr('id',this.alg_inp_id);
+        resSel.attr('id',this.res_var_id);
+        div.append(algLbl).append(algInp).append(resLbl).append(resSel);
         return div;
     };
 
     SmpDialog.prototype.retrive_elements = function(){
         this.algInp  = $('#'+this.alg_inp_id);
+        this.resSel  = $('#'+this.res_var_id);
         this.errDoc = $('#'+this.errorDoc_id);
         this.documentation = $('#'+this.documentation_id);
     };
@@ -84,9 +100,19 @@ var IPython = (function (IPython) {
         else {
             profile.profileData.algorithm = profile.settingsdialog.algInp.val();
         }
+        if(!profile.settingsdialog.resSel.val()){
+            profile.profileData.response_var = profile.settingsdialog.resSel[0].response_var[0].name;
+        }
+        else {
+            profile.profileData.response_var = profile.settingsdialog.resSel.val();
+        }
         if(this.alg_inp_id[0].selectedIndex ==0) {
             e.preventDefault();
             profile.settingsdialog.errDoc.text("Algorithm Not Selected");
+            profile.settingsdialog.errDoc.show();
+        }else if(this.res_var_id[0].selectedIndex ==0) {
+            e.preventDefault();
+            profile.settingsdialog.errDoc.text("Response Variable Not Selected");
             profile.settingsdialog.errDoc.show();
         }else{
             profile.set_text(profile.setCode(profile.profileData));

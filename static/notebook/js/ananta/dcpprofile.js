@@ -4,11 +4,12 @@ var IPython = (function (IPython) {
 
     var DCProfile = function (kernel, options) {
 
-        IPython.Profile.apply(this,[options]);
+        IPython.Profile.apply(this,[kernel,options]);
 
         this.gui_type = 'dcp';
         this.profileData = {
-            steps :[]
+            steps :[],
+            fileNamePrefix:this.cell_id
         };
         this.fields = "";
 
@@ -48,7 +49,7 @@ var IPython = (function (IPython) {
         }
         var endcode =
             '\ndcp.execute(projects)' +
-            '\nstat.getStatistics(projects)' +
+            '\nstat.getStatistics(projects,"'+profileData.fileNamePrefix+'")' +
             '\nprint "Profile Successfully Executed"' ;
 
         code  = code+stepCode+endcode;

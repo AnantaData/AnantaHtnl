@@ -2,7 +2,7 @@ var IPython = (function (IPython) {
 
     var UMProfile = function (kernel, options) {
 
-        IPython.Profile.apply(this, [options]);
+        IPython.Profile.apply(this, [kernel,options]);
 
         this.gui_type = 'ump';
         this.profileData = {

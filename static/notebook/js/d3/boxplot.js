@@ -4,7 +4,7 @@
 
 var margin = {top: 10, right: 50, bottom: 20, left: 50},
     width = 120 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    height = 250 - margin.top - margin.bottom;
 
 var min = Infinity,
     max = -Infinity;
@@ -14,20 +14,20 @@ var chart = d3.box()
     .width(width)
     .height(height);
 
-function boxPlotSelectGrapgh(selection){
-    d3.csv("a.csv", function(data) {
+function boxPlotSelectGrapgh(file,selection){
+    d3.csv(file, function(data) {
         var len = Object.keys(data[0]).length;
         var object_properties = new Array(len)
         object_properties = Object.getOwnPropertyNames(data[0]);
         var data_array = new Array();
         var element;
 
-        var select_property = selection;
+        //var select_property = selection;
         for (j = 0; j < data.length; j++) {
             var object = data[j];
-            var property = object_properties[select_property];
+            //var property = object_properties[select_property];
 
-            element = parseInt(object[property]);
+            element = parseInt(object[selection]);
             data_array.push(element);
             if (element>max) max = element;
             if (element<min) min = element;
@@ -38,16 +38,16 @@ function boxPlotSelectGrapgh(selection){
             console.log("NAN")
         }
         else{
-            crateGraph([data_array]);
+            crateboxplot([data_array]);
         }
     });
 
 }
 
-function crateGraph(data){
-    var svg = d3.select("#boxvisdiv").selectAll("svg")
+function crateboxplot(data){
+    var svg = d3.select("#visualization-area").append("svg")
         .data(data)
-        .enter().append("svg")
+        //.enter().append("svg")
         .attr("class", "box")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.bottom + margin.top)
