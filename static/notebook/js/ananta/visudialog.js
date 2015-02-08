@@ -35,6 +35,7 @@ var IPython = (function (IPython) {
                     click: function(e) {
                         this_dialog.get_values(profile , e);
                         visualize(profile.profileData.visuData);
+                        $()
                     }
                 }
             }

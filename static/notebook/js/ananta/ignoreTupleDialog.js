@@ -96,7 +96,12 @@ var IPython = (function (IPython) {
 
         if(profile.profileData.steps.length < (this.step_no+1)){
             console.log(profile.profileData.fileNamePrefix);
-            tabulate_2(this.statTabl_id,profile.profileData.fileNamePrefix);
+            var avlbl = isStatFileExist(profile.profileData.fileNamePrefix);
+            if(avlbl) {
+                tabulate_2(this.statTabl_id, profile.profileData.fileNamePrefix);
+            }else{
+                tabulate_2(this.statTabl_id, "");
+            }
         }
 
         return div;
@@ -137,6 +142,7 @@ var IPython = (function (IPython) {
             stepData = profile.profileData.steps[this.step_no];
         }
         this.stepNameInp.val(stepData.step_label);
+        console.log(stepData.fields);
         this.setCheckedValues(profile,stepData.fields);
 
     };
@@ -160,6 +166,7 @@ var IPython = (function (IPython) {
         for(var j=0;j<rows;j++){
             checked[j] = false;
         }
+        console.log(profile.fields);
         for(var i=0;i<fields.length;i++){
             for(var j=0;j<rows;j++){
                 var fieldname = profile.fields[j];
@@ -169,6 +176,7 @@ var IPython = (function (IPython) {
                 }
             }
         }
+        console.log(checked);
         tabulate_3(this.statTabl_id,profile.profileData.fileNamePrefix,checked);
     };
 
