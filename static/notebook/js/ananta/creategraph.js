@@ -25,6 +25,7 @@ function visualize(visuData){
 
                 scatterplotCreateGrapgh(stat_src);
 
+
             //}
 
             //scatterplotCreateGrapgh();
@@ -37,6 +38,7 @@ function visualize(visuData){
                 console.log(visuData.graphs[i].fields[f]);
                 //$("#visualization-area").append('The bar chart for filed in '+column);
                 barChartSelectGrapgh(graph_src,column);
+                //supervisedResultGrapgh();
 
             }
 
