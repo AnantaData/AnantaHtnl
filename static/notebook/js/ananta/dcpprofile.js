@@ -42,11 +42,11 @@ var IPython = (function (IPython) {
 
     DCProfile.prototype.setCode = function(profileData){
         var code = 'from ananta_base.base import *' +
-            '\nfrom ananta_base.data_cleaning_pan import DataCleaningProfile, UseGlobalConstantStep, IgnoreTupleStep' +
+            '\nfrom ananta_base.data_cleaning_pan import DataCleaningProfile, UseGlobalConstantStep, IgnoreTupleStep, UseAttributeMeanStep, UseAttributeModeStep, UseAttributeMedianStep' +
             '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
             '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
             '\nfrom ananta_base.data_set import TrainingSet' +
-            '\nfrom ananta_base.data_transformation import DataTransformationProfile, EncodingStep' +
+            '\nfrom ananta_base.data_transformation import DataTransformationProfile, LabelEncodingStep, BinningStep' +
             '\nimport ananta_base.data_stat as stat' +
 
             '\ndcp = DataCleaningProfile()';
@@ -100,10 +100,55 @@ var IPython = (function (IPython) {
                 '\n'+stepName+' = '+stepType+'('+consts+','+fields+')' +
                 '\ndcp.addStep('+stepName+')';
         }
+        if(stepData.step_type == 'atrMean'){
+            stepType = 'UseAttributeMeanStep';
+            var stepName = 'step'+stepData.step_no;
+            var fields = '[';
+            for(var i=0;i<stepData.fields.length;i++){
+                if(i!=0){
+                    fields +=','
+                }
+                fields += '"'+stepData.fields[i]+'"';
+            }
+            fields +="]";
+            var code =
+                '\n'+stepName+' = '+stepType+'('+fields+')' +
+                '\ndcp.addStep('+stepName+')';
+        }
+
+        if(stepData.step_type == 'atrMode'){
+            stepType = 'UseAttributeModeStep';
+            var stepName = 'step'+stepData.step_no;
+            var fields = '[';
+            for(var i=0;i<stepData.fields.length;i++){
+                if(i!=0){
+                    fields +=','
+                }
+                fields += '"'+stepData.fields[i]+'"';
+            }
+            fields +="]";
+            var code =
+                '\n'+stepName+' = '+stepType+'('+fields+')' +
+                '\ndcp.addStep('+stepName+')';
+        }
+        if(stepData.step_type == 'atrMedn'){
+            stepType = 'UseAttributeMedianStep';
+            var stepName = 'step'+stepData.step_no;
+            var fields = '[';
+            for(var i=0;i<stepData.fields.length;i++){
+                if(i!=0){
+                    fields +=','
+                }
+                fields += '"'+stepData.fields[i]+'"';
+            }
+            fields +="]";
+            var code =
+                '\n'+stepName+' = '+stepType+'('+fields+')' +
+                '\ndcp.addStep('+stepName+')';
+        }
 
         return code;
-    }
-
+    };
 
     IPython.DCProfile = DCProfile;
 

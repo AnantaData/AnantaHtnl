@@ -1,5 +1,5 @@
 /**
- * Created by laksheen on 06/02/2015.
+ * Created by laksheen on 2/6/15.
  */
 
 
@@ -57,7 +57,7 @@ var IPython = (function (IPython) {
     };
 
     GlblConstDialog.prototype.setInstruction = function(){
-        this.documentation.text('Specify the global constant that should be filled in empty fields'+
+        this.documentation.text('Specify a global constant and tick the respective field/s that should be filled with the given mean value'+
         '.')
     };
 
@@ -94,7 +94,7 @@ var IPython = (function (IPython) {
 
         stepNameInp.attr('id',this.stepNameInp_id);
         statTabl.attr('id',this.statTabl_id);
-        constNameInp.attr('id',this.constNameInp_id)
+        constNameInp.attr('id',this.constNameInp_id);
 
         div.append(stepNameLbl).append(stepNameInp).append(glbNameLblLbl).append(constNameInp).append(statTabl);
 
@@ -142,7 +142,7 @@ var IPython = (function (IPython) {
             stepData = profile.profileData.steps[this.step_no];
         }
         this.stepNameInp.val(stepData.step_label);
-        this.global_const.val(stepData.globalConstantInp.val)
+        this.globalConstantInp.val(stepData.global_const);
         this.setCheckedValues(profile,stepData.fields);
 
     };

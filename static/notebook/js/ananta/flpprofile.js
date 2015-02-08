@@ -43,13 +43,11 @@ var IPython = (function (IPython) {
     };
 
     FLProfile.prototype.setCode = function(profileData){
-        var code = 'from ananta_base.base import *' +
-            '\nfrom ananta_base.data_cleaning_pan import DataCleaningProfile, UseGlobalConstantStep, IgnoreTupleStep' +
+        var imports =
             '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
-            '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
             '\nfrom ananta_base.data_set import TrainingSet' +
-            '\nfrom ananta_base.data_transformation import DataTransformationProfile, EncodingStep' +
-            '\nimport ananta_base.data_stat as stat' +
+            '\nimport ananta_base.data_stat as stat';
+        var code =
             '\nprojects = TrainingSet()' +
             '\nflp1 = FileLoadingProfile()' +
             '\ns1 = FileLoadStep("' + profileData.fileType + '", "' + profileData.fileLoc+profileData.fileName + '")' +
@@ -58,7 +56,7 @@ var IPython = (function (IPython) {
             '\nstat.getStatistics(projects,"'+profileData.fileNamePrefix+'")' +
             '\nprint "Profile Successfully Executed"' ;
 
-        return code;
+        return imports+code;
     }
 
 

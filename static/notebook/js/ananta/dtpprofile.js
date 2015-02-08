@@ -4,13 +4,19 @@ var IPython = (function (IPython) {
 
     var DTProfile = function (kernel, options) {
 
-        IPython.Profile.apply(this,[kernel,options]);
+        IPython.Profile.apply(this,[options]);
 
         this.gui_type = 'dtp';
-        this.fileName = "";
-        this.fileType ="";
-        this.fileLoc = "";
-        this.flpdialog = new IPython.DtpDialog();
+        this.profileData = {
+            steps :[]
+        };
+        this.fields = "";
+
+        //Dialog for profile settings
+        this.settingsdialog = new IPython.DtpDialog(this.cell_id);
+
+        //set the input code according to the profile data
+        this.set_text(this.setCode(this.profileData));
 
     };
 
@@ -21,99 +27,70 @@ var IPython = (function (IPython) {
     DTProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
-
-        var get_flp_code= function(nb,fileType,fileName) {
-            var code = 'from ananta_base.base import *' +
-                '\nfrom ananta_base.data_cleaning_pan import DataCleaningProfile, UseGlobalConstantStep, IgnoreTupleStep' +
-                '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
-                '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
-                '\nfrom ananta_base.data_set import TrainingSet' +
-                '\nfrom ananta_base.data_transformation import DataTransformationProfile, EncodingStep' +
-                '\nprojects = TrainingSet()' +
-                '\nflp1 = FileLoadingProfile()' +
-                '\ns1 = FileLoadStep("' + fileType + '", "' + fileName + '")' +
-                '\nflp1.addStep(s1)' +
-                '\nflp1.execute(projects)' +
-                //'\ndf = projects.data.describe()' +
-                '\ndf = projects.data' +
-                '\nprint df' +
-                '\ndf.to_csv("a.csv", sep=",", encoding="utf-8")' +
-                '';
-            nb.set_text(code);
-
-        }
-
-
-        get_flp_code(this, this.fileType,this.fileName);
-
-        var nb = this;
-        this.b1.click(function(e){
-            e.preventDefault();
-            nb.flpdialog.show_dialog(nb,get_flp_code);
-        });
-        this.b2.click(function(e){
-            e.preventDefault();
-            IPython.notebook.execute_cell();
-        });
-        this.b3.click(function(e){
-            e.preventDefault();
-            //selectGrapgh(2);
-
-            //-----tiro ------ just create a json for test purpose, call ReadJson(Jarrray)
-
-            var Jarrray = {
-                "datafile":"data.csv",
-                "statfile":"stat.csv",
-                "graphs":[
-                    {
-                        "graphtype":"bar",
-                        "fileds":["vendorid", "item_unit_price","item_quantity"]
-                    },
-                    {
-                        "graphtype":"boxplot",
-                        "fileds":["vendorid", "item_unit_price","item_quantity"]
-                    },
-                    {
-                        "graphtype":"scatter",
-                        "fileds":["name", "legs","hands"]
-                    },
-                    {
-                        "graphtype":"hexbinning",
-                        "fileds":["name", "legs","hands"]
-                    }
-                ]
-            };
-            ReadJson(Jarrray);
-        });
-
-
         this.profileheading.text('Data Transformation Profile');
-        this.profileheading[0].style.color="#086A87";
-
+        this.profileheading[0].style.color="#610B4B";
     };
 
 
-    DTProfile.prototype.fromJSON = function (data) {
-        if(data.gui_type ==='dtp'){
-            IPython.CodeCell.prototype.fromJSON.apply(this, arguments);
+    DTProfile.prototype.setCode = function(profileData) {
+        var code = 'from ananta_base.base import *' +
+            '\nfrom ananta_base.data_transformation import DataTransformationProfile, BitmapEncodingStep, LabelEncodingStep, BinningStep' +
+            '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
+            '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
+            '\nfrom ananta_base.data_set import TrainingSet' +
+            '\nimport ananta_base.data_stat as stat' +
 
-            /*this.fileName = data.fileName;
-            this.fileType = data.fileType;
-            this.fileLoc = data.fileLoc;*/
+            '\ndtp = DataTransformationProfile()';
+        var stepCode = "";
+        for(var i=0;i<profileData.steps.length;i++){
+            stepCode+=this.addStepCode(profileData.steps[i]);
         }
+        var endcode =
+            '\ndtp.execute(projects)' +
+            '\nstat.getStatistics(projects)' +
+            '\nprint "Profile Successfully Executed"' ;
+
+        code  = code+stepCode+endcode;
+        return code;
     };
 
+    DTProfile.prototype.addStepCode = function(stepData){
+        var stepType;
+        if(stepData.step_type == 'labelEn'){
+            stepType = 'LabelEncodingStep';
+            var stepName = 'step'+stepData.step_no;
+            var fields = '[';
+            for(var i=0;i<stepData.fields.length;i++){
+                if(i!=0){
+                    fields +=','
+                }
+                fields += '"'+stepData.fields[i]+'"';
 
-    DTProfile.prototype.toJSON = function () {
-        var data = IPython.CodeCell.prototype.toJSON.apply(this);
+            }
+            fields +="]";
+            var code =
+                '\n'+stepName+' = '+stepType+'('+fields+')' +
+                '\ndcp.addStep('+stepName+')';
+        }
+        if(stepData.step_type == 'binning'){
+            stepType = 'BinningStep';
+            var stepName = 'step'+stepData.step_no;
+            var fields = '[';
+            for(var i=0;i<stepData.fields.length;i++){
+                if(i!=0){
+                    fields +=','
+                }
+                fields += '"'+stepData.fields[i]+'"';
 
-        data.gui_type = this.gui_type;
-        /*data.fileName = this.fileName;
-        data.fileType = this.fileType;
-        data.fileLoc = this.fileLoc;*/
-        return data;
+            }
+            fields +="]";
+            var code =
+                '\n'+stepName+' = '+stepType+'('+fields+')' +
+                '\ndcp.addStep('+stepName+')';
+        }
+
+        return code;
     };
-
 
     IPython.DTProfile = DTProfile;
 
