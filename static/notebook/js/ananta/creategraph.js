@@ -39,7 +39,6 @@ function visualize(visuData){
                 //$("#visualization-area").append('The bar chart for filed in '+column);
                 barChartSelectGrapgh(graph_src,column);
                 //supervisedResultGrapgh();
-
             }
 
         }

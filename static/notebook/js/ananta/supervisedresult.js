@@ -8,7 +8,7 @@ function supervisedResultGrapgh(){
     console.log("sup");
 
     var margin = {top: 20, right: 20, bottom: 30, left: 40},
-        width = 560,//- margin.left - margin.right,
+        width = 500,//- margin.left - margin.right,
         height = 350 ;//- margin.top - margin.bottom;
 
     var x = d3.scale.ordinal()
@@ -70,7 +70,7 @@ function supervisedResultGrapgh(){
             .enter().append("rect")
             .attr("class", "bar")
             .attr("x", function(d) { return x(d.rankorder); })
-            .attr("width", x.rangeBand())
+            .attr("width", x.rangeBand)
             .attr("y", function(d) { return y(d.churn); })
             .attr("height", function(d) { return height - y(d.rankorder); })
             .style("fill", function(d,i) {  if(colorlabel[i]==1){ return "#c994c7";} else {return "#addd8e";}  });
