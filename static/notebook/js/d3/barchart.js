@@ -98,8 +98,8 @@ function cratebarChar(values,column){
 
     var yAxis = d3.svg.axis()
         .scale(y)
-        .orient("left")
-        .tickFormat(formatPercent);
+        .orient("left");
+        //.tickFormat(formatPercent);
 
     var svg = d3.select("#visualization-area").append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -140,7 +140,24 @@ function cratebarChar(values,column){
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
+        .call(xAxis)
+        .append("text")
+        .attr("class", "label")
+        .attr("x", width)
+        .attr("y", -6)
+        .style("text-anchor", "end")
+        .text(column);
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+        .append("text")
+        .attr("class", "label")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("Frequency");
 
 }
 
