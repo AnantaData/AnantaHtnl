@@ -94,7 +94,7 @@ var IPython = (function (IPython) {
         div.append(stepNameLbl).append(stepNameInp).append(statTabl);
 
         if(profile.profileData.steps.length < (this.step_no+1)){
-            console.log(profile.profileData.fileNamePrefix);
+            //console.log(profile.profileData.fileNamePrefix);
             var avlbl = isStatFileExist(profile.profileData.fileNamePrefix);
             if(avlbl) {
                 tabulate_2(this.statTabl_id, profile.profileData.fileNamePrefix);

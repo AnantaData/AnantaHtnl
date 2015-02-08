@@ -74,14 +74,7 @@ var IPython = (function (IPython) {
         '<thead id="statistic_thead" class="fixedHeader">' +
         '<tr class="alternateRow">' +
         '<th><a href="#">Field</a></th>' +
-        '<th><a href="#">Count</a></th>' +
-        '<th><a href="#">Mean</a></th>' +
-        '<th><a href="#">St.Dev</a></th>' +
-        '<th><a href="#">Min</a></th>' +
-        '<th><a href="#">Q1</a></th>' +
-        '<th><a href="#">Median</a></th>' +
-        '<th><a href="#">Q3</a></th>' +
-        '<th><a href="#">Max</a></th>' +
+        '<th><a href="#">DataType</a></th>' +
         '</tr>' +
         '</thead>' +
         '<tbody id="statistic_tbody" class="scrollContent">' +
@@ -94,13 +87,15 @@ var IPython = (function (IPython) {
         div.append(stepNameLbl).append(stepNameInp).append(statTabl);
 
         if(profile.profileData.steps.length < (this.step_no+1)){
-            console.log(profile.profileData.fileNamePrefix);
-            var avlbl = isStatFileExist(profile.profileData.fileNamePrefix);
+            //console.log(profile.profileData.fileNamePrefix);
+            var avlbl = isTypesFileExist(profile.profileData.fileNamePrefix);
+            var fields;
             if(avlbl) {
-                tabulate_2(this.statTabl_id, profile.profileData.fileNamePrefix);
+                tabulate_4(this.statTabl_id, profile.profileData.fileNamePrefix);
             }else{
-                tabulate_2(this.statTabl_id, "");
+                tabulate_4(this.statTabl_id, "");
             }
+
         }
 
         return div;
