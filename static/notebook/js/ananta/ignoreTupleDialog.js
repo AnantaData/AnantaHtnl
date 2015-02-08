@@ -8,19 +8,19 @@ var IPython = (function (IPython) {
 
     var platform = IPython.utils.platform;
 
-    var VarianceThresholdDialog = function (cell_id,step_no ) {
+    var IgnTuplDialog = function (cell_id,step_no ) {
         IPython.ProfileDialog.apply(this, [cell_id]);
         this.cell_id = cell_id;
-        this.step_type = "varThresh";
-        this.step_show_name = "Variance Threshold";
+        this.step_type = "ignTupl";
+        this.step_show_name = "Ignore Tuple";
         this.dialog_id = cell_id+"_"+this.step_type+"_"+step_no+(new Date()).valueOf().toString()+"_";
         this.step_no = step_no;
     };
 
-    VarianceThresholdDialog.prototype = new IPython.ProfileDialog();
+    IgnTuplDialog.prototype = new IPython.ProfileDialog();
 
 
-    VarianceThresholdDialog.prototype.show_dialog = function (profile) {
+    IgnTuplDialog.prototype.show_dialog = function (profile) {
 
         var element = IPython.ProfileDialog.prototype.show_dialog.apply(this, []);
         if(!element){return;}
@@ -29,7 +29,7 @@ var IPython = (function (IPython) {
 
         var this_dialog = this;
         this.shortcut_dialog = IPython.minidialog.modal({
-            title : "Variance Threshold Step",
+            title : "Ignore Tuple Step",
             body : element,
             destroy : false,
             buttons : {
@@ -56,12 +56,12 @@ var IPython = (function (IPython) {
 
     };
 
-    VarianceThresholdDialog.prototype.setInstruction = function(){
-        this.documentation.text('Specify a variance threshold, in order to remove fields below that variance threshold'+
+    IgnTuplDialog.prototype.setInstruction = function(){
+        this.documentation.text('Tick on fields which should not have empty/null values during the mining process(such tuples will be removed)'+
         '.')
     };
 
-    VarianceThresholdDialog.prototype.build_elements = function (profile) {
+    IgnTuplDialog.prototype.build_elements = function (profile) {
 
 
         var div = $('<div/>');
@@ -101,14 +101,14 @@ var IPython = (function (IPython) {
         return div;
     };
 
-    VarianceThresholdDialog.prototype.retrive_elements = function(){
+    IgnTuplDialog.prototype.retrive_elements = function(){
         this.stepNameInp = $('#'+this.stepNameInp_id);
         this.statTabl = $('#'+this.statTabl_id);
         this.errDoc = $('#'+this.errorDoc_id);
         this.documentation = $('#'+this.documentation_id);
     };
 
-    VarianceThresholdDialog.prototype.get_values = function(profile){
+    IgnTuplDialog.prototype.get_values = function(profile){
 
         this.errDoc.hide();
         var stepData = {
@@ -123,7 +123,7 @@ var IPython = (function (IPython) {
         profile.profileData.steps[this.step_no] = stepData;
     };
 
-    VarianceThresholdDialog.prototype.set_values =function(profile){
+    IgnTuplDialog.prototype.set_values =function(profile){
         var stepData = {
             step_no : this.step_no,
             step_type : this.step_type,
@@ -140,7 +140,7 @@ var IPython = (function (IPython) {
 
     };
 
-    VarianceThresholdDialog.prototype.getCheckedValues = function(){
+    IgnTuplDialog.prototype.getCheckedValues = function(){
         var fields = [];
         var row = this.statTabl[0].children[1].children;
         for(var i=0;i<row.length;i++){
@@ -153,7 +153,7 @@ var IPython = (function (IPython) {
         return fields;
     };
 
-    VarianceThresholdDialog.prototype.setCheckedValues = function(profile,fields){
+    IgnTuplDialog.prototype.setCheckedValues = function(profile,fields){
         var checked = [];
         var rows = profile.fields.length;
         for(var j=0;j<rows;j++){
@@ -171,17 +171,17 @@ var IPython = (function (IPython) {
         tabulate_3(this.statTabl_id,profile.profileData.fileNamePrefix,checked);
     };
 
-    VarianceThresholdDialog.prototype.addStep =function(profile, this_dialog){
+    IgnTuplDialog.prototype.addStep =function(profile, this_dialog){
         this_dialog.get_values(profile);
         profile.settingsdialog.update_step_list(profile);
         profile.settingsdialog.minidialogs[this_dialog.step_no] = this_dialog;
     };
 
-    VarianceThresholdDialog.prototype.set_dynamic_ui =function(){
+    IgnTuplDialog.prototype.set_dynamic_ui =function(){
     };
 
 
-    IPython.VarianceThresholdDialog = VarianceThresholdDialog;
+    IPython.IgnTuplDialog = IgnTuplDialog;
 
     return IPython;
 
