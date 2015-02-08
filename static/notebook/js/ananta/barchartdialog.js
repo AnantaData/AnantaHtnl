@@ -90,7 +90,7 @@ var IPython = (function (IPython) {
         div.append(graphNameInp).append(statTabl);
 
         if(profile.profileData.visuData.graphs.length < (this.graph_no+1)){
-            tabulate_2(this.statTabl_id);
+            tabulate_2(this.statTabl_id,profile.profileData.fileNamePrefix);
         }
 
         return div;
@@ -163,7 +163,7 @@ var IPython = (function (IPython) {
                 }
             }
         }
-        tabulate_3(this.statTabl_id,checked);
+        tabulate_3(this.statTabl_id,profile.profileData.fileNamePrefix,checked);
     };
 
     BarChartDialog.prototype.addGraph =function(profile, this_dialog){
