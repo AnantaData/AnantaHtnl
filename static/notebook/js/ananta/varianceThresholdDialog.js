@@ -10,8 +10,8 @@ var IPython = (function (IPython) {
     var VarianceThresholdDialog = function (cell_id,step_no ) {
         IPython.ProfileDialog.apply(this, [cell_id]);
         this.cell_id = cell_id;
-        this.step_type = "ignTupl";
-        this.step_show_name = "Ignore Tuple";
+        this.step_type = "varThresh";
+        this.step_show_name = "Variance Threshold";
         this.dialog_id = cell_id+"_"+this.step_type+"_"+step_no+(new Date()).valueOf().toString()+"_";
         this.step_no = step_no;
     };
@@ -28,7 +28,7 @@ var IPython = (function (IPython) {
 
         var this_dialog = this;
         this.shortcut_dialog = IPython.minidialog.modal({
-            title : "Ignore Tuple Step",
+            title : "Variance Threshold",
             body : element,
             destroy : false,
             buttons : {
@@ -56,7 +56,7 @@ var IPython = (function (IPython) {
     };
 
     VarianceThresholdDialog.prototype.setInstruction = function(){
-        this.documentation.text('Give the names of the fields where unfilled data tuples should be removed'+
+        this.documentation.text('Specify the variance threshold, in order to remove the fields having a variance below the threshold'+
         '.')
     };
 
