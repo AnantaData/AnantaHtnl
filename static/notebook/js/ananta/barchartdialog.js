@@ -89,8 +89,14 @@ var IPython = (function (IPython) {
 
         div.append(graphNameInp).append(statTabl);
 
-        if(profile.profileData.visuData.graphs.length < (this.graph_no+1)){
-            tabulate_2(this.statTabl_id,profile.profileData.fileNamePrefix);
+        if(profile.profileData.steps.length < (this.step_no+1)){
+            console.log(profile.profileData.fileNamePrefix);
+            var avlbl = isStatFileExist(profile.profileData.fileNamePrefix);
+            if(avlbl) {
+                tabulate_2(this.statTabl_id, profile.profileData.fileNamePrefix);
+            }else{
+                tabulate_2(this.statTabl_id, "");
+            }
         }
 
         return div;
