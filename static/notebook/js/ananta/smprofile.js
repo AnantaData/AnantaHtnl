@@ -48,7 +48,7 @@ var IPython = (function (IPython) {
             alg = 'TrainSVMStep()';
         }
         var code ='from ananta_base.mining import supervised_mining as sm' +
-            '\nfrom sklearn.metrics import roc_auc_score' +
+            '\nfrom sklearn.metrics import r2_score' +
             '\nprint "imports done"'+
             '\nsmp1 = sm.SupervisedMiningProfile("'+profileData.response_var+'")' +
             '\nprint "mining profile created" '+
@@ -59,10 +59,14 @@ var IPython = (function (IPython) {
             '\nsmp1.execute(projects)' +
                 //'\ndf = projects.data.describe()' +
             '\ndf = projects.pred_y' +
-            '\nprojects.roc_auc_score= roc_auc_score(df, projects.train_Y)'+
-            '\nprint df' +
+            '\nprojects.r2= r2_score(df, projects.train_Y)'+
+            '\nif projects.r2<0.5:'+
+            '\n\tprint("r2 : \\x1b[31m"+str(projects.r2)+"\\x1b[0m")'+
+            '\nelif projects.r2<0.75:'+
+            '\n\tprint("r2 : \\x1b[33m"+str(projects.r2)+"\\x1b[0m")'+
+            '\nelse:'+
+            '\n\tprint("r2 : \\x1b[32m"+str(projects.r2)+"\\x1b[0m")'+
             '\ndf.tofile("a.csv", sep=",")' +
-            '\nprint projects.roc_auc_score'+
             '';
         return code;
 
