@@ -106,6 +106,7 @@ function (marked) {
     $([IPython.events]).trigger('app_initialized.NotebookApp');
     IPython.notebook.load_notebook(opts.notebook_name, opts.notebook_path);
 
+    $("#tabs" ).tabs();
     if (marked) {
         marked.setOptions({
             gfm : true,
@@ -126,5 +127,5 @@ function (marked) {
             }
         });
     }
-    $("#tabs" ).tabs();
+
 });

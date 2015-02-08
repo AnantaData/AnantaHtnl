@@ -173,9 +173,9 @@ var IPython = (function (IPython) {
         var avlbl = isTypesFileExist(profile.profileData.fileNamePrefix);
         var fields;
         if(avlbl) {
-            tabulate_4(this.statTabl_id, profile.profileData.fileNamePrefix);
+            tabulate_5(this.statTabl_id, profile.profileData.fileNamePrefix,checked);
         }else{
-            tabulate_4(this.statTabl_id, "");
+            tabulate_5(this.statTabl_id, "",checked);
         }
     };
 
