@@ -77,6 +77,7 @@ var IPython = (function (IPython) {
         var statTabl = $('<table>' +
         '<thead id="statistic_thead" class="fixedHeader">' +
         '<tr class="alternateRow">' +
+        '<th><a href="#">Check</a></th>' +
         '<th><a href="#">Field</a></th>' +
         '<th><a href="#">Count</a></th>' +
         '<th><a href="#">Mean</a></th>' +

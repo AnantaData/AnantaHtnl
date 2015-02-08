@@ -862,7 +862,7 @@ var IPython = (function (IPython) {
      **/
     Notebook.prototype.insert_cell_below = function (type, index) {
         index = this.index_or_selected(index);
-        return this.insert_cell_at_index(type, index+1);
+        return this.insert_cell_at_index(type,'', index+1);
     };
 
 
@@ -919,6 +919,21 @@ var IPython = (function (IPython) {
         return this.insert_cell_below(type,len-1);
     };
 
+    Notebook.prototype.isProfile = function(cell){
+        if ((cell instanceof IPython.FLProfile) ||
+            (cell instanceof IPython.DCProfile) ||
+            (cell instanceof IPython.DRProfile) ||
+            (cell instanceof IPython.DTProfile) ||
+            (cell instanceof IPython.UMProfile) ||
+            (cell instanceof IPython.SMProfile) ||
+            (cell instanceof IPython.Profile)
+
+        ){
+            return true;
+        }
+        return false;
+    };
+
     /**
      * Turn a cell into a code cell.
      * 
@@ -930,6 +945,7 @@ var IPython = (function (IPython) {
         if (this.is_valid_cell_index(i)) {
             var source_element = this.get_cell_element(i);
             var source_cell = source_element.data("cell");
+            if(this.isProfile(source_cell)){return;};
             if (!(source_cell instanceof IPython.CodeCell)) {
                 var target_cell = this.insert_cell_below('code',i);
                 var text = source_cell.get_text();
@@ -958,6 +974,7 @@ var IPython = (function (IPython) {
         if (this.is_valid_cell_index(i)) {
             var source_element = this.get_cell_element(i);
             var source_cell = source_element.data("cell");
+            if(this.isProfile(source_cell)){return;};
             if (!(source_cell instanceof IPython.MarkdownCell)) {
                 var target_cell = this.insert_cell_below('markdown',i);
                 var text = source_cell.get_text();
@@ -991,6 +1008,7 @@ var IPython = (function (IPython) {
         if (this.is_valid_cell_index(i)) {
             var source_element = this.get_cell_element(i);
             var source_cell = source_element.data("cell");
+            if(this.isProfile(source_cell)){return;};
             var target_cell = null;
             if (!(source_cell instanceof IPython.RawCell)) {
                 target_cell = this.insert_cell_below('raw',i);
@@ -1019,11 +1037,13 @@ var IPython = (function (IPython) {
      * @param {Number} [level] A heading level (e.g., 1 becomes &lt;h1&gt;)
      */
     Notebook.prototype.to_heading = function (index, level) {
+
         level = level || 1;
         var i = this.index_or_selected(index);
         if (this.is_valid_cell_index(i)) {
             var source_element = this.get_cell_element(i);
             var source_cell = source_element.data("cell");
+            if(this.isProfile(source_cell)){return;};
             var target_cell = null;
             if (source_cell instanceof IPython.HeadingCell) {
                 source_cell.set_level(level);
@@ -2192,7 +2212,8 @@ var IPython = (function (IPython) {
     Notebook.prototype.load_notebook_success = function (data, status, xhr) {
         this.fromJSON(data);
         if (this.ncells() === 0) {
-            this.insert_cell_below('code');
+            //this.insert_cell_below('code');
+            this.insert_profile('code','flp',0);
             this.edit_mode(0);
         } else {
             this.select(0);
