@@ -1671,6 +1671,15 @@ var IPython = (function (IPython) {
     };
 
     /**
+     * Execute all cells above the selected cell and the selected cell.
+     *
+     * @method execute_cells_above and me
+     */
+    Notebook.prototype.execute_cells_above_and_me = function () {
+        this.execute_cell_range(0, this.get_selected_index()+1);
+    };
+
+    /**
      * Execute all cells.
      * 
      * @method execute_all_cells

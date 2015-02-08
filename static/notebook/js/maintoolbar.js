@@ -167,11 +167,12 @@ var IPython = (function (IPython) {
         this.add_buttons_group([
                 {
                     id : 'run_b',
-                    label : 'Run Cell',
+                    label : 'Run All Cells',
                     icon : 'icon-play',
                     callback : function () {
                         // emulate default shift-enter behavior
-                        IPython.notebook.execute_cell_and_select_below();
+                        //IPython.notebook.execute_cell_and_select_below();
+                        IPython.notebook.execute_all_cells();
                     }
                 }/*,
                 {

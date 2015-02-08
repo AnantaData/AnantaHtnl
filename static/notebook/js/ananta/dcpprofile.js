@@ -17,6 +17,8 @@ var IPython = (function (IPython) {
             }
         };
         this.fields = "";
+        this.profileData.visuData.datafile = this.profileData.fileNamePrefix+"data.csv"
+        this.profileData.visuData.statfile = this.profileData.fileNamePrefix+"stat.csv"
 
         //Dialog for profile settings
         this.settingsdialog = new IPython.DcpDialog(this.cell_id);
