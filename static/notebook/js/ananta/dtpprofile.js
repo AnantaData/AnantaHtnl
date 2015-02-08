@@ -4,7 +4,7 @@ var IPython = (function (IPython) {
 
     var DTProfile = function (kernel, options) {
 
-        IPython.Profile.apply(this,[options]);
+        IPython.Profile.apply(this,[kernel,options]);
 
         this.gui_type = 'dtp';
         this.profileData = {
@@ -34,7 +34,7 @@ var IPython = (function (IPython) {
 
     DTProfile.prototype.setCode = function(profileData) {
         var code = 'from ananta_base.base import *' +
-            '\nfrom ananta_base.data_transformation import DataTransformationProfile, BitmapEncodingStep, LabelEncodingStep, BinningStep' +
+            '\nfrom ananta_base.data_transformation import DataTransformationProfile, LabelEncodingStep, BinningStep' +
             '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
             '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
             '\nfrom ananta_base.data_set import TrainingSet' +

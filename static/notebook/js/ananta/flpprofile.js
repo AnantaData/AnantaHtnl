@@ -48,7 +48,7 @@ var IPython = (function (IPython) {
             '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
             '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
             '\nfrom ananta_base.data_set import TrainingSet' +
-            '\nfrom ananta_base.data_transformation import DataTransformationProfile, BitmapEncodingStep, LabelEncodingStep, BinningStep' +
+            '\nfrom ananta_base.data_transformation import DataTransformationProfile, LabelEncodingStep, BinningStep' +
             '\nimport ananta_base.data_stat as stat' +
             '\nprojects = TrainingSet()' +
             '\nflp1 = FileLoadingProfile()' +

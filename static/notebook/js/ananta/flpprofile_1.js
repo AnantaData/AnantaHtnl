@@ -174,7 +174,7 @@ var IPython = (function (IPython) {
                 '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
                 '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
                 '\nfrom ananta_base.data_set import TrainingSet' +
-                '\nfrom ananta_base.data_transformation import DataTransformationProfile, EncodingStep' +
+                '\nfrom ananta_base.data_transformation import DataTransformationProfile, LabelEncodingStep, BinningStep' +
                 '\nprojects = TrainingSet()' +
                 '\nflp1 = FileLoadingProfile()' +
                 '\ns1 = FileLoadStep("' + fileType + '", "' + fileName + '")' +
