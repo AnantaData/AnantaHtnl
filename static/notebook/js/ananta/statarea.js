@@ -248,7 +248,7 @@ function tabulate_5(stattableid,filenameprefix,checked){
     var table_id = "#"+stattableid;
     d3.csv(filenameprefix+"types.csv", function(data) {
         // the columns you'd like to display
-        var columns = ["Check","Field","Count","Mean","St.Dev","Min","Q1","Median","Q3","Max"];
+        var columns = ["Check","Field","DataType"];
 
         var table = d3.select(table_id);
         //.append("table"),
