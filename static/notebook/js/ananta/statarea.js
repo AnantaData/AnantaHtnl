@@ -73,9 +73,9 @@ function tabulate(filenameprefix){
 
 }
 
-function tabulate_2(stattableid){
+function tabulate_2(stattableid,filenameprefix){
     var table_id = "#"+stattableid;
-    d3.csv("stat.csv", function(data) {
+    d3.csv(filenameprefix+"stat.csv", function(data) {
         // the columns you'd like to display
         var columns = ["Check","Field","Count","Mean","St.Dev","Min","Q1","Median","Q3","Max"];
 
@@ -128,9 +128,9 @@ function tabulate_2(stattableid){
 
 }
 
-function tabulate_3(stattableid,checked){
+function tabulate_3(stattableid,filenameprefix,checked){
     var table_id = "#"+stattableid;
-    d3.csv("stat.csv", function(data) {
+    d3.csv(filenameprefix+"stat.csv", function(data) {
         // the columns you'd like to display
         var columns = ["Check","Field","Count","Mean","St.Dev","Min","Q1","Median","Q3","Max"];
 
