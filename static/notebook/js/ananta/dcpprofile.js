@@ -39,7 +39,7 @@ var IPython = (function (IPython) {
             '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
             '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
             '\nfrom ananta_base.data_set import TrainingSet' +
-            '\nfrom ananta_base.data_transformation import DataTransformationProfile, EncodingStep' +
+            '\nfrom ananta_base.data_transformation import DataTransformationProfile, LabelEncodingStep, BinningStep' +
             '\nimport ananta_base.data_stat as stat' +
 
             '\ndcp = DataCleaningProfile()';
@@ -97,19 +97,15 @@ var IPython = (function (IPython) {
             stepType = 'UseAttributeMeanStep';
             var stepName = 'step'+stepData.step_no;
             var fields = '[';
-            var means = '[';
             for(var i=0;i<stepData.fields.length;i++){
                 if(i!=0){
                     fields +=','
-                    means +=','
                 }
                 fields += '"'+stepData.fields[i]+'"';
-                means += stepData.attr_mean;
             }
             fields +="]";
-            means +="]";
             var code =
-                '\n'+stepName+' = '+stepType+'('+means+','+fields+')' +
+                '\n'+stepName+' = '+stepType+'('+fields+')' +
                 '\ndcp.addStep('+stepName+')';
         }
 
@@ -117,38 +113,30 @@ var IPython = (function (IPython) {
             stepType = 'UseAttributeModeStep';
             var stepName = 'step'+stepData.step_no;
             var fields = '[';
-            var modes = '[';
             for(var i=0;i<stepData.fields.length;i++){
                 if(i!=0){
                     fields +=','
-                    modes +=','
                 }
                 fields += '"'+stepData.fields[i]+'"';
-                modes += stepData.attr_mode;
             }
             fields +="]";
-            modes +="]";
             var code =
-                '\n'+stepName+' = '+stepType+'('+modes+','+fields+')' +
+                '\n'+stepName+' = '+stepType+'('+fields+')' +
                 '\ndcp.addStep('+stepName+')';
         }
         if(stepData.step_type == 'atrMedn'){
             stepType = 'UseAttributeMedianStep';
             var stepName = 'step'+stepData.step_no;
             var fields = '[';
-            var medians = '[';
             for(var i=0;i<stepData.fields.length;i++){
                 if(i!=0){
                     fields +=','
-                    medians +=','
                 }
                 fields += '"'+stepData.fields[i]+'"';
-                medians += stepData.attr_median;
             }
             fields +="]";
-            medians +="]";
             var code =
-                '\n'+stepName+' = '+stepType+'('+medians+','+fields+')' +
+                '\n'+stepName+' = '+stepType+'('+fields+')' +
                 '\ndcp.addStep('+stepName+')';
         }
 

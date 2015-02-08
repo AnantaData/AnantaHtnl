@@ -72,7 +72,6 @@ var IPython = (function (IPython) {
 
         var stepTypeLbl = $('<label for="steptype">Step Type:</label>');
         var stepTypeInp = $('<select  name="steptype"  size="10" >' +
-        '<option  value="oneHot" >One Hot Encoding</option>' +
         '<option  value="labelEn" >Label Encoding</option>'+
         '<option  value="binning" >Binning</option>'+
         '</select>');
@@ -130,11 +129,9 @@ var IPython = (function (IPython) {
             var step_no = profile.profileData.steps.length;
             window.alert(step_no);
             var minidialog;
-            if(selected == 'oneHot'){
-                minidialog = new IPython.OneHotEnDialog(profile.cell_id,step_no);
-            }else if (selected == 'labelEn'){
+            if(selected == 'labelEn'){
                 minidialog = new IPython.LabelEnDialog(profile.cell_id,step_no);
-            }else if(selected == 'binning'){
+            }else if (selected == 'binning'){
                 minidialog = new IPython.BinningDialog(profile.cell_id,step_no);
             }
             //that.minidialogs[step_no].show_dialog(profile);
@@ -148,9 +145,7 @@ var IPython = (function (IPython) {
             if(step_no>that.minidialogs.length-1){
                 for(var i=0;i<profile.profileData.steps.length;i++) {
                     var selected = profile.profileData.steps[i].step_type;
-                    if (selected == 'oneHot') {
-                        that.minidialogs[i] = new IPython.OneHotEnDialog(profile.cell_id, i);
-                    } else if (selected == 'labelEn') {
+                    if (selected == 'labelEn') {
                         that.minidialogs[i] = new IPython.LabelEnDialog(profile.cell_id, i);
                     } else if (selected == 'binning') {
                         that.minidialogs[i] = new IPython.BinningDialog(profile.cell_id, i);
@@ -189,7 +184,7 @@ var IPython = (function (IPython) {
             stepData = profile.profileData.steps[i];
             this.stepListInp.append('<option  value="'+stepData.step_name+'" >'+stepData.step_label+'</option>');
         }
-    }
+    };
 
     IPython.DtpDialog = DtpDialog;
 

@@ -67,13 +67,13 @@ var IPython = (function (IPython) {
         var div = $('<div/>');
 
         this.stepNameInp_id = this.dialog_id+"stepname";
-        this.meanNameInp_id = this.dialog_id+"mean";
+        //this.meanNameInp_id = this.dialog_id+"mean";
         this.statTabl_id = "stattable"+this.dialog_id;
 
         var stepNameLbl = $('<label for="stepname">Step Name:</label>');
         var stepNameInp = $('<input type="text" name="stepname"  readonly>');
-        var attrNameLbl = $('<label for="stepname">Attribute Mean:</label>');
-        var meanNameInp = $('<input type="text" name="stepname"  />');
+        //var attrNameLbl = $('<label for="stepname">Attribute Mean:</label>');
+        //var meanNameInp = $('<input type="text" name="stepname"  />');
         var statTabl = $('<table>' +
         '<thead id="statistic_thead" class="fixedHeader">' +
         '<tr class="alternateRow">' +
@@ -94,9 +94,9 @@ var IPython = (function (IPython) {
 
         stepNameInp.attr('id',this.stepNameInp_id);
         statTabl.attr('id',this.statTabl_id);
-        meanNameInp.attr('id',this.meanNameInp_id);
+        //meanNameInp.attr('id',this.meanNameInp_id);
 
-        div.append(stepNameLbl).append(stepNameInp).append(attrNameLbl).append(meanNameInp).append(statTabl);
+        div.append(stepNameLbl).append(stepNameInp).append(statTabl);
 
         tabulate_2(this.statTabl_id);
 
@@ -105,7 +105,7 @@ var IPython = (function (IPython) {
 
     AttrMeanDialog.prototype.retrive_elements = function(){
         this.stepNameInp = $('#'+this.stepNameInp_id);
-        this.attrMeanInp = $('#'+this.meanNameInp_id);
+        //this.attrMeanInp = $('#'+this.meanNameInp_id);
         this.statTabl = $('#'+this.statTabl_id);
         this.errDoc = $('#'+this.errorDoc_id);
         this.documentation = $('#'+this.documentation_id);
@@ -124,7 +124,7 @@ var IPython = (function (IPython) {
             fields : []
         };
         stepData.fields=this.getCheckedValues();
-        stepData.attr_mean=this.attrMeanInp.val();
+        //stepData.attr_mean=this.attrMeanInp.val();
         profile.profileData.steps[this.step_no] = stepData;
     };
 
@@ -142,7 +142,7 @@ var IPython = (function (IPython) {
             stepData = profile.profileData.steps[this.step_no];
         }
         this.stepNameInp.val(stepData.step_label);
-        this.attrMeanInp.val(stepData.attr_mean);
+        //this.attrMeanInp.val(stepData.attr_mean);
         this.setCheckedValues(profile,stepData.fields);
 
     };

@@ -56,22 +56,6 @@ var IPython = (function (IPython) {
 
     DTProfile.prototype.addStepCode = function(stepData){
         var stepType;
-        if(stepData.step_type == 'oneHot'){
-            stepType = 'BitmapEncodingStep';
-            var stepName = 'step'+stepData.step_no;
-            var fields = '[';
-            for(var i=0;i<stepData.fields.length;i++){
-                if(i!=0){
-                    fields +=','
-                }
-                fields += '"'+stepData.fields[i]+'"';
-
-            }
-            fields +="]";
-            var code =
-                '\n'+stepName+' = '+stepType+'('+fields+')' +
-                '\ndcp.addStep('+stepName+')';
-        }
         if(stepData.step_type == 'labelEn'){
             stepType = 'LabelEncodingStep';
             var stepName = 'step'+stepData.step_no;
