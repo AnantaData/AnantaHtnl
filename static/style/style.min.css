@@ -1795,14 +1795,14 @@ body {
     font: 10px sans-serif;
 }
 
-.bar rect {
-    fill: steelblue;
-    shape-rendering: crispEdges;
-}
+/*.bar rect {*/
+    /*fill: steelblue;*/
+    /*shape-rendering: crispEdges;*/
+/*}*/
 
-.bar text {
-    fill: #fff;
-}
+/*.bar text {*/
+    /*fill: #fff;*/
+/*}*/
 
 .axis path, .axis line {
     fill: none;
@@ -1810,9 +1810,9 @@ body {
     shape-rendering: crispEdges;
 }
 
-body {
-    font: 10px sans-serif;
-}
+/*body {*/
+    /*font: 10px sans-serif;*/
+/*}*/
 
 .axis path,
 .axis line {
@@ -1843,16 +1843,16 @@ body {
 }
 
 
-body {
-    font: 10px sans-serif;
-}
+/*body {*/
+    /*font: 10px sans-serif;*/
+/*}*/
 
-.axis path,
-.axis line {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
-}
+/*.axis path,*/
+/*.axis line {*/
+    /*fill: none;*/
+    /*stroke: #000;*/
+    /*shape-rendering: crispEdges;*/
+/*}*/
 
 .bar {
     fill: orange;
@@ -1884,7 +1884,8 @@ body {
 svg{
     border-style:solid;
     border-width:2px;
-    border-color: #00aaaa;
+    border-color: #A9C9C9;
+
 }
 
 /* Creates a small triangle extender for the tooltip */
