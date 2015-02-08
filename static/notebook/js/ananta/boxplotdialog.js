@@ -97,7 +97,7 @@ var IPython = (function (IPython) {
          //   tabulate_2(this.statTabl_id,profile.profileData.fileNamePrefix);
         //}
 
-        if(profile.profileData.steps.length < (this.step_no+1)){
+        if(profile.profileData.visuData.graphs.length < (this.step_no+1)){
             console.log(profile.profileData.fileNamePrefix);
             var avlbl = isStatFileExist(profile.profileData.fileNamePrefix);
             if(avlbl) {
