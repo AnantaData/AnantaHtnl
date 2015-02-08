@@ -93,7 +93,7 @@ function cratebarChar(values,column){
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide);
 
-    console.log("data x "+x(data[1].dx));
+    //console.log("data x "+x(data[1].dx));
 
     bar.append("rect")
         .attr("x", 1)
@@ -134,6 +134,12 @@ function cratebarChar(values,column){
         .attr("y", 0)
         .style("text-anchor", "middle")
         .text("Frequency of "+column);
+
+    d3.select("input").on("change", change);
+
+    function change() {
+        console.log("selected")
+    }
 
 }
 
