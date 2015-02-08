@@ -73,6 +73,7 @@ var IPython = (function (IPython) {
         var statTabl = $('<table>' +
         '<thead id="statistic_thead" class="fixedHeader">' +
         '<tr class="alternateRow">' +
+        '<th><a href="#">Check</a></th>' +
         '<th><a href="#">Field</a></th>' +
         '<th><a href="#">DataType</a></th>' +
         '</tr>' +
@@ -168,7 +169,14 @@ var IPython = (function (IPython) {
                 }
             }
         }
-        tabulate_3(this.statTabl_id,profile.profileData.fileNamePrefix,checked);
+        //tabulate_4(this.statTabl_id,profile.profileData.fileNamePrefix,checked);
+        var avlbl = isTypesFileExist(profile.profileData.fileNamePrefix);
+        var fields;
+        if(avlbl) {
+            tabulate_4(this.statTabl_id, profile.profileData.fileNamePrefix);
+        }else{
+            tabulate_4(this.statTabl_id, "");
+        }
     };
 
     LabelEnDialog.prototype.addStep =function(profile, this_dialog){
