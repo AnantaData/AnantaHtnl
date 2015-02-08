@@ -13,8 +13,15 @@ var IPython = (function (IPython) {
             fileName :"",
             fileType :"",
             fileLoc : "",
-            fileNamePrefix:this.cell_id
+            fileNamePrefix:this.cell_id,
+            visuData:{
+                datafile:"",
+                statfile:"",
+                graphs:[]
+            }
         };
+        this.profileData.visuData.datafile = this.profileData.fileNamePrefix+"data.csv"
+        this.profileData.visuData.statfile = this.profileData.fileNamePrefix+"stat.csv"
         //Dialog for profile settings
         this.settingsdialog = new IPython.FlpDialog(this.cell_id);
 

@@ -5,6 +5,7 @@ var IPython = (function (IPython) {
     var Profile = function (kernel, options) {
 
         IPython.CodeCell.apply(this,[kernel,options]);
+        this.visudialog = new IPython.VisuDialog(this.cell_id);
     };
 
     Profile.prototype = new IPython.CodeCell();
@@ -84,14 +85,16 @@ var IPython = (function (IPython) {
         this.b2id = this.cell_id+"flpExcBtn";
         this.b3id = this.cell_id+"flpVisBtn";
         this.b4id = this.cell_id+"flpSSBtn";
+        this.b5id = this.cell_id+"flpRABtn";
         this.profileheading = $('<h4 style="float:left; width:35%; ">'+this.heading+'</h4>');
         this.b1 = $('<button id="'+this.b1id+'" title="Profile Settings" type="button" class="btn btn-default icon-cogs"/>');
         this.b2 = $('<button id="'+this.b2id+'" title="Execute Profile" type="button" class="btn btn-default icon-play"/>');
         this.b3 = $('<button id="'+this.b3id+'" title="Visualize Related Information" type="button" class="btn btn-default icon-eye-open"/>');
         this.b4 = $('<button id="'+this.b4id+'" title="Show Statistics" type="button" class="btn btn-default icon-signal"/>');
+        this.b5 = $('<button id="'+this.b5id+'" title="Run All Cells" type="button" class="btn btn-default icon-forward"/>');
         var btngrp = $('<div class="btn-group profile-element" role="group" aria-label="..." style="align-content: center"></div>');
 
-        btngrp.append(this.b1).append(this.b2).append(this.b3).append(this.b4);
+        btngrp.append(this.b1).append(this.b2).append(this.b5).append(this.b3).append(this.b4);
 
         //var left = $('<div id="sidebuttons" ></div>');
         var brk = $('<br>');
@@ -121,20 +124,28 @@ var IPython = (function (IPython) {
         });
         this.b3.click(function(e){
             e.preventDefault();
+            profile.visudialog.show_dialog(profile);
 
         });
         this.b4.click(function(e){
             e.preventDefault();
-            /*$("#stat_table")[0].children[1].empty();
-            var table = $("#stat_table")[0].children[1].empty();
+            //$("#stat_table")[0].children[1].empty();
+            var table = $("#stat_table")[0];
             var tbody = table.children[1];
-            tbody.empty();*/
+            var len = tbody.children.length;
+            for(var i=0;i<len;i++){
+                tbody.deleteRow();
+            }
             if(!profile.profileData.fileNamePrefix){
                 window.alert("File Name Prefix is unknown.");
             }else {
                 tabulate(profile.profileData.fileNamePrefix);
             }
 
+        });
+        this.b5.click(function(e){
+            IPython.notebook.execute_cells_above_and_me();
+            //IPython.notebook.execute_cell();
         });
 
 

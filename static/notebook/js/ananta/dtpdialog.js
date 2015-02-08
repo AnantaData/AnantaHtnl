@@ -54,6 +54,7 @@ var IPython = (function (IPython) {
 
     };
 
+
     DtpDialog.prototype.build_elements = function (nb) {
         var div = $('<div/>');
         var left = $('<div class="stepinputui-left" />');
