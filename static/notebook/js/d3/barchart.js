@@ -6,6 +6,7 @@ var values;
 
 function barChartSelectGrapgh(file,selection){
     d3.csv(file, function(data) {
+        //console.log(file);
         var len = Object.keys(data[0]).length;
         var object_properties = new Array(len)
         object_properties = Object.getOwnPropertyNames(data[0]);
@@ -17,9 +18,9 @@ function barChartSelectGrapgh(file,selection){
         for (j = 0; j < data.length; j++) {
             var object = data[j];
             //var property = object_properties[select_property];
-            //console.log(property);
+            //console.log(object);
             data_array[j] = parseInt(object[selection]);
-            //console.log(data_array[j]);
+            console.log(data_array[j]);
         }
         //console.log(data_array);
         if (isNaN(data_array[0])){
@@ -40,8 +41,8 @@ function cratebarChar(values,column){
     var formatPercent = d3.format(".0%");
 
     var margin = {top: 10, right: 30, bottom: 30, left: 30},
-        width = 400 ,//- margin.left - margin.right,
-        height = 250,// - margin.top - margin.bottom,
+        width = 250 ,//- margin.left - margin.right,
+        height = 150,// - margin.top - margin.bottom,
         ticks = ((max_margin - min_margin)/width);
 
 //                console.log(ticks);
@@ -73,6 +74,8 @@ function cratebarChar(values,column){
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+
+
     var tip = d3.tip()
         .attr('class', 'd3-tip')
         .offset([-10, 0])
@@ -90,10 +93,11 @@ function cratebarChar(values,column){
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide);
 
+    console.log("data x "+x(data[1].dx));
 
     bar.append("rect")
         .attr("x", 1)
-        .attr("width", x(data[0].dx) - 1)
+        .attr("width",function(){ if(x(data[0].dx)-1<0){return 1;}else{return x(data[0].dx)-1;}})
         .attr("height", function(d) { return height - y(d.y); });
 
     //bar.append("text")
@@ -132,6 +136,8 @@ function cratebarChar(values,column){
         .text("Frequency of "+column);
 
 }
+
+
 
 function maxMargin(data_array){
     var slots_max = data_array[0];
