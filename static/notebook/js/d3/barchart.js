@@ -83,7 +83,10 @@ function cratebarChar(values,column){
         .attr("y", 6)
         .attr("x", x(data[0].dx) / 2)
         .attr("text-anchor", "middle")
-        .text(function(d) { return formatCount(d.y); });
+        .text(function(d) {
+            console.log(d);
+            return formatCount(d.y);
+        });
 
     svg.append("g")
         .attr("class", "x axis")

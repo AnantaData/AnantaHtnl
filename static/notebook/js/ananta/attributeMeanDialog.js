@@ -98,7 +98,7 @@ var IPython = (function (IPython) {
 
         div.append(stepNameLbl).append(stepNameInp).append(statTabl);
 
-        tabulate_2(this.statTabl_id);
+        tabulate_2(this.statTabl_id,profile.profileData.fileNamePrefix);
 
         return div;
     };
@@ -175,7 +175,7 @@ var IPython = (function (IPython) {
                 }
             }
         }
-        tabulate_3(this.statTabl_id,checked);
+        tabulate_3(this.statTabl_id,profile.profileData.fileNamePrefix,checked);
     };
 
     AttrMeanDialog.prototype.addStep =function(profile, this_dialog){
