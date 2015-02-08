@@ -95,7 +95,8 @@ var IPython = (function (IPython) {
         div.append(stepNameLbl).append(stepNameInp).append(statTabl);
 
         if(profile.profileData.steps.length < (this.step_no+1)){
-            tabulate_2(this.statTabl_id);
+            console.log(profile.profileData.fileNamePrefix);
+            tabulate_2(this.statTabl_id,profile.profileData.fileNamePrefix);
         }
 
         return div;
@@ -168,7 +169,7 @@ var IPython = (function (IPython) {
                 }
             }
         }
-        tabulate_3(this.statTabl_id,checked);
+        tabulate_3(this.statTabl_id,profile.profileData.fileNamePrefix,checked);
     };
 
     IgnTuplDialog.prototype.addStep =function(profile, this_dialog){
