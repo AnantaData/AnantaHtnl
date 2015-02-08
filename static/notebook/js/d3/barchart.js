@@ -50,40 +50,6 @@ function cratebarChar(values,column){
         .domain([min_margin, max_margin])
         .range([0, width]);
 
-
-
-    //var svg = d3.select("#visualization-area").append("svg")
-    //    .attr("width", width + margin.left + margin.right)
-    //    .attr("height", height + margin.top + margin.bottom)
-    //    .append("g")
-    //    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    //
-    //var bar = svg.selectAll(".bar")
-    //    .data(data)
-    //    .enter().append("g")
-    //    .attr("class", "bar")
-    //    .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
-    //
-    //bar.append("rect")
-    //    .attr("x", 1)
-    //    .attr("width", function(){ if (x(data[0].dx) - 1<0) return 1; else return x(data[0].dx) - 1})
-    //    .attr("height", function(d) { return height - y(d.y); });
-    //
-    //bar.append("text")
-    //    .attr("dy", ".75em")
-    //    .attr("y", 6)
-    //    .attr("x", x(data[0].dx) / 2)
-    //    .attr("text-anchor", "middle")
-    //    .text(function(d) {
-    //        //console.log(d);
-    //        return formatCount(d.y);
-    //    });
-    //
-    //svg.append("g")
-    //    .attr("class", "x axis")
-    //    .attr("transform", "translate(0," + height + ")")
-    //    .call(xAxis);
-
     var data = d3.layout.histogram()
         .bins(x.ticks(100))
     (values);
@@ -130,12 +96,12 @@ function cratebarChar(values,column){
         .attr("width", x(data[0].dx) - 1)
         .attr("height", function(d) { return height - y(d.y); });
 
-    bar.append("text")
-        .attr("dy", ".75em")
-        .attr("y", 6)
-        .attr("x", x(data[0].dx) / 2)
-        .attr("text-anchor", "middle")
-        .text(function(d) { return formatCount(d.y); });
+    //bar.append("text")
+    //    .attr("dy", ".75em")
+    //    .attr("y", 6)
+    //    .attr("x", x(data[0].dx) / 2)
+    //    .attr("text-anchor", "middle")
+    //    .text(function(d) { return formatCount(d.y); });
 
     svg.append("g")
         .attr("class", "x axis")
@@ -144,7 +110,7 @@ function cratebarChar(values,column){
         .append("text")
         .attr("class", "label")
         .attr("x", width)
-        .attr("y", -6)
+        .attr("y", 30)
         .style("text-anchor", "end")
         .text(column);
 
@@ -154,10 +120,16 @@ function cratebarChar(values,column){
         .append("text")
         .attr("class", "label")
         .attr("transform", "rotate(-90)")
-        .attr("y", 6)
+        .attr("y", -30)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
         .text("Frequency");
+
+    svg.append("text")
+        .attr("x", width / 2 )
+        .attr("y", 0)
+        .style("text-anchor", "middle")
+        .text("Frequency of "+column);
 
 }
 
