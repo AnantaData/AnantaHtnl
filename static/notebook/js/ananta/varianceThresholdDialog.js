@@ -1,5 +1,5 @@
 /**
- * Created by laksheen on 2/7/15.
+ * Created by laksheen on 2/8/15.
  */
 
 var IPython = (function (IPython) {
@@ -7,19 +7,19 @@ var IPython = (function (IPython) {
 
     var platform = IPython.utils.platform;
 
-    var OneHotEnDialog = function (cell_id,step_no ) {
+    var VarianceThresholdDialog = function (cell_id,step_no ) {
         IPython.ProfileDialog.apply(this, [cell_id]);
         this.cell_id = cell_id;
-        this.step_type = "oneHot";
-        this.step_show_name = "one hot encoding";
+        this.step_type = "varThresh";
+        this.step_show_name = "Variance Threshold";
         this.dialog_id = cell_id+"_"+this.step_type+"_"+step_no+(new Date()).valueOf().toString()+"_";
         this.step_no = step_no;
     };
 
-    OneHotEnDialog.prototype = new IPython.ProfileDialog();
+    VarianceThresholdDialog.prototype = new IPython.ProfileDialog();
 
 
-    OneHotEnDialog.prototype.show_dialog = function (profile) {
+    VarianceThresholdDialog.prototype.show_dialog = function (profile) {
 
         var element = IPython.ProfileDialog.prototype.show_dialog.apply(this, []);
         if(!element){return;}
@@ -28,7 +28,7 @@ var IPython = (function (IPython) {
 
         var this_dialog = this;
         this.shortcut_dialog = IPython.minidialog.modal({
-            title : "One Hot Encoding Step",
+            title : "Variance Threshold",
             body : element,
             destroy : false,
             buttons : {
@@ -55,21 +55,24 @@ var IPython = (function (IPython) {
 
     };
 
-    OneHotEnDialog.prototype.setInstruction = function(){
-        this.documentation.text('Tick the field/s which should be one hot encoded'+
+    VarianceThresholdDialog.prototype.setInstruction = function(){
+        this.documentation.text('Specify the variance threshold, in order to remove the fields having a variance below the threshold'+
         '.')
     };
 
-    OneHotEnDialog.prototype.build_elements = function (profile) {
+    VarianceThresholdDialog.prototype.build_elements = function (profile) {
 
 
         var div = $('<div/>');
 
         this.stepNameInp_id = this.dialog_id+"stepname";
+        this.threshName_id = this.dialog_id+"threshold";
         this.statTabl_id = "stattable"+this.dialog_id;
 
         var stepNameLbl = $('<label for="stepname">Step Name:</label>');
         var stepNameInp = $('<input type="text" name="stepname"  readonly>');
+        var varThresholdLbl = $('<label for="stepname">Variance Threshold:</label>');
+        var threshNameInp = $('<input type="text" name="stepname"  />');
         var statTabl = $('<table>' +
         '<thead id="statistic_thead" class="fixedHeader">' +
         '<tr class="alternateRow">' +
@@ -89,9 +92,10 @@ var IPython = (function (IPython) {
         '</table>');
 
         stepNameInp.attr('id',this.stepNameInp_id);
+        threshNameInp.attr('id',this.threshName_id);
         statTabl.attr('id',this.statTabl_id);
 
-        div.append(stepNameLbl).append(stepNameInp).append(statTabl);
+        div.append(stepNameLbl).append(stepNameInp).append(varThresholdLbl).append(threshNameInp).append(statTabl);
 
         if(profile.profileData.steps.length < (this.step_no+1)){
             console.log(profile.profileData.fileNamePrefix);
@@ -106,32 +110,36 @@ var IPython = (function (IPython) {
         return div;
     };
 
-    OneHotEnDialog.prototype.retrive_elements = function(){
+    VarianceThresholdDialog.prototype.retrive_elements = function(){
         this.stepNameInp = $('#'+this.stepNameInp_id);
+        this.varThresholdInp = $('#'+this.threshName_id);
         this.statTabl = $('#'+this.statTabl_id);
         this.errDoc = $('#'+this.errorDoc_id);
         this.documentation = $('#'+this.documentation_id);
     };
 
-    OneHotEnDialog.prototype.get_values = function(profile){
+    VarianceThresholdDialog.prototype.get_values = function(profile){
 
         this.errDoc.hide();
         var stepData = {
             step_no : this.step_no,
             step_type : this.step_type,
+            var_threshold : '',
             step_show_name : this.step_show_name,
             step_label : this.step_no+"-"+this.step_show_name,
             step_name : this.step_no+"_"+this.step_type,
             fields : []
         };
         stepData.fields=this.getCheckedValues();
+        stepData.var_threshold=this.varThresholdInp.val();
         profile.profileData.steps[this.step_no] = stepData;
     };
 
-    OneHotEnDialog.prototype.set_values =function(profile){
+    VarianceThresholdDialog.prototype.set_values =function(profile){
         var stepData = {
             step_no : this.step_no,
             step_type : this.step_type,
+            var_threshold : '',
             step_show_name : this.step_show_name,
             step_label : this.step_no+"-"+this.step_show_name,
             step_name : this.step_no+"_"+this.step_type,
@@ -141,11 +149,12 @@ var IPython = (function (IPython) {
             stepData = profile.profileData.steps[this.step_no];
         }
         this.stepNameInp.val(stepData.step_label);
+        this.varThresholdInp.val(stepData.var_threshold);
         this.setCheckedValues(profile,stepData.fields);
 
     };
 
-    OneHotEnDialog.prototype.getCheckedValues = function(){
+    VarianceThresholdDialog.prototype.getCheckedValues = function(){
         var fields = [];
         var row = this.statTabl[0].children[1].children;
         for(var i=0;i<row.length;i++){
@@ -158,7 +167,7 @@ var IPython = (function (IPython) {
         return fields;
     };
 
-    OneHotEnDialog.prototype.setCheckedValues = function(profile,fields){
+    VarianceThresholdDialog.prototype.setCheckedValues = function(profile,fields){
         var checked = [];
         var rows = profile.fields.length;
         for(var j=0;j<rows;j++){
@@ -173,20 +182,20 @@ var IPython = (function (IPython) {
                 }
             }
         }
-        tabulate_3(this.statTabl_id,profile.profileData.fileNamePrefix,checked);
+        tabulate_3(this.statTabl_id,checked);
     };
 
-    OneHotEnDialog.prototype.addStep =function(profile, this_dialog){
+    VarianceThresholdDialog.prototype.addStep =function(profile, this_dialog){
         this_dialog.get_values(profile);
         profile.settingsdialog.update_step_list(profile);
         profile.settingsdialog.minidialogs[this_dialog.step_no] = this_dialog;
     };
 
-    OneHotEnDialog.prototype.set_dynamic_ui =function(){
+    VarianceThresholdDialog.prototype.set_dynamic_ui =function(){
     };
 
 
-    IPython.OneHotEnDialog = OneHotEnDialog;
+    IPython.VarianceThresholdDialog = VarianceThresholdDialog;
 
     return IPython;
 

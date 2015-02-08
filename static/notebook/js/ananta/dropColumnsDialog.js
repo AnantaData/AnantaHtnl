@@ -1,5 +1,5 @@
 /**
- * Created by laksheen on 2/7/15.
+ * Created by laksheen on 2/8/15.
  */
 
 var IPython = (function (IPython) {
@@ -7,19 +7,19 @@ var IPython = (function (IPython) {
 
     var platform = IPython.utils.platform;
 
-    var OneHotEnDialog = function (cell_id,step_no ) {
+    var DropColumnsDialog = function (cell_id,step_no ) {
         IPython.ProfileDialog.apply(this, [cell_id]);
         this.cell_id = cell_id;
-        this.step_type = "oneHot";
-        this.step_show_name = "one hot encoding";
+        this.step_type = "removeCol";
+        this.step_show_name = "Drop Columns";
         this.dialog_id = cell_id+"_"+this.step_type+"_"+step_no+(new Date()).valueOf().toString()+"_";
         this.step_no = step_no;
     };
 
-    OneHotEnDialog.prototype = new IPython.ProfileDialog();
+    DropColumnsDialog.prototype = new IPython.ProfileDialog();
 
 
-    OneHotEnDialog.prototype.show_dialog = function (profile) {
+    DropColumnsDialog.prototype.show_dialog = function (profile) {
 
         var element = IPython.ProfileDialog.prototype.show_dialog.apply(this, []);
         if(!element){return;}
@@ -28,7 +28,7 @@ var IPython = (function (IPython) {
 
         var this_dialog = this;
         this.shortcut_dialog = IPython.minidialog.modal({
-            title : "One Hot Encoding Step",
+            title : "Drop Column/s Step",
             body : element,
             destroy : false,
             buttons : {
@@ -55,12 +55,12 @@ var IPython = (function (IPython) {
 
     };
 
-    OneHotEnDialog.prototype.setInstruction = function(){
-        this.documentation.text('Tick the field/s which should be one hot encoded'+
+    DropColumnsDialog.prototype.setInstruction = function(){
+        this.documentation.text('Tick the field names which should not be used in mining'+
         '.')
     };
 
-    OneHotEnDialog.prototype.build_elements = function (profile) {
+    DropColumnsDialog.prototype.build_elements = function (profile) {
 
 
         var div = $('<div/>');
@@ -102,18 +102,17 @@ var IPython = (function (IPython) {
                 tabulate_2(this.statTabl_id, "");
             }
         }
-
         return div;
     };
 
-    OneHotEnDialog.prototype.retrive_elements = function(){
+    DropColumnsDialog.prototype.retrive_elements = function(){
         this.stepNameInp = $('#'+this.stepNameInp_id);
         this.statTabl = $('#'+this.statTabl_id);
         this.errDoc = $('#'+this.errorDoc_id);
         this.documentation = $('#'+this.documentation_id);
     };
 
-    OneHotEnDialog.prototype.get_values = function(profile){
+    DropColumnsDialog.prototype.get_values = function(profile){
 
         this.errDoc.hide();
         var stepData = {
@@ -128,7 +127,7 @@ var IPython = (function (IPython) {
         profile.profileData.steps[this.step_no] = stepData;
     };
 
-    OneHotEnDialog.prototype.set_values =function(profile){
+    DropColumnsDialog.prototype.set_values =function(profile){
         var stepData = {
             step_no : this.step_no,
             step_type : this.step_type,
@@ -142,10 +141,9 @@ var IPython = (function (IPython) {
         }
         this.stepNameInp.val(stepData.step_label);
         this.setCheckedValues(profile,stepData.fields);
-
     };
 
-    OneHotEnDialog.prototype.getCheckedValues = function(){
+    DropColumnsDialog.prototype.getCheckedValues = function(){
         var fields = [];
         var row = this.statTabl[0].children[1].children;
         for(var i=0;i<row.length;i++){
@@ -158,7 +156,7 @@ var IPython = (function (IPython) {
         return fields;
     };
 
-    OneHotEnDialog.prototype.setCheckedValues = function(profile,fields){
+    DropColumnsDialog.prototype.setCheckedValues = function(profile,fields){
         var checked = [];
         var rows = profile.fields.length;
         for(var j=0;j<rows;j++){
@@ -173,20 +171,19 @@ var IPython = (function (IPython) {
                 }
             }
         }
-        tabulate_3(this.statTabl_id,profile.profileData.fileNamePrefix,checked);
+        tabulate_3(this.statTabl_id,checked);
     };
 
-    OneHotEnDialog.prototype.addStep =function(profile, this_dialog){
+    DropColumnsDialog.prototype.addStep =function(profile, this_dialog){
         this_dialog.get_values(profile);
         profile.settingsdialog.update_step_list(profile);
         profile.settingsdialog.minidialogs[this_dialog.step_no] = this_dialog;
     };
 
-    OneHotEnDialog.prototype.set_dynamic_ui =function(){
+    DropColumnsDialog.prototype.set_dynamic_ui =function(){
     };
 
-
-    IPython.OneHotEnDialog = OneHotEnDialog;
+    IPython.DropColumnsDialog = DropColumnsDialog;
 
     return IPython;
 
