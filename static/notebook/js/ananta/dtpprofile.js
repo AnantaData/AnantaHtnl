@@ -33,10 +33,8 @@ var IPython = (function (IPython) {
 
 
     DTProfile.prototype.setCode = function(profileData) {
-        var code = 'from ananta_base.base import *' +
+        var code =
             '\nfrom ananta_base.data_transformation import DataTransformationProfile, LabelEncodingStep, BinningStep' +
-            '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
-            '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
             '\nfrom ananta_base.data_set import TrainingSet' +
             '\nimport ananta_base.data_stat as stat' +
 
@@ -70,7 +68,7 @@ var IPython = (function (IPython) {
             fields +="]";
             var code =
                 '\n'+stepName+' = '+stepType+'('+fields+')' +
-                '\ndcp.addStep('+stepName+')';
+                '\ndtp.addStep('+stepName+')';
         }
         if(stepData.step_type == 'binning'){
             stepType = 'BinningStep';
@@ -86,7 +84,7 @@ var IPython = (function (IPython) {
             fields +="]";
             var code =
                 '\n'+stepName+' = '+stepType+'('+fields+')' +
-                '\ndcp.addStep('+stepName+')';
+                '\ndtp.addStep('+stepName+')';
         }
 
         return code;
