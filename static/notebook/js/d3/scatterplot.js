@@ -7,8 +7,8 @@
 
 
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 480 - margin.left - margin.right,
-    height = 250 - margin.top - margin.bottom;
+    width = 480,//- margin.left - margin.right,
+    height = 250;//- margin.top - margin.bottom;
 
 
 
@@ -66,7 +66,7 @@ function scatterplotCreateGrapgh(file) {
             .attr("y", 6)
             .attr("dy", ".71em")
             .style("text-anchor", "end");
-//              .text("Sepal Length (cm)")
+              //.text("Sepal Length (cm)");
 
         svg.selectAll(".dot")
             .data(data)

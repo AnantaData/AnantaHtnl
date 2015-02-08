@@ -212,3 +212,22 @@ function getFields(){
     });
     return fields;
 }
+
+function isStatFileExist(filenameprefix){
+    var avlbl = false;
+    $.ajax({
+        type: "GET",
+        url: filenameprefix+"types.csv",
+        dataType: "text",
+        async:false
+    }).success(function (csvd) {
+        avlbl = true;
+    }).done(function() {
+        alert( "success" );
+    }).fail(function() {
+        alert( "fail" );
+    }).always(function() {
+        alert( "complete" );
+    });
+    return avlbl;
+}
