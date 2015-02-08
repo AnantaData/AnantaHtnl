@@ -1,7 +1,6 @@
 /**
- * Created by lakmal on 2/3/15.
+ * Created by laksheen on 2/8/15.
  */
-
 
 var IPython = (function (IPython) {
     "use strict";
@@ -29,7 +28,7 @@ var IPython = (function (IPython) {
 
         var this_dialog = this;
         this.shortcut_dialog = IPython.minidialog.modal({
-            title : "Variance Threshold Step",
+            title : "Variance Threshold",
             body : element,
             destroy : false,
             buttons : {
@@ -57,7 +56,7 @@ var IPython = (function (IPython) {
     };
 
     VarianceThresholdDialog.prototype.setInstruction = function(){
-        this.documentation.text('Specify a variance threshold, in order to remove fields below that variance threshold'+
+        this.documentation.text('Specify the variance threshold, in order to remove the fields having a variance below the threshold'+
         '.')
     };
 
@@ -67,35 +66,39 @@ var IPython = (function (IPython) {
         var div = $('<div/>');
 
         this.stepNameInp_id = this.dialog_id+"stepname";
+        this.threshName_id = this.dialog_id+"threshold";
         this.statTabl_id = "stattable"+this.dialog_id;
+
         var stepNameLbl = $('<label for="stepname">Step Name:</label>');
         var stepNameInp = $('<input type="text" name="stepname"  readonly>');
+        var varThresholdLbl = $('<label for="stepname">Variance Threshold:</label>');
+        var threshNameInp = $('<input type="text" name="stepname"  />');
         var statTabl = $('<table>' +
-                            '<thead id="statistic_thead" class="fixedHeader">' +
-                                '<tr class="alternateRow">' +
-                                '<th><a href="#">Field</a></th>' +
-                                '<th><a href="#">Count</a></th>' +
-                                '<th><a href="#">Mean</a></th>' +
-                                '<th><a href="#">St.Dev</a></th>' +
-                                '<th><a href="#">Min</a></th>' +
-                                '<th><a href="#">Q1</a></th>' +
-                                '<th><a href="#">Median</a></th>' +
-                                '<th><a href="#">Q3</a></th>' +
-                                '<th><a href="#">Max</a></th>' +
-                                '</tr>' +
-                            '</thead>' +
-                            '<tbody id="statistic_tbody" class="scrollContent">' +
-                            '</tbody>' +
-                        '</table>');
+        '<thead id="statistic_thead" class="fixedHeader">' +
+        '<tr class="alternateRow">' +
+        '<th><a href="#">Field</a></th>' +
+        '<th><a href="#">Count</a></th>' +
+        '<th><a href="#">Mean</a></th>' +
+        '<th><a href="#">St.Dev</a></th>' +
+        '<th><a href="#">Min</a></th>' +
+        '<th><a href="#">Q1</a></th>' +
+        '<th><a href="#">Median</a></th>' +
+        '<th><a href="#">Q3</a></th>' +
+        '<th><a href="#">Max</a></th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tbody id="statistic_tbody" class="scrollContent">' +
+        '</tbody>' +
+        '</table>');
 
         stepNameInp.attr('id',this.stepNameInp_id);
+        threshNameInp.attr('id',this.threshName_id);
         statTabl.attr('id',this.statTabl_id);
 
-        div.append(stepNameLbl).append(stepNameInp).append(statTabl);
+        div.append(stepNameLbl).append(stepNameInp).append(varThresholdLbl).append(threshNameInp).append(statTabl);
 
         if(profile.profileData.steps.length < (this.step_no+1)){
-            console.log(profile.profileData.fileNamePrefix);
-            tabulate_2(this.statTabl_id,profile.profileData.fileNamePrefix);
+            tabulate_2(this.statTabl_id);
         }
 
         return div;
@@ -103,6 +106,7 @@ var IPython = (function (IPython) {
 
     VarianceThresholdDialog.prototype.retrive_elements = function(){
         this.stepNameInp = $('#'+this.stepNameInp_id);
+        this.varThresholdInp = $('#'+this.threshName_id);
         this.statTabl = $('#'+this.statTabl_id);
         this.errDoc = $('#'+this.errorDoc_id);
         this.documentation = $('#'+this.documentation_id);
@@ -114,12 +118,14 @@ var IPython = (function (IPython) {
         var stepData = {
             step_no : this.step_no,
             step_type : this.step_type,
+            var_threshold : '',
             step_show_name : this.step_show_name,
             step_label : this.step_no+"-"+this.step_show_name,
             step_name : this.step_no+"_"+this.step_type,
             fields : []
         };
         stepData.fields=this.getCheckedValues();
+        stepData.var_threshold=this.varThresholdInp.val();
         profile.profileData.steps[this.step_no] = stepData;
     };
 
@@ -127,6 +133,7 @@ var IPython = (function (IPython) {
         var stepData = {
             step_no : this.step_no,
             step_type : this.step_type,
+            var_threshold : '',
             step_show_name : this.step_show_name,
             step_label : this.step_no+"-"+this.step_show_name,
             step_name : this.step_no+"_"+this.step_type,
@@ -136,6 +143,7 @@ var IPython = (function (IPython) {
             stepData = profile.profileData.steps[this.step_no];
         }
         this.stepNameInp.val(stepData.step_label);
+        this.varThresholdInp.val(stepData.var_threshold);
         this.setCheckedValues(profile,stepData.fields);
 
     };
@@ -168,7 +176,7 @@ var IPython = (function (IPython) {
                 }
             }
         }
-        tabulate_3(this.statTabl_id,profile.profileData.fileNamePrefix,checked);
+        tabulate_3(this.statTabl_id,checked);
     };
 
     VarianceThresholdDialog.prototype.addStep =function(profile, this_dialog){

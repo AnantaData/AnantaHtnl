@@ -7,10 +7,24 @@ var IPython = (function (IPython) {
         IPython.Profile.apply(this,[kernel,options]);
 
         this.gui_type = 'drp';
-        this.fileName = "";
-        this.fileType ="";
-        this.fileLoc = "";
-        this.flpdialog = new IPython.DrpDialog();
+        this.profileData = {
+            steps :[],
+            fileNamePrefix:this.cell_id,
+            visuData:{
+                datafile:"",
+                statfile:"",
+                graphs:[]
+            }
+        };
+        this.fields = "";
+        this.profileData.visuData.datafile = this.profileData.fileNamePrefix+"data.csv"
+        this.profileData.visuData.statfile = this.profileData.fileNamePrefix+"stat.csv"
+
+        //Dialog for profile settings
+        this.settingsdialog = new IPython.DcpDialog(this.cell_id);
+
+        //set the input code according to the profile data
+        this.set_text(this.setCode(this.profileData));
 
     };
 
@@ -21,77 +35,98 @@ var IPython = (function (IPython) {
     DRProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
-
-        var get_flp_code= function(nb,fileType,fileName) {
-            var code = 'from ananta_base.base import *' +
-                '\nfrom ananta_base.data_cleaning_pan import DataCleaningProfile, UseGlobalConstantStep, IgnoreTupleStep' +
-                '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
-                '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
-                '\nfrom ananta_base.data_set import TrainingSet' +
-                '\nfrom ananta_base.data_transformation import DataTransformationProfile, EncodingStep' +
-                '\nprojects = TrainingSet()' +
-                '\nflp1 = FileLoadingProfile()' +
-                '\ns1 = FileLoadStep("' + fileType + '", "' + fileName + '")' +
-                '\nflp1.addStep(s1)' +
-                '\nflp1.execute(projects)' +
-                //'\ndf = projects.data.describe()' +
-                '\ndf = projects.data' +
-                '\nprint df' +
-                '\ndf.to_csv("a.csv", sep=",", encoding="utf-8")' +
-                '';
-            nb.set_text(code);
-
-        }
-
-
-        get_flp_code(this, this.fileType,this.fileName);
-
-        var nb = this;
-        this.b1.click(function(e){
-            e.preventDefault();
-            nb.flpdialog.show_dialog(nb,get_flp_code);
-        });
-        this.b2.click(function(e){
-            e.preventDefault();
-            IPython.notebook.execute_cell();
-        });
-        this.b3.click(function(e){
-            e.preventDefault();
-            selectGrapgh(2);
-        });
-
         this.profileheading.text('Data Reduction Profile');
-        this.profileheading[0].style.color="#4C0B5F";
+        this.profileheading[0].style.color="#610B4B";
 
     };
 
+    DRProfile.prototype.setCode = function(profileData){
+        var code = 'from ananta_base.base import *' +
+            '\nfrom ananta_base.data_cleaning_pan import DataCleaningProfile, UseGlobalConstantStep, IgnoreTupleStep, UseAttributeMeanStep, UseAttributeModeStep, UseAttributeMedianStep' +
+            '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
+            '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
+            '\nfrom ananta_base.data_set import TrainingSet' +
+            '\nfrom ananta_base.data_reduction import DataReductionProfile, VarianceThresholdStep,DropColumnsByNameStep, SelectKBestStep' +
+            '\nimport ananta_base.data_stat as stat' +
 
-    DRProfile.prototype.fromJSON = function (data) {
-        if(data.gui_type ==='drp'){
-            IPython.CodeCell.prototype.fromJSON.apply(this, arguments);
-
-            /*this.fileName = data.fileName;
-            this.fileType = data.fileType;
-            this.fileLoc = data.fileLoc;*/
+            '\ndrp = DataReductionProfile()';
+        var stepCode = "";
+        for(var i=0;i<profileData.steps.length;i++){
+            stepCode+=this.addStepCode(profileData.steps[i]);
         }
+        var endcode =
+            '\ndrp.execute(projects)' +
+            '\nstat.getStatistics(projects,"'+profileData.fileNamePrefix+'")' +
+            '\nprint "Profile Successfully Executed"' ;
+
+        code  = code+stepCode+endcode;
+        return code;
     };
 
+    DRProfile.prototype.addStepCode = function(stepData){
+        var stepType;
+        if(stepData.step_type == 'removeCol'){
+            stepType = 'DropColumnsByNameStep';
+            var stepName = 'step'+stepData.step_no;
+            var fields = '[';
+            for(var i=0;i<stepData.fields.length;i++){
+                if(i!=0){
+                    fields +=','
+                }
+                fields += '"'+stepData.fields[i]+'"';
 
-    DRProfile.prototype.toJSON = function () {
-        var data = IPython.CodeCell.prototype.toJSON.apply(this);
+            }
+            fields +="]";
+            var code =
+                '\n'+stepName+' = '+stepType+'('+fields+')' +
+                '\ndrp.addStep('+stepName+')';
+        }
+        if(stepData.step_type == 'varThresh'){
+            stepType = 'VarianceThresholdStep';
+            var stepName = 'step'+stepData.step_no;
+            var fields = '[';
+            var consts = '[';
+            for(var i=0;i<stepData.fields.length;i++){
+                if(i!=0){
+                    fields +=','
+                    consts +=','
+                }
+                fields += '"'+stepData.fields[i]+'"';
+                consts += stepData.global_const;
+            }
+            fields +="]";
+            consts +="]";
+            var code =
+                '\n'+stepName+' = '+stepType+'('+consts+','+fields+')' +
+                '\ndcp.addStep('+stepName+')';
+        }
+        //this is only for supervised mining
+        if(stepData.step_type == 'kBest'){
+            stepType = 'SelectKBestStep';
+            var stepName = 'step'+stepData.step_no;
+            var fields = '[';
+            for(var i=0;i<stepData.fields.length;i++){
+                if(i!=0){
+                    fields +=','
+                }
+                fields += '"'+stepData.fields[i]+'"';
+            }
+            fields +="]";
+            var code =
+                '\n'+stepName+' = '+stepType+'('+fields+')' +
+                '\ndcp.addStep('+stepName+')';
+        }
 
-        data.gui_type = this.gui_type;
-        /*data.fileName = this.fileName;
-        data.fileType = this.fileType;
-        data.fileLoc = this.fileLoc;*/
-        return data;
+        //for principal component analysis in Supervised learning
+        if(stepData.step_type == 'prinCom'){
+
+        }
+        return code;
     };
-
 
     IPython.DRProfile = DRProfile;
 
     return IPython;
 }(IPython));
 
-
-///
+////
