@@ -35,10 +35,10 @@ var IPython = (function (IPython) {
         algorithm = profileData.algorithm;
         alert(profileData.algorithm)
         if (algorithm == 'kgsom') {
-            alg = 'TrainLogitStep()';
+            alg = 'KGSOMStep(np.array(projects.data).shape[1])';
         }
         else if (algorithm == 'gsom') {
-            alg = 'TrainRanforStep()';
+            alg = 'GSOMStep(np.array(projects.data).shape[1])';
         }
         else if (algorithm == 'kmeans') {
             alg = 'KmeanStep('+profileData.kv+')';
@@ -46,15 +46,15 @@ var IPython = (function (IPython) {
         }
         var code = 'from ananta_base.base import *' +
             '\nfrom ananta_base.mining import unsupervised_mining as um' +
-            '\nump1 = um.UnupervisedMiningProfile()' +
+            '\nump1 = um.UnsupervisedMiningProfile()' +
             '\ns1= um.' + alg + '' +
             '\ns2=um.'+scheme +
-            '\nsmp1.addStep(s1)' +
-            '\nsmp1.addStep(s2)' +
-            '\nsmp1.execute(projects)' +
+            '\nump1.addStep(s1)' +
+            '\nump1.addStep(s2)' +
+            '\nump1.execute(projects)' +
                 //'\ndf = projects.data.describe()' +
             '\ndf = projects.data' +
-            '\nprint df' +
+            '\nprint df.shape' +
             '\ndf.tofile("a.csv", sep=",")' +
             '';
         return code;
