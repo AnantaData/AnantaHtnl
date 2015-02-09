@@ -8,9 +8,17 @@ var IPython = (function (IPython) {
 
         this.gui_type = 'dtp';
         this.profileData = {
-            steps :[]
+            steps :[],
+            fileNamePrefix:this.cell_id,
+            visuData:{
+                datafile:"",
+                statfile:"",
+                graphs:[]
+            }
         };
         this.fields = "";
+        this.profileData.visuData.datafile = this.profileData.fileNamePrefix+"data.csv"
+        this.profileData.visuData.statfile = this.profileData.fileNamePrefix+"stat.csv"
 
         //Dialog for profile settings
         this.settingsdialog = new IPython.DtpDialog(this.cell_id);
