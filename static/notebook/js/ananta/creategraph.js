@@ -37,8 +37,9 @@ function visualize(visuData){
                 var column = visuData.graphs[i].fields[f];
                 console.log(visuData.graphs[i].fields[f]);
                 //$("#visualization-area").append('The bar chart for filed in '+column);
-                barChartSelectGrapgh(graph_src,column);
+                //barChartSelectGrapgh(graph_src,column);
                 //supervisedResultGrapgh();
+                hexBinningCreateGrapgh();
             }
 
         }

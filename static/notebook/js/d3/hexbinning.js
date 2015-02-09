@@ -4,12 +4,16 @@
 
 //var datalenght = 2000
 
-var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
 
-function hexBinningCreateGrapgh(file) {
-    d3.csv(file, function (data) {
+
+function hexBinningCreateGrapgh() {
+
+    var margin = {top: 20, right: 20, bottom: 30, left: 40},
+        width = 850 - margin.left - margin.right,
+        height = 350 - margin.top - margin.bottom;
+
+
+    d3.csv("somout.csv", function (data) {
 
         var x = data.map(function (d) {
             return d.x
@@ -18,7 +22,7 @@ function hexBinningCreateGrapgh(file) {
             return d.y
         });
         var colorlabel = data.map(function (d) {
-            return d.label
+            return d.c
         });
 
         var points = new Array(data.length);
@@ -28,16 +32,32 @@ function hexBinningCreateGrapgh(file) {
         }
         console.log(points);
 
-        var hexbin = d3.hexbin()
-            .size([width, height])
-            .radius(20);
-
-        var x = d3.scale.identity()
+        x = d3.scale.identity()
             .domain([0, width]);
 
-        var y = d3.scale.linear()
+        y = d3.scale.linear()
             .domain([0, height])
             .range([height, 0]);
+
+        var MapColumns = 30,
+            MapRows = 20;
+
+        var hexRadius = d3.min([width/((MapColumns + 0.5) * Math.sqrt(3)),
+            height/((MapRows + 1/3) * 1.5)]);
+
+        //Calculate the center positions of each hexagon
+        var points = [];
+        for (var i = 0; i < MapRows; i++) {
+            for (var j = 0; j < MapColumns; j++) {
+                points.push([hexRadius * j * 1.75, hexRadius * i * 1.5]);
+            }//for j
+        }//f
+
+
+        var hexbin = d3.hexbin()
+            //.size([width, height])
+            .radius(hexRadius);
+
 
         var xAxis = d3.svg.axis()
             .scale(x)
@@ -79,10 +99,12 @@ function hexBinningCreateGrapgh(file) {
             .enter().append("path")
             .attr("class", "hexagon")
             .attr("d", hexbin.hexagon())
-            .attr("transform", function (d) {
-                return "translate(" + d.x + "," + d.y + ")";
-            })
-            .style("fill", function(d,i) { return(colorlabel[i]);  });
+            //.attr("d", function (d) {  return "M" + d.x + "," + d.y + hexbin.hexagon(); })
+            //.attr("transform", function (d) {  return "translate(" + d.x + "," + d.y + ")";  })
+            .attr("stroke", "white")
+            .attr("stroke-width", "1px")
+            .style("fill", "teal")
+            .style("fill", function(d,i) { if(colorlabel[i]=="g"){ return "#A1EBA1"} else if(colorlabel[i]=="r"){return "#FF85AD"} else{ return "#99CCFF"} });
             //.style("fill", function (d, i) {
             //    console.log(colorlabel[i]);
             //    return colorlabel[i];
