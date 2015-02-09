@@ -44,7 +44,7 @@ function visualize(visuData){
 
         }
 
-        else if(visuData.graphs[i].graph_type == "boxplot"){
+        else if(visuData.graphs[i].graph_type == "boxPlot"){
             console.log("boxplot");
             for(f=0;f<visuData.graphs[i].fields.length;f++){
                 var column = visuData.graphs[i].fields[f];
