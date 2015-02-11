@@ -6,13 +6,13 @@
 
 
 
-function hexBinningCreateGrapgh() {
+function hexBinningCreateGrapgh(file) {
     var margin = {top: 70, right: 20, bottom: 40, left: 50};
 
     var width = 620 - margin.left - margin.right,
         height = 480 - margin.top - margin.bottom;
 
-    d3.csv("somout.csv", function (data) {
+    d3.csv(file, function (data) {
 
         var x = data.map(function(d) { return d.x});
         var y = data.map(function(d) { return d.y});
