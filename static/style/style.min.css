@@ -1777,7 +1777,7 @@ html>body tbody.scrollContent td + td + td {
 .box line,
 .box rect,
 .box circle {
-    fill: #fff;
+    fill: orange;
     stroke: #000;
     stroke-width: 1.5px;
 }
