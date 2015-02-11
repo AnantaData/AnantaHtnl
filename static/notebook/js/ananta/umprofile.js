@@ -19,6 +19,7 @@ var IPython = (function (IPython) {
     };
 
 
+
     UMProfile.prototype = new IPython.Profile();
 
     UMProfile.prototype.create_element = function () {

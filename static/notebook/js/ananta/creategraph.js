@@ -37,9 +37,7 @@ function visualize(visuData){
                 var column = visuData.graphs[i].fields[f];
                 console.log(visuData.graphs[i].fields[f]);
                 //$("#visualization-area").append('The bar chart for filed in '+column);
-                //barChartSelectGrapgh(graph_src,column);
-                //supervisedResultGrapgh();
-                hexBinningCreateGrapgh();
+                barChartSelectGrapgh(graph_src,column);
             }
 
         }
@@ -57,7 +55,7 @@ function visualize(visuData){
 
         else if(visuData.graphs[i].graph_type == "hexbinning"){
             //$("#visualization-area").append('The scatter plot for node in Self Organizing Map');
-            hexBinningCreateGrapgh(stat_src);
+            hexBinningCreateGrapgh();
         }
         //barChartSelectGrapgh(graph_src,"vendorid");
     }
