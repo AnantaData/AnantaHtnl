@@ -38,8 +38,8 @@ var IPython = (function (IPython) {
                     click: function(e) {
                         //this_dialog.addStep(profile,this_dialog);
                         this_dialog.get_values(profile,e);
-                        profile.settingsdialog.update_graph_list(profile);
-                        profile.settingsdialog.minidialogs[this_dialog.graph_no] = this_dialog;
+                        profile.visudialog.update_graph_list(profile);
+                        profile.visudialog.minidialogs[this_dialog.graph_no] = this_dialog;
                     }
                 }
             }
