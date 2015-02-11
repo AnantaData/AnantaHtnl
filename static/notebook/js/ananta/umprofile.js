@@ -6,9 +6,18 @@ var IPython = (function (IPython) {
 
         this.gui_type = 'ump';
         this.profileData = {
-            algorithm: ""
+            algorithm: "",
+
+            fileNamePrefix:this.cell_id,
+            visuData:{
+                datafile:"",
+                statfile:"",
+                graphs:[]
+            }
 
         };
+        this.profileData.visuData.datafile = this.profileData.fileNamePrefix+"data.csv"
+        this.profileData.visuData.statfile = this.profileData.fileNamePrefix+"stat.csv"
 
         //Dialog for profile settings
         this.settingsdialog = new IPython.UmpDialog(this.cell_id);
@@ -35,10 +44,10 @@ var IPython = (function (IPython) {
         algorithm = profileData.algorithm;
         alert(profileData.algorithm)
         if (algorithm == 'kgsom') {
-            alg = 'TrainLogitStep()';
+            alg = 'KGSOMStep('+profileData.kv+')';
         }
         else if (algorithm == 'gsom') {
-            alg = 'TrainRanforStep()';
+            alg = 'GSOMStep('+profileData.kv+')';
         }
         else if (algorithm == 'kmeans') {
             alg = 'KmeanStep('+profileData.kv+')';
@@ -46,7 +55,7 @@ var IPython = (function (IPython) {
         }
         var code = 'from ananta_base.base import *' +
             '\nfrom ananta_base.mining import unsupervised_mining as um' +
-            '\nump1 = um.UnupervisedMiningProfile()' +
+            '\nump1 = um.UnsupervisedMiningProfile()' +
             '\ns1= um.' + alg + '' +
             '\ns2=um.'+scheme +
             '\nsmp1.addStep(s1)' +
