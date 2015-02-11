@@ -6,9 +6,18 @@ var IPython = (function (IPython) {
 
         this.gui_type = 'ump';
         this.profileData = {
-            algorithm: ""
+            algorithm: "",
+
+            fileNamePrefix:this.cell_id,
+            visuData:{
+                datafile:"",
+                statfile:"",
+                graphs:[]
+            }
 
         };
+        this.profileData.visuData.datafile = this.profileData.fileNamePrefix+"data.csv"
+        this.profileData.visuData.statfile = this.profileData.fileNamePrefix+"stat.csv"
 
         //Dialog for profile settings
         this.settingsdialog = new IPython.UmpDialog(this.cell_id);

@@ -9,9 +9,18 @@ var IPython = (function (IPython) {
         this.gui_type = 'smp';
         this.profileData = {
             algorithm: "",
-            response_var:"churn"
+            response_var:"churn",
+
+            fileNamePrefix:this.cell_id,
+            visuData:{
+                datafile:"",
+                statfile:"",
+                graphs:[]
+            }
 
         };
+        this.profileData.visuData.datafile = this.profileData.fileNamePrefix+"data.csv"
+        this.profileData.visuData.statfile = this.profileData.fileNamePrefix+"stat.csv"
 
         //Dialog for profile settings
         this.settingsdialog = new IPython.SmpDialog(this.cell_id);

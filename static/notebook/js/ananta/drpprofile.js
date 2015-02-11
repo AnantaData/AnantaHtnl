@@ -21,7 +21,7 @@ var IPython = (function (IPython) {
         this.profileData.visuData.statfile = this.profileData.fileNamePrefix+"stat.csv"
 
         //Dialog for profile settings
-        this.settingsdialog = new IPython.DcpDialog(this.cell_id);
+        this.settingsdialog = new IPython.DrpDialog(this.cell_id);
 
         //set the input code according to the profile data
         this.set_text(this.setCode(this.profileData));
