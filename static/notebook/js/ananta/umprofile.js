@@ -55,6 +55,7 @@ var IPython = (function (IPython) {
         }
         var code = 'from ananta_base.base import *' +
             '\nfrom ananta_base.mining import unsupervised_mining as um' +
+            '\nimport numpy as np' +
             '\nump1 = um.UnsupervisedMiningProfile()' +
             '\ns1= um.' + alg + '' +
             '\ns2=um.'+scheme +
