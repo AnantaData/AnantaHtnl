@@ -39,7 +39,6 @@ var IPython = (function (IPython) {
                         if(json_msg!=null){
                             visualize(json_msg);
                         }
-
                     }
                 }
             }
@@ -120,14 +119,8 @@ var IPython = (function (IPython) {
             window.alert(graph_no);
             var minidialog;
             this_dialog.update_graph(profile,selected);
-            if(json_msg!=null){
-                visualize(json_msg);
-            }
         });
     };
-
-
-
 
     UnVisuDialog.prototype.update_graph= function(profile,type){
         json_msg = {
@@ -141,10 +134,9 @@ var IPython = (function (IPython) {
         };
     }
 
-
-
     IPython.UnVisuDialog = UnVisuDialog;
 
     return IPython;
 
 }(IPython));
+

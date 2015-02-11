@@ -20,7 +20,7 @@ function visualize(visuData){
 
         if(visuData.graphs[i].graph_type == "scatter"){
             console.log("scatter");
-                scatterplotCreateGrapgh(stat_src);
+                scatterplotCreateGrapgh(graph_src);
         }
 
         else if(visuData.graphs[i].graph_type == "barChrt"){

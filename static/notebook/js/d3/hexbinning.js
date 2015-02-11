@@ -4,12 +4,11 @@
 
 //var datalenght = 2000
 
-
+var margin = {top: 70, right: 20, bottom: 40, left: 50};
 
 function hexBinningCreateGrapgh(file) {
-    var margin = {top: 70, right: 20, bottom: 40, left: 50};
 
-    var width = 620 - margin.left - margin.right,
+    var width = 600 - margin.left - margin.right,
         height = 480 - margin.top - margin.bottom;
 
     d3.csv(file, function (data) {
@@ -31,13 +30,13 @@ function hexBinningCreateGrapgh(file) {
 
         console.log(width+"   "+height);
 
-        createHexBinChart(point_x,point_y,colorlabel,height,width,margin);
+        createHexBinChart(point_x,point_y,colorlabel,height,width);
     });
 
 }
 
 
-function createHexBinChart(x_arr,y_arr,colorlabel_arr,height,width,margin){
+function createHexBinChart(x_arr,y_arr,colorlabel_arr,height,width){
 
     var max_x = maxMargin_x(x_arr);
     var max_y = maxMargin_y(y_arr);
@@ -77,7 +76,6 @@ function createHexBinChart(x_arr,y_arr,colorlabel_arr,height,width,margin){
         .range(["white", "green"])
         .interpolate(d3.interpolateLab);
 
-
     var x = d3.scale.linear()
         .domain([0, 100])
         .range([0,width]);
@@ -115,7 +113,7 @@ function createHexBinChart(x_arr,y_arr,colorlabel_arr,height,width,margin){
         .attr("y", -30 )
         .attr("text-anchor", "middle")
         .style("font-size", "22px")
-        .text("Map Distribution");
+        .text("Hexagonal Binning");
 
 
     svg.append("clipPath")
@@ -134,22 +132,6 @@ function createHexBinChart(x_arr,y_arr,colorlabel_arr,height,width,margin){
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
-    svg.append("text")
-        .attr("class", "label")
-        .attr("transform", "rotate(-90)")
-        .attr("y", -50)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("Scaled Y axis");
-
-    svg.append("text")
-        .attr("class", "label")
-        .attr("x", width)
-        .attr("y", height + margin.bottom - 5)
-        .style("text-anchor", "end")
-        .text("Scaled X axis");
-
-
     svg.selectAll(".hex")
         .data(points)
         .enter().append("clipPath")
@@ -167,10 +149,22 @@ function createHexBinChart(x_arr,y_arr,colorlabel_arr,height,width,margin){
         .attr("class", "hexagon")
         .attr("d", hexbin.hexagon())
         .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-//            .style("fill", function(d,i) { setColour(colorlabel[i]); return color(d.length); });
         .style("fill", function(d,i) { if(colorlabel_arr[i]=="g"){ return color_green(d.length); } else if(colorlabel_arr[i]=="r"){return color_red(d.length)} else{ return color_blue(d.length);} });
-    //.style("fill", function(d,i) { console.log(colorlabel[i]);return colorlabel[i]; });
 
+    svg.append("text")
+        .attr("class", "label")
+        .attr("x", width)
+        .attr("y", height + margin.bottom - 5)
+        .style("text-anchor", "end")
+        .text("Scaled X");
+
+    svg.append("text")
+        .attr("class", "label")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -50)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("Scaled Y");
 
 }
 
