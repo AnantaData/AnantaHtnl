@@ -67,7 +67,7 @@ var IPython = (function (IPython) {
 
 
         var graphTypeLbl = $('<label for="graphtype">Graph Type:</label>');
-        var graphTypeInp = $('<select  name="graphtype"  size="10" >' +
+        var graphTypeInp = $('<select  name="graphtype"  size="5" >' +
         '<option  value="scatter" >Scatter Plot</option>' +
         '<option  value="hexbinning" >Hexagonal Binning</option>'+
         '</select>');

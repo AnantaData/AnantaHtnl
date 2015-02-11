@@ -96,7 +96,7 @@ function createHexBinChart(x_arr,y_arr,colorlabel_arr,height,width){
 
     var hexbin = d3.hexbin()
         .size([width, height])
-        .radius(x(7.5));
+        .radius(x(2.5));
 
     var svg = d3.select("#visualization-area").append("svg")
         .attr("width", width + margin.left + margin.right)
