@@ -21,7 +21,7 @@ var IPython = (function (IPython) {
         this.profileData.visuData.statfile = this.profileData.fileNamePrefix+"stat.csv"
 
         //Dialog for profile settings
-        this.settingsdialog = new IPython.DcpDialog(this.cell_id);
+        this.settingsdialog = new IPython.DrpDialog(this.cell_id);
 
         //set the input code according to the profile data
         this.set_text(this.setCode(this.profileData));
@@ -98,7 +98,7 @@ var IPython = (function (IPython) {
             consts +="]";
             var code =
                 '\n'+stepName+' = '+stepType+'('+consts+','+fields+')' +
-                '\ndcp.addStep('+stepName+')';
+                '\ndrp.addStep('+stepName+')';
         }
         //this is only for supervised mining
         if(stepData.step_type == 'kBest'){
@@ -114,7 +114,7 @@ var IPython = (function (IPython) {
             fields +="]";
             var code =
                 '\n'+stepName+' = '+stepType+'('+fields+')' +
-                '\ndcp.addStep('+stepName+')';
+                '\ndrp.addStep('+stepName+')';
         }
 
         //for principal component analysis in Supervised learning
