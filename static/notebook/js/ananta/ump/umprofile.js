@@ -29,7 +29,7 @@ var IPython = (function (IPython) {
     UMProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
-        this.profileheading.text('Unsupervised Mining Profile');
+        this.profileheading.text('Unsupervised Miner');
         this.profileheading[0].style.color="#0B615E";
     };
 
@@ -52,6 +52,7 @@ var IPython = (function (IPython) {
         }
         var code = 'from ananta_base.base import *' +
             '\nfrom ananta_base.mining import unsupervised_mining as um' +
+            '\nimport numpy as np' +
             '\nump1 = um.UnsupervisedMiningProfile()' +
             '\ns1= um.' + alg + '' +
             '\ns2=um.'+scheme +

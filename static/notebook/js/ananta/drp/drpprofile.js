@@ -2,11 +2,18 @@
 
 var IPython = (function (IPython) {
 
-    var DCProfile = function (kernel, options) {
+    /**
+     *
+     * @param kernel
+     * @param options
+     * @constructor
+     */
+
+    var DRProfile = function (kernel, options) {
 
         IPython.Profile.apply(this,[kernel,options]);
 
-        this.gui_type = 'dcp';
+        this.gui_type = 'drp';
         this.profileData = {
             steps :[],
             fileNamePrefix:this.cell_id,
@@ -21,41 +28,44 @@ var IPython = (function (IPython) {
         this.profileData.visuData.statfile = this.profileData.fileNamePrefix+"stat.csv"
 
         //Dialog for profile settings
-        this.settingsdialog = new IPython.DcpDialog(this.cell_id);
+        this.settingsdialog = new IPython.DrpDialog(this.cell_id);
 
         //set the input code according to the profile data
         this.set_text(this.setCode(this.profileData));
 
     };
 
+    /**
+     *
+     * @type {IPython.Profile}
+     */
+    DRProfile.prototype = new IPython.Profile();
 
-    DCProfile.prototype = new IPython.Profile();
 
-
-    DCProfile.prototype.create_element = function () {
+    DRProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
-        this.profileheading.text('Data Cleaning Profile');
+        this.profileheading.text('Data Reducer');
         this.profileheading[0].style.color="#610B4B";
 
     };
 
-    DCProfile.prototype.setCode = function(profileData){
+    DRProfile.prototype.setCode = function(profileData){
         var code = 'from ananta_base.base import *' +
             '\nfrom ananta_base.data_cleaning_pan import DataCleaningProfile, UseGlobalConstantStep, IgnoreTupleStep, UseAttributeMeanStep, UseAttributeModeStep, UseAttributeMedianStep' +
             '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
             '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
             '\nfrom ananta_base.data_set import TrainingSet' +
-            '\nfrom ananta_base.data_transformation import DataTransformationProfile, LabelEncodingStep, BinningStep' +
+            '\nfrom ananta_base.data_reduction import DataReductionProfile, VarianceThresholdStep,DropColumnsByNameStep, SelectKBestStep' +
             '\nimport ananta_base.data_stat as stat' +
 
-            '\ndcp = DataCleaningProfile()';
+            '\ndrp = DataReductionProfile()';
         var stepCode = "";
         for(var i=0;i<profileData.steps.length;i++){
             stepCode+=this.addStepCode(profileData.steps[i]);
         }
         var endcode =
-            '\ndcp.execute(projects)' +
+            '\ndrp.execute(projects)' +
             '\nstat.getStatistics(projects,"'+profileData.fileNamePrefix+'")' +
             '\nprint "Profile Successfully Executed"' ;
 
@@ -63,10 +73,10 @@ var IPython = (function (IPython) {
         return code;
     };
 
-    DCProfile.prototype.addStepCode = function(stepData){
+    DRProfile.prototype.addStepCode = function(stepData){
         var stepType;
-        if(stepData.step_type == 'ignTupl'){
-            stepType = 'IgnoreTupleStep';
+        if(stepData.step_type == 'removeCol'){
+            stepType = 'DropColumnsByNameStep';
             var stepName = 'step'+stepData.step_no;
             var fields = '[';
             for(var i=0;i<stepData.fields.length;i++){
@@ -79,10 +89,10 @@ var IPython = (function (IPython) {
             fields +="]";
             var code =
                 '\n'+stepName+' = '+stepType+'('+fields+')' +
-                '\ndcp.addStep('+stepName+')';
+                '\ndrp.addStep('+stepName+')';
         }
-        if(stepData.step_type == 'gblCnst'){
-            stepType = 'UseGlobalConstantStep';
+        if(stepData.step_type == 'varThresh'){
+            stepType = 'VarianceThresholdStep';
             var stepName = 'step'+stepData.step_no;
             var fields = '[';
             var consts = '[';
@@ -98,10 +108,11 @@ var IPython = (function (IPython) {
             consts +="]";
             var code =
                 '\n'+stepName+' = '+stepType+'('+consts+','+fields+')' +
-                '\ndcp.addStep('+stepName+')';
+                '\ndrp.addStep('+stepName+')';
         }
-        if(stepData.step_type == 'atrMean'){
-            stepType = 'UseAttributeMeanStep';
+        //this is only for supervised mining
+        if(stepData.step_type == 'kBest'){
+            stepType = 'SelectKBestStep';
             var stepName = 'step'+stepData.step_no;
             var fields = '[';
             for(var i=0;i<stepData.fields.length;i++){
@@ -113,44 +124,17 @@ var IPython = (function (IPython) {
             fields +="]";
             var code =
                 '\n'+stepName+' = '+stepType+'('+fields+')' +
-                '\ndcp.addStep('+stepName+')';
+                '\ndrp.addStep('+stepName+')';
         }
 
-        if(stepData.step_type == 'atrMode'){
-            stepType = 'UseAttributeModeStep';
-            var stepName = 'step'+stepData.step_no;
-            var fields = '[';
-            for(var i=0;i<stepData.fields.length;i++){
-                if(i!=0){
-                    fields +=','
-                }
-                fields += '"'+stepData.fields[i]+'"';
-            }
-            fields +="]";
-            var code =
-                '\n'+stepName+' = '+stepType+'('+fields+')' +
-                '\ndcp.addStep('+stepName+')';
-        }
-        if(stepData.step_type == 'atrMedn'){
-            stepType = 'UseAttributeMedianStep';
-            var stepName = 'step'+stepData.step_no;
-            var fields = '[';
-            for(var i=0;i<stepData.fields.length;i++){
-                if(i!=0){
-                    fields +=','
-                }
-                fields += '"'+stepData.fields[i]+'"';
-            }
-            fields +="]";
-            var code =
-                '\n'+stepName+' = '+stepType+'('+fields+')' +
-                '\ndcp.addStep('+stepName+')';
-        }
+        //for principal component analysis in Supervised learning
+        if(stepData.step_type == 'prinCom'){
 
+        }
         return code;
     };
 
-    IPython.DCProfile = DCProfile;
+    IPython.DRProfile = DRProfile;
 
     return IPython;
 }(IPython));
