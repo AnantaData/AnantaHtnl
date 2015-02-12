@@ -157,12 +157,12 @@ function maxMargin(data_array){
 }
 
 function minMargin(data_array){
-    var slots_max = data_array[0];
+    var slots_min = data_array[0];
     for (var s = 0; s < data_array.length; s++) //finding maximum value of slots array
     {
-        if (data_array[s] < slots_max) {
-            slots_max = data_array[s];
+        if (data_array[s] < slots_min) {
+            slots_min = data_array[s];
         }
     }
-    return(slots_max);
+    return(slots_min);
 }

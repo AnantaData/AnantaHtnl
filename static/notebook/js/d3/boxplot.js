@@ -2,19 +2,22 @@
  * Created by lakmal on 1/11/15.
  */
 
-var margin = {top: 10, right: 50, bottom: 20, left: 50},
-    width = 120 - margin.left - margin.right,
-    height = 250 - margin.top - margin.bottom;
 
-var min = Infinity,
-    max = -Infinity;
-
-var chart = d3.box()
-    .whiskers(iqr(1.5))
-    .width(width)
-    .height(height);
 
 function boxPlotSelectGrapgh(file,selection){
+
+    var margin = {top: 30, right: 50, bottom: 20, left: 50},
+        width = 150 - margin.left - margin.right,
+        height = 250 - margin.top - margin.bottom;
+
+    var min = Infinity,
+        max = -Infinity;
+
+    var chart = d3.box()
+        .whiskers(iqr(1.5))
+        .width(width)
+        .height(height);
+
     d3.csv(file, function(data) {
         var len = Object.keys(data[0]).length;
         var object_properties = new Array(len)
@@ -38,13 +41,14 @@ function boxPlotSelectGrapgh(file,selection){
             console.log("NAN")
         }
         else{
-            crateboxplot([data_array]);
+            crateboxplot([data_array],width,height,margin,chart,selection);
         }
     });
 
 }
 
-function crateboxplot(data){
+function crateboxplot(data,width,height,margin,chart,Coloumn){
+
     var svg = d3.select("#visualization-area").append("svg")
         .data(data)
         //.enter().append("svg")
@@ -55,22 +59,13 @@ function crateboxplot(data){
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
         .call(chart);
 
-//                  setInterval(function() {
-//                    svg.datum(randomize).call(chart.duration(1000));
-//                  }, 2000);
+    svg.append("text")
+        .attr("x", width / 2 )
+        .attr("y", -15)
+        .style("text-anchor", "middle")
+        .text(Coloumn);
 }
 
-function randomize(d) {
-    if (!d.randomizer) d.randomizer = randomizer(d);
-    return d.map(d.randomizer);
-}
-
-function randomizer(d) {
-    var k = d3.max(d) * .02;
-    return function(d) {
-        return Math.max(min, Math.min(max, d + k * (Math.random() - .5)));
-    };
-}
 
 // Returns a function to compute the interquartile range.
 function iqr(k) {

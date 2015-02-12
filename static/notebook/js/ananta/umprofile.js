@@ -7,20 +7,18 @@ var IPython = (function (IPython) {
         this.gui_type = 'ump';
         this.profileData = {
             algorithm: "",
-
-            fileNamePrefix:this.cell_id,
             visuData:{
                 datafile:"",
-                statfile:"",
+                //statfile:"",
                 graphs:[]
             }
 
         };
-        this.profileData.visuData.datafile = this.profileData.fileNamePrefix+"data.csv"
-        this.profileData.visuData.statfile = this.profileData.fileNamePrefix+"stat.csv"
 
+        this.profileData.visuData.datafile = this.profileData.fileNamePrefix+"somout.csv"
         //Dialog for profile settings
         this.settingsdialog = new IPython.UmpDialog(this.cell_id);
+        this.visudialog = new IPython.UnVisuDialog(this.cell_id);
 
         //set the input code according to the profile data
         this.set_text(this.setCode(this.profileData));
@@ -28,10 +26,12 @@ var IPython = (function (IPython) {
     };
 
 
+
     UMProfile.prototype = new IPython.Profile();
 
     UMProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
+
         this.profileheading.text('Unsupervised Mining Profile');
         this.profileheading[0].style.color="#0B615E";
     };

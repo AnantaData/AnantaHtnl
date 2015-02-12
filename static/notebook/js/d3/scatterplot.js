@@ -4,15 +4,12 @@
 
 
 
-
-
-var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 480,//- margin.left - margin.right,
-    height = 250;//- margin.top - margin.bottom;
-
-
-
 function scatterplotCreateGrapgh(file) {
+
+    var margin = {top: 70, right: 20, bottom: 40, left: 50};
+
+    var width = 620 - margin.left - margin.right,
+        height = 480 - margin.top - margin.bottom;
 
     var x = d3.scale.linear()
         .range([0, width]);
@@ -20,9 +17,30 @@ function scatterplotCreateGrapgh(file) {
     var y = d3.scale.linear()
         .range([height, 0]);
 
+    // setup fill color
     var color = d3.scale.category10();
 
+    var xAxis = d3.svg.axis()
+        .ticks(8)
+        .scale(x)
+        .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left");
+
+    var svg = d3.select("#visualization-area").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
     d3.csv(file, function (error, data) {
+
+        data.forEach(function(d) {
+            d.x = +d.x;
+            d.y = +d.y;
+        });
 
         x.domain(d3.extent(data, function (d) {
             return d.x;
@@ -31,21 +49,9 @@ function scatterplotCreateGrapgh(file) {
             return d.y;
         })).nice();
 
-        var xAxis = d3.svg.axis()
-            .scale(x)
-            .orient("bottom");
+        //console.log("X "+x(0)+" Y"+y(0));
 
-        var yAxis = d3.svg.axis()
-            .scale(y)
-            .orient("left");
-
-
-        var svg = d3.select("#visualization-area").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+        //draw X axis
         svg.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
@@ -54,8 +60,8 @@ function scatterplotCreateGrapgh(file) {
             .attr("class", "label")
             .attr("x", width)
             .attr("y", -6)
-            .style("text-anchor", "end");
-//              .text("Sepal Width (cm)");
+            .style("text-anchor", "end")
+              .text("Scaled X Axis");
 
         svg.append("g")
             .attr("class", "y axis")
@@ -65,13 +71,14 @@ function scatterplotCreateGrapgh(file) {
             .attr("transform", "rotate(-90)")
             .attr("y", 6)
             .attr("dy", ".71em")
-            .style("text-anchor", "end");
-              //.text("Sepal Length (cm)");
+            .style("text-anchor", "end")
+            .text("Scaled Y Axis");
 
         svg.selectAll(".dot")
             .data(data)
             .enter().append("circle")
             .attr("class", "dot")
+            .attr("stroke", "none")
             .attr("r", 3.5)
             .attr("cx", function (d) {
                 return x(d.x);
@@ -79,18 +86,14 @@ function scatterplotCreateGrapgh(file) {
             .attr("cy", function (d) {
                 return y(d.y);
             })
-            //.style("fill", function (d) {
-            //    return color(d.label);
-            //});
-            .style("fill", function(d,i) { return(d.label);  });
+            .style("fill", function(d) { return color(d.c); });
 
         var legend = svg.selectAll(".legend")
             .data(color.domain())
             .enter().append("g")
             .attr("class", "legend")
-            .attr("transform", function (d, i) {
-                return "translate(0," + i * 20 + ")";
-            });
+            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
 
         legend.append("rect")
             .attr("x", width - 18)
@@ -107,5 +110,17 @@ function scatterplotCreateGrapgh(file) {
                 return d;
             });
 
+        var title = d3.select("svg").append("g")
+            .attr("transform", "translate(" +margin.left+ "," +margin.top+ ")")
+            .attr("class","title");
+
+        title.append("text")
+            .attr("x", (width / 2))
+            .attr("y", -30 )
+            .attr("text-anchor", "middle")
+            .style("font-size", "22px")
+            .text("Scatter Plot");
+
     });
 }
+
