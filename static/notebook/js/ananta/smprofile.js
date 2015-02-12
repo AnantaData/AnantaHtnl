@@ -1,4 +1,13 @@
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
+//============================================================================
+// File Loading Profile
+//============================================================================
 
 var IPython = (function (IPython) {
 
@@ -19,8 +28,12 @@ var IPython = (function (IPython) {
             }
 
         };
-        this.profileData.visuData.datafile = this.profileData.fileNamePrefix+"data.csv"
-        this.profileData.visuData.statfile = this.profileData.fileNamePrefix+"stat.csv"
+
+        //this.profileData.visuData.datafile = this.profileData.fileNamePrefix+"data.csv"
+        //this.profileData.visuData.statfile = this.profileData.fileNamePrefix+"stat.csv"
+
+        this.settingsdialog = new IPython.UmpDialog(this.cell_id);
+        this.visudialog = new IPython.UnVisuDialog(this.cell_id,"somout.csv");
 
         //Dialog for profile settings
         this.settingsdialog = new IPython.SmpDialog(this.cell_id);
@@ -29,7 +42,6 @@ var IPython = (function (IPython) {
         this.set_text(this.setCode(this.profileData));
 
     };
-
 
     SMProfile.prototype = new IPython.Profile();
 
@@ -42,7 +54,6 @@ var IPython = (function (IPython) {
     };
 
     SMProfile.prototype.setCode = function (profileData) {
-
 
         var alg = "";
         algorithm = profileData.algorithm;

@@ -7,10 +7,12 @@ var IPython = (function (IPython) {
     "use strict";
 
     var platform = IPython.utils.platform;
+    var src_file;
 
-    var UnVisuDialog = function (cell_id) {
+    var UnVisuDialog = function (cell_id,src) {
         IPython.ProfileDialog.apply(this, [cell_id]);
         this.minidialogs = [];
+        src_file = src;
     };
 
     var json_msg;
@@ -124,7 +126,7 @@ var IPython = (function (IPython) {
 
     UnVisuDialog.prototype.update_graph= function(profile,type){
         json_msg = {
-            "datafile":"somout.csv",
+            "datafile":src_file,
             "statfile":"",
             "graphs":[
                 {
