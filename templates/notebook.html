@@ -402,7 +402,7 @@ class="notebook_app"
 {% block script %}
 
 {{super()}}
-<!--script type="text/javascript">
+<script type="text/javascript">
     $(function(){
         sweetAlert({
             title:"Welcome to Ananta!",
@@ -472,7 +472,7 @@ class="notebook_app"
             });
         });
     });
-</script-->
+</script>
 
 <script src="{{ static_url('components/google-caja/html-css-sanitizer-minified.js') }}" charset="utf-8"></script>
 <script src="{{ static_url('components/codemirror/lib/codemirror.js') }}" charset="utf-8"></script>
@@ -567,6 +567,8 @@ class="notebook_app"
 <script src="{{ static_url("notebook/js/ananta/labelEncodeDialog.js") }}" type="text/javascript" charset="utf-8"></script>
 <script src="{{ static_url("notebook/js/ananta/varianceThresholdDialog.js") }}" type="text/javascript" charset="utf-8"></script>
 <script src="{{ static_url("notebook/js/ananta/dropColumnsDialog.js") }}" type="text/javascript" charset="utf-8"></script>
+<script src="{{ static_url("notebook/js/ananta/UnVisuDialog.js") }}" type="text/javascript" charset="utf-8"></script>
+
 
 <script src="{{ static_url("notebook/js/d3/min.js") }}" type="text/javascript" charset="utf-8"></script>
 <script src="{{ static_url("notebook/js/d3/box.js") }}" type="text/javascript" charset="utf-8"></script>
@@ -590,4 +592,6 @@ class="notebook_app"
 <script src="{{ static_url("notebook/js/ananta/semanticdialog.js") }}" type="text/javascript" charset="utf-8"></script>
 <script src="{{ static_url("notebook/js/ananta/supervisedresult.js") }}" type="text/javascript" charset="utf-8"></script>
 <script src="{{ static_url("notebook/js/ananta/creategraph.js") }}" type="text/javascript" charset="utf-8"></script>
+
+
 {% endblock %}

@@ -86,11 +86,11 @@ var IPython = (function (IPython) {
                     }
                 },
                 {
-                    id : 'insert_dmp',
+                    id : 'insert_ump',
                     label : 'Insert Unsupervised Mining Profile',
                     icon : 'icon-fullscreen',
                     callback : function () {
-                        IPython.notebook.insert_profile('code','dmp');
+                        IPython.notebook.insert_profile('code','ump');
                         IPython.notebook.select_next();
                         IPython.notebook.focus_cell();
                     }

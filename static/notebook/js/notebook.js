@@ -764,7 +764,7 @@ var IPython = (function (IPython) {
                 if(gui_type === 'dtp'){
                     cell = new IPython.DTProfile(this.kernel);
                 }
-                if(gui_type === 'dmp'){
+                if(gui_type === 'ump'){
                     cell = new IPython.UMProfile(this.kernel);
                 }if(gui_type === 'smp'){
                     cell = new IPython.SMProfile(this.kernel);
@@ -882,7 +882,7 @@ var IPython = (function (IPython) {
             cell = new IPython.DTProfile(this.kernel);
         }else if(profile_type === 'drp') {
             cell = new IPython.DRProfile(this.kernel);
-        }else if(profile_type === 'dmp') {
+        }else if(profile_type === 'ump') {
             cell = new IPython.UMProfile(this.kernel);
         }else if (profile_type === 'smp'){
             cell = new IPython.SMProfile(this.kernel);
