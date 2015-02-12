@@ -1,7 +1,13 @@
-/**
- * Created by tiroshan on 1/22/15.
- */
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
+//============================================================================
+// Semantics Graph
+//============================================================================
 var width = 960,
     height = 500;
 
@@ -19,7 +25,6 @@ function SemanticSelectGrapgh(selection_1,selection_2){
 
             data_array[j] = [parseInt(object[property_1]),parseInt(object[property_2])];
         }
-        console.log(data_array[0]);
         createGraph(data_array);
     });
 

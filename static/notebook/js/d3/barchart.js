@@ -6,7 +6,7 @@
 //----------------------------------------------------------------------------
 
 //============================================================================
-// File Loading Profile
+// Bar Chart
 //============================================================================
 
 function barChartSelectGrapgh(file,selection){
@@ -118,11 +118,6 @@ function cratebarChar(values,column){
         .style("text-anchor", "middle")
         .text("Frequency of "+column);
 
-    d3.select("input").on("change", change);
-
-    function change() {
-        console.log("selected")
-    }
 }
 
 function maxMargin(data_array){

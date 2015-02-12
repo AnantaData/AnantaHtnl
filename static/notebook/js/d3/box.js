@@ -1,6 +1,16 @@
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
+
+//============================================================================
+// Box Plot - Box
+//============================================================================
+
 (function() {
 
-// Inspired by http://informationandvisualization.de/blog/box-plot
 d3.box = function() {
   var width = 1,
       height = 1,

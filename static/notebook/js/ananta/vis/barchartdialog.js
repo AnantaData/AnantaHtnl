@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
+
+//============================================================================
+// Bar Chart Dialog
+//============================================================================
+
 var IPython = (function (IPython) {
     "use strict";
 
@@ -13,7 +24,6 @@ var IPython = (function (IPython) {
     };
 
     BarChartDialog.prototype = new IPython.ProfileDialog();
-
 
     BarChartDialog.prototype.show_dialog = function (profile) {
 
@@ -32,7 +42,6 @@ var IPython = (function (IPython) {
                 },
                 Ok :{class : "btn-primary",
                     click: function(e) {
-                        //this_dialog.addStep(profile,this_dialog);
                         this_dialog.get_values(profile,e);
                         profile.visudialog.update_graph_list(profile);
                         profile.visudialog.minidialogs[this_dialog.graph_no] = this_dialog;
@@ -46,9 +55,6 @@ var IPython = (function (IPython) {
         this.set_dynamic_ui();
         this.set_values(profile);
         this.setInstruction();
-        //this.addStep(profile,this);
-        //$([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
-
     };
 
     BarChartDialog.prototype.setInstruction = function(){
@@ -58,9 +64,7 @@ var IPython = (function (IPython) {
 
     BarChartDialog.prototype.build_elements = function (profile) {
 
-
         var div = $('<div/>');
-
         this.graphNameInp_id = this.dialog_id+"graphname";
         this.statTabl_id = "stattable"+this.dialog_id;
 
@@ -180,7 +184,6 @@ var IPython = (function (IPython) {
 
     BarChartDialog.prototype.set_dynamic_ui =function(){
     };
-
 
     IPython.BarChartDialog = BarChartDialog;
 

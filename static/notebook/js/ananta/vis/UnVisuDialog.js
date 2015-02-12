@@ -1,7 +1,13 @@
-/**
- * Created by tiroshan on 2/11/15.
- */
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
+//============================================================================
+// Supervised / Unsupervised graph selection Dialog
+//============================================================================
 
 var IPython = (function (IPython) {
     "use strict";
@@ -26,9 +32,8 @@ var IPython = (function (IPython) {
         if(!element){return;}
         var form_div = this.build_elements(profile);
         element.append(form_div);
-        //var json_msg = this.update_graph(profile);
-
         var this_dialog = this;
+
         this.shortcut_dialog = IPython.dialog.modal({
             title : "Visualization Options",
             body : element,
