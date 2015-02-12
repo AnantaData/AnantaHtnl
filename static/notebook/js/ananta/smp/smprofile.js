@@ -36,7 +36,7 @@ var IPython = (function (IPython) {
     SMProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
-        this.profileheading.text('Supervised Mining Profile');
+        this.profileheading.text('Supervised Miner');
         this.profileheading[0].style.color="#04B486";
 
     };

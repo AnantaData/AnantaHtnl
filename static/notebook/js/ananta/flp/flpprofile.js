@@ -46,7 +46,7 @@ var IPython = (function (IPython) {
     FLProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
-        this.profileheading.text('File Loading Profile');
+        this.profileheading.text('File Loader');
         this.profileheading[0].style.color="#B404AE";
 
     };

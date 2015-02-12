@@ -45,7 +45,7 @@ var IPython = (function (IPython) {
     DRProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
-        this.profileheading.text('Data Reduction Profile');
+        this.profileheading.text('Data Reducer');
         this.profileheading[0].style.color="#610B4B";
 
     };
