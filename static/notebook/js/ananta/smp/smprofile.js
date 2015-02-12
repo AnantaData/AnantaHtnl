@@ -1,4 +1,13 @@
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
+//============================================================================
+// File Loading Profile
+//============================================================================
 
 var IPython = (function (IPython) {
 
@@ -19,8 +28,12 @@ var IPython = (function (IPython) {
             }
 
         };
-        this.profileData.visuData.datafile = this.profileData.fileNamePrefix+"data.csv"
-        this.profileData.visuData.statfile = this.profileData.fileNamePrefix+"stat.csv"
+
+        //this.profileData.visuData.datafile = this.profileData.fileNamePrefix+"data.csv"
+        //this.profileData.visuData.statfile = this.profileData.fileNamePrefix+"stat.csv"
+
+        this.settingsdialog = new IPython.UmpDialog(this.cell_id);
+        this.visudialog = new IPython.UnVisuDialog(this.cell_id,"somout.csv");
 
         //Dialog for profile settings
         this.settingsdialog = new IPython.SmpDialog(this.cell_id);
@@ -30,19 +43,17 @@ var IPython = (function (IPython) {
 
     };
 
-
     SMProfile.prototype = new IPython.Profile();
 
     SMProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
-        this.profileheading.text('Supervised Mining Profile');
+        this.profileheading.text('Supervised Miner');
         this.profileheading[0].style.color="#04B486";
 
     };
 
     SMProfile.prototype.setCode = function (profileData) {
-
 
         var alg = "";
         algorithm = profileData.algorithm;

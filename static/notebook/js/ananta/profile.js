@@ -24,8 +24,8 @@ var IPython = (function (IPython) {
         var inner_cell = $('<div />').addClass('inner_cell');
         this.celltoolbar = new IPython.CellToolbar(this);
         inner_cell.append(this.celltoolbar.element);
-        //var input_area = $('<div style="display: none;"/>').addClass('input_area');
-        var input_area = $('<div/>').addClass('input_area');
+        var input_area = $('<div style="display: none;"/>').addClass('input_area');
+        //var input_area = $('<div/>').addClass('input_area');
         this.code_mirror = CodeMirror(input_area.get(0), this.cm_config);
         $(this.code_mirror.getInputField()).attr("spellcheck", "false");
         inner_cell.append(input_area);
@@ -92,7 +92,7 @@ var IPython = (function (IPython) {
         this.b3 = $('<button id="'+this.b3id+'" title="Visualize Related Information" type="button" class="btn btn-default icon-eye-open"/>');
         this.b4 = $('<button id="'+this.b4id+'" title="Show Statistics" type="button" class="btn btn-default icon-signal"/>');
         this.b5 = $('<button id="'+this.b5id+'" title="Run Up To Here" type="button" class="btn btn-default icon-forward"/>');
-        var btngrp = $('<div class="btn-group profile-element" role="group" aria-label="..." style="align-content: center"></div>');
+        var btngrp = $('<div class="btn-group profile-element" role="group" aria-label="..." style="align-content: center;width: 30%"></div>');
 
         btngrp.append(this.b1).append(this.b2).append(this.b5).append(this.b3).append(this.b4);
 

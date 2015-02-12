@@ -2,11 +2,11 @@
 
 var IPython = (function (IPython) {
 
-    var DRProfile = function (kernel, options) {
+    var DTProfile = function (kernel, options) {
 
         IPython.Profile.apply(this,[kernel,options]);
 
-        this.gui_type = 'drp';
+        this.gui_type = 'dtp';
         this.profileData = {
             steps :[],
             fileNamePrefix:this.cell_id,
@@ -21,7 +21,7 @@ var IPython = (function (IPython) {
         this.profileData.visuData.statfile = this.profileData.fileNamePrefix+"stat.csv"
 
         //Dialog for profile settings
-        this.settingsdialog = new IPython.DrpDialog(this.cell_id);
+        this.settingsdialog = new IPython.DtpDialog(this.cell_id);
 
         //set the input code according to the profile data
         this.set_text(this.setCode(this.profileData));
@@ -29,33 +29,30 @@ var IPython = (function (IPython) {
     };
 
 
-    DRProfile.prototype = new IPython.Profile();
+    DTProfile.prototype = new IPython.Profile();
 
 
-    DRProfile.prototype.create_element = function () {
+    DTProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
-        this.profileheading.text('Data Reduction Profile');
+        this.profileheading.text('Data Transformer');
         this.profileheading[0].style.color="#610B4B";
-
     };
 
-    DRProfile.prototype.setCode = function(profileData){
-        var code = 'from ananta_base.base import *' +
-            '\nfrom ananta_base.data_cleaning_pan import DataCleaningProfile, UseGlobalConstantStep, IgnoreTupleStep, UseAttributeMeanStep, UseAttributeModeStep, UseAttributeMedianStep' +
-            '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
-            '\nfrom ananta_base.data_preparing import DataPreparingProfile, DataSortStep, DataSelectStep' +
+
+    DTProfile.prototype.setCode = function(profileData) {
+        var code =
+            '\nfrom ananta_base.data_transformation import DataTransformationProfile, LabelEncodingStep, BinningStep' +
             '\nfrom ananta_base.data_set import TrainingSet' +
-            '\nfrom ananta_base.data_reduction import DataReductionProfile, VarianceThresholdStep,DropColumnsByNameStep, SelectKBestStep' +
             '\nimport ananta_base.data_stat as stat' +
 
-            '\ndrp = DataReductionProfile()';
+            '\ndtp = DataTransformationProfile()';
         var stepCode = "";
         for(var i=0;i<profileData.steps.length;i++){
             stepCode+=this.addStepCode(profileData.steps[i]);
         }
         var endcode =
-            '\ndrp.execute(projects)' +
+            '\ndtp.execute(projects)' +
             '\nstat.getStatistics(projects,"'+profileData.fileNamePrefix+'")' +
             '\nprint "Profile Successfully Executed"' ;
 
@@ -63,10 +60,10 @@ var IPython = (function (IPython) {
         return code;
     };
 
-    DRProfile.prototype.addStepCode = function(stepData){
+    DTProfile.prototype.addStepCode = function(stepData){
         var stepType;
-        if(stepData.step_type == 'removeCol'){
-            stepType = 'DropColumnsByNameStep';
+        if(stepData.step_type == 'labelEn'){
+            stepType = 'LabelEncodingStep';
             var stepName = 'step'+stepData.step_no;
             var fields = '[';
             for(var i=0;i<stepData.fields.length;i++){
@@ -79,21 +76,10 @@ var IPython = (function (IPython) {
             fields +="]";
             var code =
                 '\n'+stepName+' = '+stepType+'('+fields+')' +
-                '\ndrp.addStep('+stepName+')';
+                '\ndtp.addStep('+stepName+')';
         }
-        if(stepData.step_type == 'varThresh'){
-            stepType = 'VarianceThresholdStep';
-            var stepName = 'step'+stepData.step_no;
-
-            var consts = stepData.var_threshold;
-
-            var code =
-                '\n'+stepName+' = '+stepType+'('+consts+')' +
-                '\ndrp.addStep('+stepName+')';
-        }
-        //this is only for supervised mining
-        if(stepData.step_type == 'kBest'){
-            stepType = 'SelectKBestStep';
+        if(stepData.step_type == 'binning'){
+            stepType = 'BinningStep';
             var stepName = 'step'+stepData.step_no;
             var fields = '[';
             for(var i=0;i<stepData.fields.length;i++){
@@ -101,23 +87,20 @@ var IPython = (function (IPython) {
                     fields +=','
                 }
                 fields += '"'+stepData.fields[i]+'"';
+
             }
             fields +="]";
             var code =
                 '\n'+stepName+' = '+stepType+'('+fields+')' +
-                '\ndrp.addStep('+stepName+')';
+                '\ndtp.addStep('+stepName+')';
         }
 
-        //for principal component analysis in Supervised learning
-        if(stepData.step_type == 'prinCom'){
-
-        }
         return code;
     };
 
-    IPython.DRProfile = DRProfile;
+    IPython.DTProfile = DTProfile;
 
     return IPython;
 }(IPython));
 
-////
+///

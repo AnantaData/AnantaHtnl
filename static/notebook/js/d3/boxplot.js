@@ -1,14 +1,20 @@
-/**
- * Created by lakmal on 1/11/15.
- */
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
+//============================================================================
+// Box Plot Graph
+//============================================================================
 
 
 function boxPlotSelectGrapgh(file,selection){
 
     var margin = {top: 30, right: 50, bottom: 20, left: 50},
         width = 150 - margin.left - margin.right,
-        height = 250 - margin.top - margin.bottom;
+        height = 240 - margin.top - margin.bottom;
 
     var min = Infinity,
         max = -Infinity;
@@ -25,17 +31,15 @@ function boxPlotSelectGrapgh(file,selection){
         var data_array = new Array();
         var element;
 
-        //var select_property = selection;
         for (j = 0; j < data.length; j++) {
             var object = data[j];
-            //var property = object_properties[select_property];
 
             element = parseInt(object[selection]);
             data_array.push(element);
             if (element>max) max = element;
             if (element<min) min = element;
         }
-        console.log(data_array);
+
         chart.domain([min, max]);
         if (isNaN(data_array[0])){
             console.log("NAN")
@@ -51,7 +55,6 @@ function crateboxplot(data,width,height,margin,chart,Coloumn){
 
     var svg = d3.select("#visualization-area").append("svg")
         .data(data)
-        //.enter().append("svg")
         .attr("class", "box")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.bottom + margin.top)

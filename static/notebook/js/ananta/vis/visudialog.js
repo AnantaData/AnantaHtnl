@@ -1,8 +1,13 @@
-/**
- * Created by tiroshan on 1/18/15.
- */
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
-
+//============================================================================
+// File Loading Profile
+//============================================================================
 
 var IPython = (function (IPython) {
     "use strict";
@@ -51,6 +56,10 @@ var IPython = (function (IPython) {
 
     };
 
+    /**
+     * Create Dialog box elements
+     */
+
     VisuDialog.prototype.build_elements = function (nb) {
         var div = $('<div/>');
         var left = $('<div class="stepinputui-left" />');
@@ -65,7 +74,6 @@ var IPython = (function (IPython) {
         this.graphListInp_id = this.dialog_id+"graphlist";
         this.editGraphBtn_id = this.dialog_id+"grapheditbtn";
         this.dletGraphBtn_id = this.dialog_id+"graphdletbtn";
-
 
         var graphTypeLbl = $('<label for="graphtype">Graph Type:</label>');
         var graphTypeInp = $('<select  name="graphtype"  size="10" >' +
@@ -104,7 +112,6 @@ var IPython = (function (IPython) {
     VisuDialog.prototype.retrive_elements = function(){
         this.graphTypeInp = $('#'+this.graphTypeInp_id);
         this.graphTypeBtn = $('#'+this.graphTypeBtn_id);
-
         this.graphListInp = $('#'+this.graphListInp_id);
         this.editGraphBtn = $('#'+this.editGraphBtn_id);
         this.dletGraphBtn = $('#'+this.dletGraphBtn_id);
@@ -137,14 +144,12 @@ var IPython = (function (IPython) {
             }else if(selected == 'hexBinn'){
                 minidialog = new IPython.HexBinningDialog(profile.cell_id,graph_no);
             }
-            //that.minidialogs[step_no].show_dialog(profile);
             minidialog.show_dialog(profile);
         });
         this.editGraphBtn.click(function(){
             var that = profile.visudialog;
             var graph_no = profile.visudialog.graphListInp[0].selectedIndex;
             window.alert(graph_no);
-            //window.alert(that.minidialogs);
             if(graph_no>that.minidialogs.length-1){
                 for(var i=0;i<profile.profileData.visuData.graphs.length;i++) {
                     var selected = profile.profileData.visuData.graphs[i].graph_type;

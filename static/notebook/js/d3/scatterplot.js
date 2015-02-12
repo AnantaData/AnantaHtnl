@@ -1,9 +1,13 @@
-/**
- * Created by tiroshan on 1/22/15.
- */
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
-
-
+//============================================================================
+// Scatter Plot Graph
+//============================================================================
 function scatterplotCreateGrapgh(file) {
 
     var margin = {top: 70, right: 20, bottom: 40, left: 50};
@@ -48,8 +52,6 @@ function scatterplotCreateGrapgh(file) {
         y.domain(d3.extent(data, function (d) {
             return d.y;
         })).nice();
-
-        //console.log("X "+x(0)+" Y"+y(0));
 
         //draw X axis
         svg.append("g")

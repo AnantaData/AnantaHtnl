@@ -1,21 +1,32 @@
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
+
+//============================================================================
+// Box Plot Dialog
+//============================================================================
+
 var IPython = (function (IPython) {
     "use strict";
 
     var platform = IPython.utils.platform;
 
-    var BarChartDialog = function (cell_id,graph_no ) {
+    var BoxPlotDialog = function (cell_id,graph_no ) {
         IPython.ProfileDialog.apply(this, [cell_id]);
         this.cell_id = cell_id;
-        this.graph_type = "barChrt";
-        this.graph_show_name = "Bar Chart";
+        this.graph_type = "boxPlot";
+        this.graph_show_name = "Box Plot";
         this.dialog_id = cell_id+"_"+this.graph_type+"_"+graph_no+(new Date()).valueOf().toString()+"_";
         this.graph_no = graph_no;
     };
 
-    BarChartDialog.prototype = new IPython.ProfileDialog();
+    BoxPlotDialog.prototype = new IPython.ProfileDialog();
 
 
-    BarChartDialog.prototype.show_dialog = function (profile) {
+    BoxPlotDialog.prototype.show_dialog = function (profile) {
 
         var element = IPython.ProfileDialog.prototype.show_dialog.apply(this, []);
         if(!element){return;}
@@ -24,7 +35,7 @@ var IPython = (function (IPython) {
 
         var this_dialog = this;
         this.shortcut_dialog = IPython.minidialog.modal({
-            title : "Bar Chart Plotter",
+            title : "Box Plotter",
             body : element,
             destroy : false,
             buttons : {
@@ -32,7 +43,6 @@ var IPython = (function (IPython) {
                 },
                 Ok :{class : "btn-primary",
                     click: function(e) {
-                        //this_dialog.addStep(profile,this_dialog);
                         this_dialog.get_values(profile,e);
                         profile.visudialog.update_graph_list(profile);
                         profile.visudialog.minidialogs[this_dialog.graph_no] = this_dialog;
@@ -46,21 +56,16 @@ var IPython = (function (IPython) {
         this.set_dynamic_ui();
         this.set_values(profile);
         this.setInstruction();
-        //this.addStep(profile,this);
-        //$([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
-
     };
 
-    BarChartDialog.prototype.setInstruction = function(){
+    BoxPlotDialog.prototype.setInstruction = function(){
         this.documentation.text('TGive the names of the fields where unfilled data tuples should be removed'+
         '.')
     };
 
-    BarChartDialog.prototype.build_elements = function (profile) {
-
+    BoxPlotDialog.prototype.build_elements = function (profile) {
 
         var div = $('<div/>');
-
         this.graphNameInp_id = this.dialog_id+"graphname";
         this.statTabl_id = "stattable"+this.dialog_id;
 
@@ -98,18 +103,17 @@ var IPython = (function (IPython) {
                 tabulate_2(this.statTabl_id, "");
             }
         }
-
         return div;
     };
 
-    BarChartDialog.prototype.retrive_elements = function(){
+    BoxPlotDialog.prototype.retrive_elements = function(){
         this.graphNameInp = $('#'+this.graphNameInp_id);
         this.statTabl = $('#'+this.statTabl_id);
         this.errDoc = $('#'+this.errorDoc_id);
         this.documentation = $('#'+this.documentation_id);
     };
 
-    BarChartDialog.prototype.get_values = function(profile){
+    BoxPlotDialog.prototype.get_values = function(profile){
 
         this.errDoc.hide();
         var graphData = {
@@ -124,7 +128,7 @@ var IPython = (function (IPython) {
         profile.profileData.visuData.graphs[this.graph_no] = graphData;
     };
 
-    BarChartDialog.prototype.set_values =function(profile){
+    BoxPlotDialog.prototype.set_values =function(profile){
         var graphData = {
             graph_no : this.graph_no,
             graph_type : this.graph_type,
@@ -141,7 +145,7 @@ var IPython = (function (IPython) {
 
     };
 
-    BarChartDialog.prototype.getCheckedValues = function(){
+    BoxPlotDialog.prototype.getCheckedValues = function(){
         var fields = [];
         var row = this.statTabl[0].children[1].children;
         for(var i=0;i<row.length;i++){
@@ -154,7 +158,7 @@ var IPython = (function (IPython) {
         return fields;
     };
 
-    BarChartDialog.prototype.setCheckedValues = function(profile,fields){
+    BoxPlotDialog.prototype.setCheckedValues = function(profile,fields){
         var checked = [];
         var rows = profile.fields.length;
         for(var j=0;j<rows;j++){
@@ -172,17 +176,16 @@ var IPython = (function (IPython) {
         tabulate_3(this.statTabl_id,profile.profileData.fileNamePrefix,checked);
     };
 
-    BarChartDialog.prototype.addGraph =function(profile, this_dialog){
+    BoxPlotDialog.prototype.addGraph =function(profile, this_dialog){
         this_dialog.get_values(profile);
-        profile.visudialog.update_graph_list(profile);
-        profile.visudialog.minidialogs[this_dialog.graph_no] = this_dialog;
+        profile.settingsdialog.update_graph_list(profile);
+        profile.settingsdialog.minidialogs[this_dialog.graph_no] = this_dialog;
     };
 
-    BarChartDialog.prototype.set_dynamic_ui =function(){
+    BoxPlotDialog.prototype.set_dynamic_ui =function(){
     };
 
-
-    IPython.BarChartDialog = BarChartDialog;
+    IPython.BoxPlotDialog = BoxPlotDialog;
 
     return IPython;
 
