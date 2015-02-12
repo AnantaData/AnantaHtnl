@@ -2,6 +2,13 @@
 
 var IPython = (function (IPython) {
 
+    /**
+     *
+     * @param kernel
+     * @param options
+     * @constructor
+     */
+
     var DRProfile = function (kernel, options) {
 
         IPython.Profile.apply(this,[kernel,options]);
@@ -28,7 +35,10 @@ var IPython = (function (IPython) {
 
     };
 
-
+    /**
+     *
+     * @type {IPython.Profile}
+     */
     DRProfile.prototype = new IPython.Profile();
 
 
