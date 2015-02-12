@@ -1,9 +1,19 @@
-/**
- * Created by lakmal on 2/3/15.
- */
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
+
+//============================================================================
+// Mini Dialog
+//============================================================================
 
 IPython.namespace('IPython.minidialog');
 
+/**
+ * The Mini Dialog is the parent class of all the mini dialogs appear under a profile
+ */
 IPython.minidialog = (function (IPython) {
     "use strict";
 

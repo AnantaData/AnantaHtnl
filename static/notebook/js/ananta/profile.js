@@ -1,16 +1,38 @@
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
+//============================================================================
+// Profile
+//============================================================================
 
 var IPython = (function (IPython) {
 
+    /**
+     * The Profile is extended from codecell class of IPython
+     * @param kernel
+     * @param options
+     * @constructor
+     */
     var Profile = function (kernel, options) {
 
         IPython.CodeCell.apply(this,[kernel,options]);
         this.visudialog = new IPython.VisuDialog(this.cell_id);
     };
 
+    /**
+     * The Profile is extended from codecell class of IPython
+     * @type {IPython.CodeCell}
+     */
     Profile.prototype = new IPython.CodeCell();
 
-
+    /**
+     * Basic profile elements and events are created here
+     * The five buttons, instructions and the error documentation are added
+     */
     Profile.prototype.create_element = function () {
 
         IPython.Cell.prototype.create_element.apply(this, arguments);
@@ -54,32 +76,6 @@ var IPython = (function (IPython) {
         var output = $('<div></div>');
         var visdiv = $('<div id="flpvisdiv"></div>');
 
-        /*change color according to the profile type */
-
-        //alert(this.gui_type);
-        /*switch(this.gui_type){
-            case "flp":
-                color = "#E2A9F3";
-                break;
-            case "dcp":
-                color = "#9F81F7";
-                break;
-            case "Data Reduction Profile":
-                color = "#819FF7";
-                break;
-            case "Data Transformation Profile":
-                color = "#81DAF5";
-                break;
-            case "Unsupervised Mining Profile":
-                color = "#81F7D8";
-                break;
-            case "Supervised Mining Profile":
-                color = "#81F79F";
-                break;
-            default:
-                color="#000000";
-        }*/
-
 
         this.b1id = this.cell_id+"flpSetBtn";
         this.b2id = this.cell_id+"flpExcBtn";
@@ -96,15 +92,11 @@ var IPython = (function (IPython) {
 
         btngrp.append(this.b1).append(this.b2).append(this.b5).append(this.b3).append(this.b4);
 
-        //var left = $('<div id="sidebuttons" ></div>');
         var brk = $('<br>');
-        //var right = $('<div id="visarea" "></div>');
         var full = $('<div></div>');
 
-        //right.append(this.profileheading);
         full.addClass('clear');
         output.addClass('profile-element');
-        //left.append(prompt)
         full.append(prompt).append(this.profileheading).append(btngrp).append(input).append(widget_area).append(output).append(visdiv);
         cell.append(full);
 
@@ -129,7 +121,6 @@ var IPython = (function (IPython) {
         });
         this.b4.click(function(e){
             e.preventDefault();
-            //$("#stat_table")[0].children[1].empty();
             var table = $("#stat_table")[0];
             var tbody = table.children[1];
             var len = tbody.children.length;
@@ -145,13 +136,18 @@ var IPython = (function (IPython) {
         });
         this.b5.click(function(e){
             IPython.notebook.execute_cells_above_and_me();
-            //IPython.notebook.execute_cell();
+
         });
 
 
     };
 
-
+    /**
+     * Set input prompt
+     * @param prompt_value
+     * @param lines_number
+     * @returns {string}
+     */
     Profile.input_prompt_classical = function (prompt_value, lines_number) {
         var ns;
         if (prompt_value === undefined) {
@@ -162,15 +158,22 @@ var IPython = (function (IPython) {
         return 'Profile&nbsp;[' + ns + ']:';
     };
 
+    /**
+     * Load Profile from JSON file
+     * @param data
+     */
     Profile.prototype.fromJSON = function (data) {
-        //if(data.gui_type ==='flp'){
-            IPython.CodeCell.prototype.fromJSON.apply(this, arguments);
-            this.gui_type = data.gui_type;
-            this.profileData = data.profileData;
-        //}
+
+        IPython.CodeCell.prototype.fromJSON.apply(this, arguments);
+        this.gui_type = data.gui_type;
+        this.profileData = data.profileData;
+
     };
 
-
+    /**
+     * Save profile to JSON file
+     * @returns {*|string|Object}
+     */
     Profile.prototype.toJSON = function () {
         var data = IPython.CodeCell.prototype.toJSON.apply(this);
 
@@ -179,7 +182,10 @@ var IPython = (function (IPython) {
         return data;
     };
 
-
+    /**
+     * class as a variable
+     * @type {Function}
+     */
     IPython.Profile = Profile;
 
     return IPython;

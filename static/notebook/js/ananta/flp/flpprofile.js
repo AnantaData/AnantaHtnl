@@ -11,6 +11,13 @@
 
 var IPython = (function (IPython) {
 
+    /**
+     * The constructor of File Loading Profile
+     * @param kernel
+     * @param options
+     * @constructor
+     */
+
     var FLProfile = function (kernel, options) {
 
         //Inherit from Profile class
@@ -39,10 +46,15 @@ var IPython = (function (IPython) {
 
     };
 
-
+    /**
+     * File Loading profile is extended from Profile class
+     * @type {IPython.Profile}
+     */
     FLProfile.prototype = new IPython.Profile();
 
-
+    /**
+     * The additional elements to profile element
+     */
     FLProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
@@ -51,6 +63,11 @@ var IPython = (function (IPython) {
 
     };
 
+    /**
+     * File Loading code is set here
+     * @param profileData
+     * @returns {string}
+     */
     FLProfile.prototype.setCode = function(profileData){
         var imports =
             '\nfrom ananta_base.data_io import FileLoadingProfile, FileLoadStep' +
@@ -68,7 +85,10 @@ var IPython = (function (IPython) {
         return imports+code;
     }
 
-
+    /**
+     * class as a variable
+     * @type {Function}
+     */
     IPython.FLProfile = FLProfile;
 
     return IPython;

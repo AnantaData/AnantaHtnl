@@ -1,8 +1,12 @@
-// Copyright (c) IPython Development Team.
-// Distributed under the terms of the Modified BSD License.
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
 //============================================================================
-// QuickHelp button
+// File Loading Profile Dialog
 //============================================================================
 
 var IPython = (function (IPython) {
@@ -10,12 +14,25 @@ var IPython = (function (IPython) {
 
     var platform = IPython.utils.platform;
 
+    /**
+     * The constructor of FlpDialog,  this class is extended from ProfileDialog
+     * @param cell_id
+     * @constructor
+     */
     var FlpDialog = function (cell_id) {
         IPython.ProfileDialog.apply(this, [cell_id]);
     };
 
+    /**
+     * This class is extended from ProfileDialog
+     * @type {IPython.ProfileDialog}
+     */
     FlpDialog.prototype = new IPython.ProfileDialog();
 
+    /**
+     * This method shows the dialog, all the html elements, events are created here
+     * @param profile
+     */
     FlpDialog.prototype.show_dialog = function (profile) {
 
         var element = IPython.ProfileDialog.prototype.show_dialog.apply(this, []);
@@ -32,7 +49,7 @@ var IPython = (function (IPython) {
                 Close : {},
                 Ok :{class : "btn-primary",
                     click: function(e) {
-                        this_dialog.get_values(profile, e);
+                        return this_dialog.get_values(profile, e);
                     }
                 }
             }
@@ -49,7 +66,9 @@ var IPython = (function (IPython) {
 
     };
 
-
+    /**
+     * The instruction for the dialog user
+     */
     FlpDialog.prototype.setInstruction = function(){
         this.documentation.text('The File Loading Profile Should be given two inputs. <b>File Type</b> '+
         'which can be csv, txt, json etc.'+
@@ -57,6 +76,11 @@ var IPython = (function (IPython) {
         '.')
     };
 
+    /**
+     * This method is called inside the show dialog method and create all the HTML elements
+     * @param profile
+     * @returns {*|jQuery|HTMLElement}
+     */
     FlpDialog.prototype.build_elements = function (profile) {
         var div = $('<div/>');
 
@@ -90,6 +114,9 @@ var IPython = (function (IPython) {
         return div;
     };
 
+    /**
+     * All the html elements are called from there id using jquery
+     */
     FlpDialog.prototype.retrive_elements = function(){
         this.fileTypeInp = $('#'+this.fileTypeInp_id);
         this.fileLoctInp = $('#'+this.fileLoctInp_id);
@@ -99,6 +126,12 @@ var IPython = (function (IPython) {
         this.documentation = $('#'+this.documentation_id);
     };
 
+    /**
+     * when the dialog is finished the values obtained are stored
+     * @param profile
+     * @param e
+     * @returns {boolean}
+     */
     FlpDialog.prototype.get_values = function(profile, e){
 
         this.errDoc.hide();
@@ -131,12 +164,19 @@ var IPython = (function (IPython) {
         return false;
     };
 
+    /**
+     * The stored values are set in the GUI, when loading a profile
+     * @param profile
+     */
     FlpDialog.prototype.set_values =function(profile){
         $('#'+this.fileTypeInp_id+' option[value="' + profile.profileData.fileType + '"]').prop('selected', true);
         this.fileLoctInp.val(profile.profileData.fileLoc);
         this.fileNameTxt.val(profile.profileData.fileName);
     };
 
+    /**
+     * Set dynamic elements of ui
+     */
     FlpDialog.prototype.set_dynamic_ui =function(){
         var this_dialog = this;
         this.fileNameInp.change(function(){
@@ -144,6 +184,10 @@ var IPython = (function (IPython) {
         });
     };
 
+    /**
+     * class variable
+     * @type {Function}
+     */
     IPython.FlpDialog = FlpDialog;
 
     return IPython;

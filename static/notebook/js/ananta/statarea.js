@@ -1,4 +1,17 @@
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
+//============================================================================
+// Statistics related methods
+//============================================================================
+
+/**
+ * populate evaluation results to table
+ */
 function populate_eval(){
 
     d3.csv("stat.csv",function(data){
@@ -32,6 +45,10 @@ function populate_eval(){
 
 }
 
+/**
+ * Tabulate data to table without any change
+ * @param filenameprefix
+ */
 function tabulate(filenameprefix){
     d3.csv(filenameprefix+"stat.csv", function(data) {
         // the columns you'd like to display
@@ -73,6 +90,11 @@ function tabulate(filenameprefix){
 
 }
 
+/**
+ * Tabulate data to table with check box
+ * @param stattableid
+ * @param filenameprefix
+ */
 function tabulate_2(stattableid,filenameprefix){
     var table_id = "#"+stattableid;
     d3.csv(filenameprefix+"stat.csv", function(data) {
@@ -128,6 +150,12 @@ function tabulate_2(stattableid,filenameprefix){
 
 }
 
+/**
+ * Tabulate data to table with checkboxes with checked values
+ * @param stattableid
+ * @param filenameprefix
+ * @param checked
+ */
 function tabulate_3(stattableid,filenameprefix,checked){
     var table_id = "#"+stattableid;
     d3.csv(filenameprefix+"stat.csv", function(data) {
@@ -189,6 +217,11 @@ function tabulate_3(stattableid,filenameprefix,checked){
 
 }
 
+/**
+ * Tabulate types data to table with checkboxes
+ * @param stattableid
+ * @param filenameprefix
+ */
 function tabulate_4(stattableid,filenameprefix){
     var table_id = "#"+stattableid;
     d3.csv(filenameprefix+"types.csv", function(data) {
@@ -244,6 +277,12 @@ function tabulate_4(stattableid,filenameprefix){
 
 }
 
+/**
+ * Tabulate types data to a table with checkboxes
+ * @param stattableid
+ * @param filenameprefix
+ * @param checked
+ */
 function tabulate_5(stattableid,filenameprefix,checked){
     var table_id = "#"+stattableid;
     d3.csv(filenameprefix+"types.csv", function(data) {
@@ -305,7 +344,10 @@ function tabulate_5(stattableid,filenameprefix,checked){
 
 }
 
-
+/**
+ * ajax call to get names of the fileds in the data set
+ * @returns {Array}
+ */
 function getFields(){
     var fields = [];
     $.ajax({
@@ -330,6 +372,11 @@ function getFields(){
     return fields;
 }
 
+/**
+ * ajax call to get the updated names of the fields in the data set
+ * @param filenameprefix
+ * @returns {Array}
+ */
 function getFields_New(filenameprefix){
     var fields = [];
     $.ajax({
@@ -354,6 +401,11 @@ function getFields_New(filenameprefix){
     return fields;
 }
 
+/**
+ * check whether the stat file is there
+ * @param filenameprefix
+ * @returns {boolean}
+ */
 function isStatFileExist(filenameprefix){
     var avlbl = false;
     $.ajax({
@@ -373,6 +425,11 @@ function isStatFileExist(filenameprefix){
     return avlbl;
 }
 
+/**
+ * check whether the types file is there
+ * @param filenameprefix
+ * @returns {boolean}
+ */
 function isTypesFileExist(filenameprefix){
     var avlbl = false;
     $.ajax({
