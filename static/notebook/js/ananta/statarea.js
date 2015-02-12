@@ -363,11 +363,11 @@ function getFields(){
             fields.push({name:field_data[0],type:field_data[1]})
         }
     }).done(function() {
-        alert( "success" );
+        //alert( "success" );
     }).fail(function() {
-        alert( "error" );
+        //alert( "error" );
     }).always(function() {
-        alert( "complete" );
+        //alert( "complete" );
     });
     return fields;
 }
@@ -392,11 +392,11 @@ function getFields_New(filenameprefix){
             fields.push({name:field_data[0],type:field_data[1]})
         }
     }).done(function() {
-        alert( "success" );
+        //alert( "success" );
     }).fail(function() {
-        alert( "error" );
+        //alert( "error" );
     }).always(function() {
-        alert( "complete" );
+        //alert( "complete" );
     });
     return fields;
 }
@@ -416,11 +416,11 @@ function isStatFileExist(filenameprefix){
     }).success(function (csvd) {
         avlbl = true;
     }).done(function() {
-        alert( "success" );
+        //alert( "success" );
     }).fail(function() {
-        alert( "fail" );
+        //alert( "fail" );
     }).always(function() {
-        alert( "complete" );
+        //alert( "complete" );
     });
     return avlbl;
 }
@@ -440,11 +440,11 @@ function isTypesFileExist(filenameprefix){
     }).success(function (csvd) {
         avlbl = true;
     }).done(function() {
-        alert( "success" );
+        //alert( "success" );
     }).fail(function() {
-        alert( "fail" );
+        //alert( "fail" );
     }).always(function() {
-        alert( "complete" );
+        //alert( "complete" );
     });
     return avlbl;
 }

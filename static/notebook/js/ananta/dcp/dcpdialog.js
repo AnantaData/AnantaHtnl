@@ -125,7 +125,7 @@ var IPython = (function (IPython) {
             var that = profile.settingsdialog;
             var selected = that.stepTypeInp.val();
             var step_no = profile.profileData.steps.length;
-            window.alert(step_no);
+            //window.alert(step_no);
             var minidialog;
             if(selected == 'ignTupl'){
                 //that.minidialogs[step_no] = new IPython.IgnTuplDialog(profile.cell_id,step_no);
@@ -145,7 +145,7 @@ var IPython = (function (IPython) {
         this.editStepBtn.click(function(){
             var that = profile.settingsdialog;
             var step_no = profile.settingsdialog.stepListInp[0].selectedIndex;
-            window.alert(step_no);
+            //window.alert(step_no);
             //window.alert(that.minidialogs);
             if(step_no>that.minidialogs.length-1){
                 for(var i=0;i<profile.profileData.steps.length;i++) {

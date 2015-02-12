@@ -123,7 +123,7 @@ var IPython = (function (IPython) {
             var that = profile.visudialog;
             var selected = that.graphTypeInp.val();
             var graph_no = profile.profileData.visuData.graphs.length;
-            window.alert(graph_no);
+            //window.alert(graph_no);
             var minidialog;
             this_dialog.update_graph(profile,selected);
         });

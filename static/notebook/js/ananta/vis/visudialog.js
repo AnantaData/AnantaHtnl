@@ -133,7 +133,7 @@ var IPython = (function (IPython) {
             var that = profile.visudialog;
             var selected = that.graphTypeInp.val();
             var graph_no = profile.profileData.visuData.graphs.length;
-            window.alert(graph_no);
+            //window.alert(graph_no);
             var minidialog;
             if(selected == 'barChrt'){
                 minidialog = new IPython.BarChartDialog(profile.cell_id,graph_no);
@@ -149,7 +149,7 @@ var IPython = (function (IPython) {
         this.editGraphBtn.click(function(){
             var that = profile.visudialog;
             var graph_no = profile.visudialog.graphListInp[0].selectedIndex;
-            window.alert(graph_no);
+            //window.alert(graph_no);
             if(graph_no>that.minidialogs.length-1){
                 for(var i=0;i<profile.profileData.visuData.graphs.length;i++) {
                     var selected = profile.profileData.visuData.graphs[i].graph_type;

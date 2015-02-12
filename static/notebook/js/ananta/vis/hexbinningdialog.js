@@ -59,7 +59,7 @@ var IPython = (function (IPython) {
         this.shortcut_dialog.addClass("modal_stretch");
 
         $("#filename").change(function(){
-            window.alert("chosen");
+            //window.alert("chosen");
             $('#filenametxt').val($('#filename')[0].files[0].name);
         });
 

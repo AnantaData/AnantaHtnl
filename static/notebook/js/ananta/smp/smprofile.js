@@ -57,7 +57,7 @@ var IPython = (function (IPython) {
 
         var alg = "";
         algorithm = profileData.algorithm;
-        alert(profileData.algorithm)
+        //alert(profileData.algorithm)
         if (algorithm == 'logit') {
             alg = 'TrainLogitStep()';
         }

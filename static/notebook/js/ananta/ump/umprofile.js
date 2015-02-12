@@ -39,7 +39,7 @@ var IPython = (function (IPython) {
         var alg = "";
         var scheme="MapEvalStep()";
         algorithm = profileData.algorithm;
-        alert(profileData.algorithm)
+        //alert(profileData.algorithm)
         if (algorithm == 'kgsom') {
             alg = 'KGSOMStep(np.array(projects.data).shape[1])';
         }
