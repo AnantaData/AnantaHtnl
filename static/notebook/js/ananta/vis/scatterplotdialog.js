@@ -1,3 +1,14 @@
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
+
+//============================================================================
+// Scatter Plot Graph Dialog
+//============================================================================
+
 var IPython = (function (IPython) {
     "use strict";
 
@@ -8,7 +19,6 @@ var IPython = (function (IPython) {
 
 
     ScatterPlotDialog.prototype.show_dialog = function (nb) {
-        // toggles display of keyboard shortcut dialog
         var prof = nb;
         var that = this;
         if ( this.force_rebuild ) {
@@ -21,11 +31,6 @@ var IPython = (function (IPython) {
             $(this.shortcut_dialog).modal("toggle");
             return;
         }
-
-        /*var command_shortcuts = IPython.keyboard_manager.command_shortcuts.help();
-         var edit_shortcuts = IPython.keyboard_manager.edit_shortcuts.help();
-         var help, shortcut;
-         var i, half, n;*/
 
         var element =  $('<div id="scattervisdiv"></div>');
 
@@ -55,17 +60,7 @@ var IPython = (function (IPython) {
         });
         this.shortcut_dialog.addClass("modal_stretch");
 
-        //$("#filename").change(function(){
-        //    window.alert("chosen");
-        //    $('#filenametxt').val($('#filename')[0].files[0].name);
-        //});
-
         $([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
-
-
-        //$('#filetype option[value="' + nb.fileType + '"]').prop('selected', true);
-        //$('#fileloc').val(nb.fileLoc);
-        //$('#filenametxt').val(nb.fileName);
 
     };
 

@@ -1,9 +1,13 @@
-/**
- * Created by tiroshan on 1/21/15.
- */
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
-//var datalenght = 2000
-
+//============================================================================
+// Hex Binning Graph
+//============================================================================
 var margin = {top: 70, right: 20, bottom: 40, left: 50};
 
 function hexBinningCreateGrapgh(file) {
@@ -25,11 +29,6 @@ function hexBinningCreateGrapgh(file) {
             point_x[i] = new Array(x[i]);
             point_y[i] = new Array(y[i]);
         }
-
-        console.log("point x"+point_x+" point y "+point_y);
-
-        console.log(width+"   "+height);
-
         createHexBinChart(point_x,point_y,colorlabel,height,width);
     });
 
@@ -74,6 +73,11 @@ function createHexBinChart(x_arr,y_arr,colorlabel_arr,height,width){
     var color_green = d3.scale.linear()
         .domain([0, 20])
         .range(["white", "green"])
+        .interpolate(d3.interpolateLab);
+
+    var color = d3.scale.linear()
+        .domain([0, 3])
+        .range(["yellow", "darkred"])
         .interpolate(d3.interpolateLab);
 
     var x = d3.scale.linear()
@@ -149,8 +153,8 @@ function createHexBinChart(x_arr,y_arr,colorlabel_arr,height,width){
         .attr("class", "hexagon")
         .attr("d", hexbin.hexagon())
         .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-        .style("fill", function(d,i) { if(colorlabel_arr[i]=="g"){ return color_green(d.length); } else if(colorlabel_arr[i]=="r"){return color_red(d.length)} else{ return color_blue(d.length);} });
-
+        //.style("fill", function(d,i) { if(colorlabel_arr[i]=="g"){ return color_green(d.length); } else if(colorlabel_arr[i]=="r"){return color_red(d.length)} else{ return color_blue(d.length);} });
+        .style("fill", function(d,i) { return color(d.length);});
     svg.append("text")
         .attr("class", "label")
         .attr("x", width)
@@ -174,8 +178,6 @@ function maxMargin_x(data_array){
     {
         slots_maxx = Math.max(slots_maxx,data_array[s]);
     }
-
-
     return(slots_maxx);
 }
 
@@ -185,8 +187,6 @@ function maxMargin_y(data_array){
     {
         slots_maxy = Math.max(slots_maxy,data_array[s]);
     }
-
-
     return(slots_maxy);
 }
 

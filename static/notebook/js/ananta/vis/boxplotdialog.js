@@ -1,6 +1,13 @@
-/**
- * Created by tiroshan on 1/21/15.
- */
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
+
+//============================================================================
+// Box Plot Dialog
+//============================================================================
 
 var IPython = (function (IPython) {
     "use strict";
@@ -36,7 +43,6 @@ var IPython = (function (IPython) {
                 },
                 Ok :{class : "btn-primary",
                     click: function(e) {
-                        //this_dialog.addStep(profile,this_dialog);
                         this_dialog.get_values(profile,e);
                         profile.visudialog.update_graph_list(profile);
                         profile.visudialog.minidialogs[this_dialog.graph_no] = this_dialog;
@@ -50,9 +56,6 @@ var IPython = (function (IPython) {
         this.set_dynamic_ui();
         this.set_values(profile);
         this.setInstruction();
-        //this.addStep(profile,this);
-        //$([IPython.events]).on('rebuild.QuickHelp', function() { that.force_rebuild = true;});
-
     };
 
     BoxPlotDialog.prototype.setInstruction = function(){
@@ -62,9 +65,7 @@ var IPython = (function (IPython) {
 
     BoxPlotDialog.prototype.build_elements = function (profile) {
 
-
         var div = $('<div/>');
-
         this.graphNameInp_id = this.dialog_id+"graphname";
         this.statTabl_id = "stattable"+this.dialog_id;
 
@@ -92,10 +93,6 @@ var IPython = (function (IPython) {
         statTabl.attr('id',this.statTabl_id);
 
         div.append(graphNameInp).append(statTabl);
-
-        //if(profile.profileData.visuData.graphs.length < (this.graph_no+1)){
-         //   tabulate_2(this.statTabl_id,profile.profileData.fileNamePrefix);
-        //}
 
         if(profile.profileData.visuData.graphs.length < (this.step_no+1)){
             console.log(profile.profileData.fileNamePrefix);
@@ -187,7 +184,6 @@ var IPython = (function (IPython) {
 
     BoxPlotDialog.prototype.set_dynamic_ui =function(){
     };
-
 
     IPython.BoxPlotDialog = BoxPlotDialog;
 

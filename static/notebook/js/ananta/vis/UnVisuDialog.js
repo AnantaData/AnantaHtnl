@@ -1,16 +1,24 @@
-/**
- * Created by tiroshan on 2/11/15.
- */
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
+//============================================================================
+// Supervised / Unsupervised graph selection Dialog
+//============================================================================
 
 var IPython = (function (IPython) {
     "use strict";
 
     var platform = IPython.utils.platform;
+    var src_file;
 
-    var UnVisuDialog = function (cell_id) {
+    var UnVisuDialog = function (cell_id,src) {
         IPython.ProfileDialog.apply(this, [cell_id]);
         this.minidialogs = [];
+        src_file = src;
     };
 
     var json_msg;
@@ -24,9 +32,8 @@ var IPython = (function (IPython) {
         if(!element){return;}
         var form_div = this.build_elements(profile);
         element.append(form_div);
-        //var json_msg = this.update_graph(profile);
-
         var this_dialog = this;
+
         this.shortcut_dialog = IPython.dialog.modal({
             title : "Visualization Options",
             body : element,
@@ -124,7 +131,7 @@ var IPython = (function (IPython) {
 
     UnVisuDialog.prototype.update_graph= function(profile,type){
         json_msg = {
-            "datafile":"somout.csv",
+            "datafile":src_file,
             "statfile":"",
             "graphs":[
                 {

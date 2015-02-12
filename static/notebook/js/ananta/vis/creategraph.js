@@ -1,7 +1,13 @@
-/**
- * Created by tiroshan on 2/7/15.
- */
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
+//============================================================================
+// Create Graph module - message passing interface for graphs
+//============================================================================
 function visualize(visuData){
 
     $('#visualization-area').empty();

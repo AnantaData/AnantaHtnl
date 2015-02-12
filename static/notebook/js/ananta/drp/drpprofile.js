@@ -94,20 +94,11 @@ var IPython = (function (IPython) {
         if(stepData.step_type == 'varThresh'){
             stepType = 'VarianceThresholdStep';
             var stepName = 'step'+stepData.step_no;
-            var fields = '[';
-            var consts = '[';
-            for(var i=0;i<stepData.fields.length;i++){
-                if(i!=0){
-                    fields +=','
-                    consts +=','
-                }
-                fields += '"'+stepData.fields[i]+'"';
-                consts += stepData.global_const;
-            }
-            fields +="]";
-            consts +="]";
+
+            var consts = stepData.var_threshold;
+
             var code =
-                '\n'+stepName+' = '+stepType+'('+consts+','+fields+')' +
+                '\n'+stepName+' = '+stepType+'('+consts+')' +
                 '\ndrp.addStep('+stepName+')';
         }
         //this is only for supervised mining

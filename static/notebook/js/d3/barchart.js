@@ -1,28 +1,25 @@
-/**
- * Created by tiroshan on 1/21/15.
- */
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
-var values;
+//============================================================================
+// Bar Chart
+//============================================================================
 
 function barChartSelectGrapgh(file,selection){
     d3.csv(file, function(data) {
-        //console.log(file);
-        var len = Object.keys(data[0]).length;
-        var object_properties = new Array(len)
-        object_properties = Object.getOwnPropertyNames(data[0]);
-        var data_array = new Array(data.length);
 
-        //console.log(object_properties);
-        //var select_property = selection;
+        var len = Object.keys(data[0]).length;
+        var data_array = new Array(data.length);
 
         for (j = 0; j < data.length; j++) {
             var object = data[j];
-            //var property = object_properties[select_property];
-            //console.log(object);
             data_array[j] = parseInt(object[selection]);
-            console.log(data_array[j]);
         }
-        //console.log(data_array);
+
         if (isNaN(data_array[0])){
             console.log("NAN")
         }
@@ -41,11 +38,9 @@ function cratebarChar(values,column){
     var formatPercent = d3.format(".0%");
 
     var margin = {top: 10, right: 30, bottom: 30, left: 30},
-        width = 250 ,//- margin.left - margin.right,
-        height = 150,// - margin.top - margin.bottom,
+        width = 250 ,
+        height = 200,
         ticks = ((max_margin - min_margin)/width);
-
-//                console.log(ticks);
 
     var x = d3.scale.linear()
         .domain([min_margin, max_margin])
@@ -66,15 +61,12 @@ function cratebarChar(values,column){
     var yAxis = d3.svg.axis()
         .scale(y)
         .orient("left");
-        //.tickFormat(formatPercent);
 
     var svg = d3.select("#visualization-area").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
 
     var tip = d3.tip()
         .attr('class', 'd3-tip')
@@ -93,19 +85,10 @@ function cratebarChar(values,column){
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide);
 
-    //console.log("data x "+x(data[1].dx));
-
     bar.append("rect")
         .attr("x", 1)
         .attr("width",function(){ if(x(data[0].dx)-1<0){return 1;}else{return x(data[0].dx)-1;}})
         .attr("height", function(d) { return height - y(d.y); });
-
-    //bar.append("text")
-    //    .attr("dy", ".75em")
-    //    .attr("y", 6)
-    //    .attr("x", x(data[0].dx) / 2)
-    //    .attr("text-anchor", "middle")
-    //    .text(function(d) { return formatCount(d.y); });
 
     svg.append("g")
         .attr("class", "x axis")
@@ -135,15 +118,7 @@ function cratebarChar(values,column){
         .style("text-anchor", "middle")
         .text("Frequency of "+column);
 
-    d3.select("input").on("change", change);
-
-    function change() {
-        console.log("selected")
-    }
-
 }
-
-
 
 function maxMargin(data_array){
     var slots_max = data_array[0];
