@@ -39,7 +39,7 @@ function cratebarChar(values,column){
 
     var margin = {top: 10, right: 30, bottom: 30, left: 30},
         width = 250 ,
-        height = 150,
+        height = 200,
         ticks = ((max_margin - min_margin)/width);
 
     var x = d3.scale.linear()

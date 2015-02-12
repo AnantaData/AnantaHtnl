@@ -8,7 +8,7 @@ function boxPlotSelectGrapgh(file,selection){
 
     var margin = {top: 30, right: 50, bottom: 20, left: 50},
         width = 150 - margin.left - margin.right,
-        height = 250 - margin.top - margin.bottom;
+        height = 240 - margin.top - margin.bottom;
 
     var min = Infinity,
         max = -Infinity;
