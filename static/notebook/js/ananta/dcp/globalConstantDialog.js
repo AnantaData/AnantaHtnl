@@ -38,9 +38,12 @@ var IPython = (function (IPython) {
                 Ok :{class : "btn-primary",
                     click: function(e) {
                         //this_dialog.addStep(profile,this_dialog);
-                        this_dialog.get_values(profile,e);
-                        profile.settingsdialog.update_step_list(profile);
-                        profile.settingsdialog.minidialogs[this_dialog.step_no] = this_dialog;
+                        if(this_dialog.get_values(profile,e)) {
+                            profile.settingsdialog.update_step_list(profile);
+                            profile.settingsdialog.minidialogs[this_dialog.step_no] = this_dialog;
+                        }else{
+                            return false;
+                        }
                     }
                 }
             }
@@ -134,7 +137,15 @@ var IPython = (function (IPython) {
         };
         stepData.fields=this.getCheckedValues();
         stepData.global_const=this.globalConstantInp.val();
-        profile.profileData.steps[this.step_no] = stepData;
+        var cons = parseFloat(stepData.global_const);
+        if(!isNaN(cons)) {
+            profile.profileData.steps[this.step_no] = stepData;
+            return true;
+        }else{
+            this.errDoc.text("Global Constant value is not given or not a float value");
+            this.errDoc.show();
+            return false;
+        }
     };
 
     GlblConstDialog.prototype.set_values =function(profile){

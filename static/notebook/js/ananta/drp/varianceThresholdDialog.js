@@ -36,10 +36,12 @@ var IPython = (function (IPython) {
                 },
                 Ok :{class : "btn-primary",
                     click: function(e) {
-                        //this_dialog.addStep(profile,this_dialog);
-                        this_dialog.get_values(profile,e);
-                        profile.settingsdialog.update_step_list(profile);
-                        profile.settingsdialog.minidialogs[this_dialog.step_no] = this_dialog;
+                        if(this_dialog.get_values(profile,e)) {
+                            profile.settingsdialog.update_step_list(profile);
+                            profile.settingsdialog.minidialogs[this_dialog.step_no] = this_dialog;
+                        }else{
+                            return false;
+                        }
                     }
                 }
             }
@@ -132,7 +134,16 @@ var IPython = (function (IPython) {
         };
         stepData.fields=this.getCheckedValues();
         stepData.var_threshold=this.varThresholdInp.val();
-        profile.profileData.steps[this.step_no] = stepData;
+        //profile.profileData.steps[this.step_no] = stepData;
+        var cons = parseFloat(stepData.var_threshold);
+        if(!isNaN(cons)) {
+            profile.profileData.steps[this.step_no] = stepData;
+            return true;
+        }else{
+            this.errDoc.text("Variance Threshold value is not given or not a float value");
+            this.errDoc.show();
+            return false;
+        }
     };
 
     VarianceThresholdDialog.prototype.set_values =function(profile){
