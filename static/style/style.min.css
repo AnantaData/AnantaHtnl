@@ -1911,6 +1911,7 @@ svg{
 .stepinputui-button{
     float: left;
     width: 30%;
+    margin-top: 22px;
 }
 
 .modal-mini{
