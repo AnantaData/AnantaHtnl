@@ -1,11 +1,28 @@
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
+//============================================================================
+// Data Cleaning Profile
+//============================================================================
 
 var IPython = (function (IPython) {
 
+    /**
+     * The constructor of Data Cleaninf profile
+     * @param kernel
+     * @param options
+     * @constructor
+     */
     var DCProfile = function (kernel, options) {
 
+        //Inherit from Profile class
         IPython.Profile.apply(this,[kernel,options]);
 
+        //DCProfile specific data
         this.gui_type = 'dcp';
         this.profileData = {
             steps :[],
@@ -28,10 +45,15 @@ var IPython = (function (IPython) {
 
     };
 
-
+    /**
+     * File Loading profile is extended from Profile class
+     * @type {IPython.Profile}
+     */
     DCProfile.prototype = new IPython.Profile();
 
-
+    /**
+     * The additional elements to profile element
+     */
     DCProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
@@ -40,6 +62,11 @@ var IPython = (function (IPython) {
 
     };
 
+    /**
+     * Data Cleaning code is set here
+     * @param profileData
+     * @returns {string}
+     */
     DCProfile.prototype.setCode = function(profileData){
         var code = 'from ananta_base.base import *' +
             '\nfrom ananta_base.data_cleaning_pan import DataCleaningProfile, UseGlobalConstantStep, IgnoreTupleStep, UseAttributeMeanStep, UseAttributeModeStep, UseAttributeMedianStep' +
@@ -63,6 +90,11 @@ var IPython = (function (IPython) {
         return code;
     };
 
+    /**
+     * Data cleaning steps added to code
+     * @param stepData
+     * @returns {string}
+     */
     DCProfile.prototype.addStepCode = function(stepData){
         var stepType;
         if(stepData.step_type == 'ignTupl'){
@@ -150,6 +182,10 @@ var IPython = (function (IPython) {
         return code;
     };
 
+    /**
+     * class as a variable
+     * @type {Function}
+     */
     IPython.DCProfile = DCProfile;
 
     return IPython;

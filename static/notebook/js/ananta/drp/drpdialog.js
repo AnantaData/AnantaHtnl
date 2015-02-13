@@ -1,4 +1,6 @@
-
+//============================================================================
+// Data Reduction Profile Dialog
+//============================================================================
 
 var IPython = (function (IPython) {
     "use strict";
@@ -9,14 +11,26 @@ var IPython = (function (IPython) {
 
     };
 
+    /**
+     * The constructor of DrpDialog,  this class is extended from ProfileDialog
+     * @param cell_id
+     * @constructor
+     */
     var DrpDialog = function (cell_id) {
         IPython.ProfileDialog.apply(this, [cell_id]);
         this.minidialogs = [];
     };
 
+    /**
+     * This class is extended from ProfileDialog
+     * @type {IPython.ProfileDialog}
+     */
     DrpDialog.prototype = new IPython.ProfileDialog();
 
-
+    /**
+     * This method shows the dialog, all the html elements, events are created here
+     * @param profile
+     */
     DrpDialog.prototype.show_dialog = function (profile) {
         profile.fields = getFields();
         var element = IPython.ProfileDialog.prototype.show_dialog.apply(this, []);
@@ -49,6 +63,11 @@ var IPython = (function (IPython) {
 
     };
 
+    /**
+     * This method is called inside the show dialog method and create all the HTML elements
+     * @param nb
+     * @returns {*|jQuery|HTMLElement}
+     */
     DrpDialog.prototype.build_elements = function (nb) {
         var div = $('<div/>');
         var left = $('<div class="stepinputui-left" />');
@@ -95,10 +114,16 @@ var IPython = (function (IPython) {
         return div;
     };
 
+    /**
+     * Set the instructions for the dialog user
+     */
     DrpDialog.prototype.setInstruction = function(){
         this.documentation.text('The Data Reduction Profile should be given the steps. ')
     };
 
+    /**
+     * All the html elements are called from their id using jquery
+     */
     DrpDialog.prototype.retrive_elements = function(){
         this.stepTypeInp = $('#'+this.stepTypeInp_id);
         this.stepTypeBtn = $('#'+this.stepTypeBtn_id);
@@ -110,14 +135,27 @@ var IPython = (function (IPython) {
         this.documentation = $('#'+this.documentation_id);
     };
 
+    /**
+     * when the dialog is finished the values obtained are stored
+     * @param profile
+     * @param e
+     */
     DrpDialog.prototype.get_values = function(profile, e){
         profile.set_text(profile.setCode(profile.profileData));
     };
 
+    /**
+     * The stored values are set in the GUI, when loading a profile
+     * @param profile
+     */
     DrpDialog.prototype.set_values =function(profile){
         this.update_step_list(profile);
     };
 
+    /**
+     * Set dynamic elements of the UI
+     * @param profile
+     */
     DrpDialog.prototype.set_dynamic_ui =function(profile){
         var this_dialog = this;
         this.stepTypeBtn.click(function(){
@@ -181,6 +219,10 @@ var IPython = (function (IPython) {
         });
     };
 
+    /**
+     * Update step details when user edit steps
+     * @param profile
+     */
     DrpDialog.prototype.update_step_list= function(profile){
         this.stepListInp.empty();
         var stepData;
@@ -188,8 +230,12 @@ var IPython = (function (IPython) {
             stepData = profile.profileData.steps[i];
             this.stepListInp.append('<option  value="'+stepData.step_name+'" >'+stepData.step_label+'</option>');
         }
-    }
+    };
 
+    /**
+     * class variable
+     * @type {Function}
+     */
     IPython.DrpDialog = DrpDialog;
 
     return IPython;

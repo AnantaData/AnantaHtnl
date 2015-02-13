@@ -1,7 +1,22 @@
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
+//============================================================================
+// Data Transformation Profile
+//============================================================================
 
 var IPython = (function (IPython) {
 
+    /**
+     * The constructor of Data transformation Profile
+     * @param kernel
+     * @param options
+     * @constructor
+     */
     var DTProfile = function (kernel, options) {
 
         IPython.Profile.apply(this,[kernel,options]);
@@ -28,10 +43,15 @@ var IPython = (function (IPython) {
 
     };
 
-
+    /**
+     * Data transformation profile is extended from Profile class
+     * @type {IPython.Profile}
+     */
     DTProfile.prototype = new IPython.Profile();
 
-
+    /**
+     * The additional elements to profile element
+     */
     DTProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
@@ -39,7 +59,11 @@ var IPython = (function (IPython) {
         this.profileheading[0].style.color="#610B4B";
     };
 
-
+    /**
+     * Data transformation code is set here
+     * @param profileData
+     * @returns {string}
+     */
     DTProfile.prototype.setCode = function(profileData) {
         var code =
             '\nfrom ananta_base.data_transformation import DataTransformationProfile, LabelEncodingStep, BinningStep' +
@@ -60,6 +84,11 @@ var IPython = (function (IPython) {
         return code;
     };
 
+    /**
+     * Data transformation steps added to code
+     * @param stepData
+     * @returns {string}
+     */
     DTProfile.prototype.addStepCode = function(stepData){
         var stepType;
         if(stepData.step_type == 'labelEn'){
@@ -98,6 +127,10 @@ var IPython = (function (IPython) {
         return code;
     };
 
+    /**
+     * class as a variable
+     * @type {Function}
+     */
     IPython.DTProfile = DTProfile;
 
     return IPython;

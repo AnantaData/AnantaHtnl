@@ -1,18 +1,28 @@
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
+//============================================================================
+// Data Reduction Profile
+//============================================================================
 
 var IPython = (function (IPython) {
 
     /**
-     *
+     * The constructor of Data reduction Profile
      * @param kernel
      * @param options
      * @constructor
      */
-
     var DRProfile = function (kernel, options) {
 
+        //Inherit from Profile class
         IPython.Profile.apply(this,[kernel,options]);
 
+        //DRProfile specific data
         this.gui_type = 'drp';
         this.profileData = {
             steps :[],
@@ -36,12 +46,14 @@ var IPython = (function (IPython) {
     };
 
     /**
-     *
+     * Data Reduction profile is extended from Profile class
      * @type {IPython.Profile}
      */
     DRProfile.prototype = new IPython.Profile();
 
-
+    /**
+     * The additional elements to profile element
+     */
     DRProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
@@ -50,6 +62,11 @@ var IPython = (function (IPython) {
 
     };
 
+    /**
+     * Data reduction code is set here
+     * @param profileData
+     * @returns {string}
+     */
     DRProfile.prototype.setCode = function(profileData){
         var code = 'from ananta_base.base import *' +
             '\nfrom ananta_base.data_cleaning_pan import DataCleaningProfile, UseGlobalConstantStep, IgnoreTupleStep, UseAttributeMeanStep, UseAttributeModeStep, UseAttributeMedianStep' +
@@ -73,6 +90,11 @@ var IPython = (function (IPython) {
         return code;
     };
 
+    /**
+     * Data reduction steps added to code
+     * @param stepData
+     * @returns {string}
+     */
     DRProfile.prototype.addStepCode = function(stepData){
         var stepType;
         if(stepData.step_type == 'removeCol'){
@@ -125,6 +147,10 @@ var IPython = (function (IPython) {
         return code;
     };
 
+    /**
+     * class as a variable
+     * @type {Function}
+     */
     IPython.DRProfile = DRProfile;
 
     return IPython;

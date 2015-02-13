@@ -1,14 +1,31 @@
+//============================================================================
+// Supervised Mining Profile Dialog
+//============================================================================
+
 var IPython = (function (IPython) {
     "use strict";
 
     var platform = IPython.utils.platform;
 
+    /**
+     * The constructor of SmpDialog,  this class is extended from ProfileDialog
+     * @param cell_id
+     * @constructor
+     */
     var SmpDialog = function (cell_id) {
         IPython.ProfileDialog.apply(this, [cell_id]);
     };
 
+    /**
+     * This class is extended from ProfileDialog
+     * @type {IPython.ProfileDialog}
+     */
     SmpDialog.prototype = new IPython.ProfileDialog();
 
+    /**
+     * This method shows the dialog, all the html elements, events are created here
+     * @param profile
+     */
     SmpDialog.prototype.show_dialog = function (profile) {
 
         var element = IPython.ProfileDialog.prototype.show_dialog.apply(this, []);
@@ -42,13 +59,18 @@ var IPython = (function (IPython) {
 
     };
 
-
+    /**
+     * Set the instructions for the dialog user
+     */
     SmpDialog.prototype.setInstruction = function(){
         this.documentation.text('Please enter the algorithm you wish to run on this predictive analysis.');
     };
 
-
-
+    /**
+     * This method is called inside the show dialog method and create all the HTML elements
+     * @param profile
+     * @returns {*|jQuery|HTMLElement}
+     */
     SmpDialog.prototype.build_elements = function (profile) {
         var div = $('<div/>');
 
@@ -84,6 +106,9 @@ var IPython = (function (IPython) {
         return div;
     };
 
+    /**
+     * All the html elements are called from their id using jquery
+     */
     SmpDialog.prototype.retrive_elements = function(){
         this.algInp  = $('#'+this.alg_inp_id);
         this.resSel  = $('#'+this.res_var_id);
@@ -91,6 +116,11 @@ var IPython = (function (IPython) {
         this.documentation = $('#'+this.documentation_id);
     };
 
+    /**
+     * when the dialog is finished the values obtained are stored
+     * @param profile
+     * @param e
+     */
     SmpDialog.prototype.get_values = function(profile, e){
 
         this.errDoc.hide();
@@ -122,11 +152,19 @@ var IPython = (function (IPython) {
         return false;
     };
 
+    /**
+     * The stored values are set in the GUI, when loading a profile
+     * @param profile
+     */
     SmpDialog.prototype.set_values =function(profile){
         $('#'+this.alg_inp_id+' option[value="' + profile.profileData.algorithm + '"]').prop('selected', true);
 
     };
 
+    /**
+     * Set dynamic elements of the UI
+     * @param profile
+     */
     SmpDialog.prototype.set_dynamic_ui =function(){
         var this_dialog = this;
         this.algInp.change(function(){
@@ -135,6 +173,10 @@ var IPython = (function (IPython) {
         });
     };
 
+    /**
+     * class variable
+     * @type {Function}
+     */
     IPython.SmpDialog = SmpDialog;
 
     return IPython;

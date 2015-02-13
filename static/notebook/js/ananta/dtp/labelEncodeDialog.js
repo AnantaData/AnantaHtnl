@@ -1,12 +1,18 @@
-/**
- * Created by laksheen on 2/7/15.
- */
+//============================================================================
+// Global Constant Dialog
+//============================================================================
 
 var IPython = (function (IPython) {
     "use strict";
 
     var platform = IPython.utils.platform;
 
+    /**
+     * The constructor of Label encoding Dialog, this class is extended from ProfileDialog
+     * @param cell_id
+     * @param step_no
+     * @constructor
+     */
     var LabelEnDialog = function (cell_id,step_no ) {
         IPython.ProfileDialog.apply(this, [cell_id]);
         this.cell_id = cell_id;
@@ -16,9 +22,16 @@ var IPython = (function (IPython) {
         this.step_no = step_no;
     };
 
+    /**
+     * This class is extended from ProfileDialog
+     * @type {IPython.ProfileDialog}
+     */
     LabelEnDialog.prototype = new IPython.ProfileDialog();
 
-
+    /**
+     * This method shows the dialog, all the html elements, events are created here
+     * @param profile
+     */
     LabelEnDialog.prototype.show_dialog = function (profile) {
 
         var element = IPython.ProfileDialog.prototype.show_dialog.apply(this, []);
@@ -55,11 +68,19 @@ var IPython = (function (IPython) {
 
     };
 
+    /**
+     * Set the instructions for the dialog user
+     */
     LabelEnDialog.prototype.setInstruction = function(){
         this.documentation.text('Tick the field/s which should be label encoded'+
         '.')
     };
 
+    /**
+     * This method is called inside the show dialog method and create all the HTML elements
+     * @param profile
+     * @returns {*|jQuery|HTMLElement}
+     */
     LabelEnDialog.prototype.build_elements = function (profile) {
 
 
@@ -102,6 +123,9 @@ var IPython = (function (IPython) {
         return div;
     };
 
+    /**
+     * All the html elements are called from their id using jquery
+     */
     LabelEnDialog.prototype.retrive_elements = function(){
         this.stepNameInp = $('#'+this.stepNameInp_id);
         this.statTabl = $('#'+this.statTabl_id);
@@ -109,6 +133,10 @@ var IPython = (function (IPython) {
         this.documentation = $('#'+this.documentation_id);
     };
 
+    /**
+     * when the dialog is finished the values obtained are stored
+     * @param profile
+     */
     LabelEnDialog.prototype.get_values = function(profile){
 
         this.errDoc.hide();
@@ -124,6 +152,10 @@ var IPython = (function (IPython) {
         profile.profileData.steps[this.step_no] = stepData;
     };
 
+    /**
+     * The stored values are set in the GUI, when loading a profile
+     * @param profile
+     */
     LabelEnDialog.prototype.set_values =function(profile){
         var stepData = {
             step_no : this.step_no,
@@ -141,6 +173,10 @@ var IPython = (function (IPython) {
 
     };
 
+    /**
+     * Get the values of the ticked check boxes
+     * @returns {Array}
+     */
     LabelEnDialog.prototype.getCheckedValues = function(){
         var fields = [];
         var row = this.statTabl[0].children[1].children;
@@ -154,6 +190,11 @@ var IPython = (function (IPython) {
         return fields;
     };
 
+    /**
+     * set the values of check boxes
+     * @param profile
+     * @param fields
+     */
     LabelEnDialog.prototype.setCheckedValues = function(profile,fields){
         var checked = [];
         var rows = profile.fields.length;
@@ -179,16 +220,27 @@ var IPython = (function (IPython) {
         }
     };
 
+    /**
+     * Add a new Label Encoding step
+     * @param profile
+     * @param this_dialog
+     */
     LabelEnDialog.prototype.addStep =function(profile, this_dialog){
         this_dialog.get_values(profile);
         profile.settingsdialog.update_step_list(profile);
         profile.settingsdialog.minidialogs[this_dialog.step_no] = this_dialog;
     };
 
+    /**
+     * Set dynamic elements of the UI
+     */
     LabelEnDialog.prototype.set_dynamic_ui =function(){
     };
 
-
+    /***
+     * class variable
+     * @type {Function}
+     */
     IPython.LabelEnDialog = LabelEnDialog;
 
     return IPython;
