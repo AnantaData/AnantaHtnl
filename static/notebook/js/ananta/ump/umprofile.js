@@ -1,5 +1,22 @@
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
+
+//============================================================================
+// Unsupervised Mining Profile
+//============================================================================
+
 var IPython = (function (IPython) {
 
+    /**
+     * The constructor of Unsupervised Mining Profile
+     * @param kernel
+     * @param options
+     * @constructor
+     */
     var UMProfile = function (kernel, options) {
 
         IPython.Profile.apply(this, [kernel,options]);
@@ -22,10 +39,15 @@ var IPython = (function (IPython) {
 
     };
 
-
-
+    /**
+     * Unsupervised Mining profile is extended from Profile class
+     * @type {IPython.Profile}
+     */
     UMProfile.prototype = new IPython.Profile();
 
+    /**
+     * The additional elements to profile element
+     */
     UMProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
@@ -33,6 +55,11 @@ var IPython = (function (IPython) {
         this.profileheading[0].style.color="#0B615E";
     };
 
+    /**
+     * Unsupervised Mining code is set here
+     * @param profileData
+     * @returns {string}
+     */
     UMProfile.prototype.setCode = function (profileData) {
 
 
@@ -68,6 +95,10 @@ var IPython = (function (IPython) {
 
     }
 
+    /**
+     * class as a variable
+     * @type {Function}
+     */
     IPython.UMProfile = UMProfile;
 
     return IPython;

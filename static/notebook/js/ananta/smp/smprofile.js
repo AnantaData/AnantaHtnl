@@ -6,11 +6,17 @@
 //----------------------------------------------------------------------------
 
 //============================================================================
-// File Loading Profile
+// Supervised Mining Profile
 //============================================================================
 
 var IPython = (function (IPython) {
 
+    /**
+     * The constructor of Supervised Mining Profile
+     * @param kernel
+     * @param options
+     * @constructor
+     */
     var SMProfile = function (kernel, options) {
 
         IPython.Profile.apply(this, [kernel,options]);
@@ -43,8 +49,15 @@ var IPython = (function (IPython) {
 
     };
 
+    /**
+     * Supervisd Mining profile is extended from Profile class
+     * @type {IPython.Profile}
+     */
     SMProfile.prototype = new IPython.Profile();
 
+    /**
+     * The additional elements to profile element
+     */
     SMProfile.prototype.create_element = function () {
         IPython.Profile.prototype.create_element.apply(this, arguments);
 
@@ -53,6 +66,11 @@ var IPython = (function (IPython) {
 
     };
 
+    /**
+     * Supervised Mining code is set here
+     * @param profileData
+     * @returns {string}
+     */
     SMProfile.prototype.setCode = function (profileData) {
 
         var alg = "";
@@ -92,6 +110,10 @@ var IPython = (function (IPython) {
 
     }
 
+    /**
+     * class as a variable
+     * @type {Function}
+     */
     IPython.SMProfile = SMProfile;
 
     return IPython;
