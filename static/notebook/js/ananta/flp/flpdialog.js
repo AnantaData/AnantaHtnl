@@ -115,7 +115,7 @@ var IPython = (function (IPython) {
     };
 
     /**
-     * All the html elements are called from there id using jquery
+     * All the html elements are called from their id using jquery
      */
     FlpDialog.prototype.retrive_elements = function(){
         this.fileTypeInp = $('#'+this.fileTypeInp_id);

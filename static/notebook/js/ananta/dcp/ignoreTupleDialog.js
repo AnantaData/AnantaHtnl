@@ -1,13 +1,25 @@
-/**
- * Created by lakmal on 2/3/15.
- */
+//----------------------------------------------------------------------------
+//  Copyright (C) 2015  The Ananta Development Team
+//
+//  Distributed under the terms of the BSD License.  The full license is in
+//  the file COPYING, distributed as part of this software.
+//----------------------------------------------------------------------------
 
+//============================================================================
+// Ignore Tuple Dialog
+//============================================================================
 
 var IPython = (function (IPython) {
     "use strict";
 
     var platform = IPython.utils.platform;
 
+    /**
+     * The constructor of Ignore Tuple Dialog, this class is extended from ProfileDialog
+     * @param cell_id
+     * @param step_no
+     * @constructor
+     */
     var IgnTuplDialog = function (cell_id,step_no ) {
         IPython.ProfileDialog.apply(this, [cell_id]);
         this.cell_id = cell_id;
@@ -17,9 +29,17 @@ var IPython = (function (IPython) {
         this.step_no = step_no;
     };
 
+    /**
+     * This class is extended from ProfileDialog
+     * @type {IPython.ProfileDialog}
+     */
     IgnTuplDialog.prototype = new IPython.ProfileDialog();
 
 
+    /**
+     * This method shows the dialog, all the html elements, events are created here
+     * @param profile
+     */
     IgnTuplDialog.prototype.show_dialog = function (profile) {
 
         var element = IPython.ProfileDialog.prototype.show_dialog.apply(this, []);
@@ -56,11 +76,19 @@ var IPython = (function (IPython) {
 
     };
 
+    /**
+     * Set the instructions for the dialog user
+     */
     IgnTuplDialog.prototype.setInstruction = function(){
         this.documentation.text('Tick on fields which should not have empty/null values during the mining process(such tuples will be removed)'+
         '.')
     };
 
+    /**
+     * This method is called inside the show dialog method and create all the HTML elements
+     * @param profile
+     * @returns {*|jQuery|HTMLElement}
+     */
     IgnTuplDialog.prototype.build_elements = function (profile) {
 
 
@@ -107,6 +135,9 @@ var IPython = (function (IPython) {
         return div;
     };
 
+    /**
+     * All the html elements are called from their id using jquery
+     */
     IgnTuplDialog.prototype.retrive_elements = function(){
         this.stepNameInp = $('#'+this.stepNameInp_id);
         this.statTabl = $('#'+this.statTabl_id);
@@ -114,6 +145,10 @@ var IPython = (function (IPython) {
         this.documentation = $('#'+this.documentation_id);
     };
 
+    /**
+     * when the dialog is finished the values obtained are stored
+     * @param profile
+     */
     IgnTuplDialog.prototype.get_values = function(profile){
 
         this.errDoc.hide();
@@ -129,6 +164,10 @@ var IPython = (function (IPython) {
         profile.profileData.steps[this.step_no] = stepData;
     };
 
+    /**
+     * The stored values are set in the GUI, when loading a profile
+     * @param profile
+     */
     IgnTuplDialog.prototype.set_values =function(profile){
         var stepData = {
             step_no : this.step_no,
@@ -147,6 +186,10 @@ var IPython = (function (IPython) {
 
     };
 
+    /**
+     * Get the values of the ticked check boxes
+     * @returns {Array}
+     */
     IgnTuplDialog.prototype.getCheckedValues = function(){
         var fields = [];
         var row = this.statTabl[0].children[1].children;
@@ -160,6 +203,11 @@ var IPython = (function (IPython) {
         return fields;
     };
 
+    /**
+     * set the values of check boxes
+     * @param profile
+     * @param fields
+     */
     IgnTuplDialog.prototype.setCheckedValues = function(profile,fields){
         var checked = [];
         var rows = profile.fields.length;
@@ -180,16 +228,27 @@ var IPython = (function (IPython) {
         tabulate_3(this.statTabl_id,profile.profileData.fileNamePrefix,checked);
     };
 
+    /**
+     * Add a new Attribute Mean step
+     * @param profile
+     * @param this_dialog
+     */
     IgnTuplDialog.prototype.addStep =function(profile, this_dialog){
         this_dialog.get_values(profile);
         profile.settingsdialog.update_step_list(profile);
         profile.settingsdialog.minidialogs[this_dialog.step_no] = this_dialog;
     };
 
+    /**
+     * Set dynamic elements of the UI
+     */
     IgnTuplDialog.prototype.set_dynamic_ui =function(){
     };
 
-
+    /***
+     * class variable
+     * @type {Function}
+     */
     IPython.IgnTuplDialog = IgnTuplDialog;
 
     return IPython;
